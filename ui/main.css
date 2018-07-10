@@ -354,3 +354,9 @@ a .card:hover{
 .push-down{
     margin-top:40px
 }
+
+
+.entry-img img{
+    height: 200px;
+    border-radius:0;
+}
