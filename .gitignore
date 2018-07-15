@@ -1,1 +1,4 @@
-.github/
+.github
+node_modules
+.env
+dist/
