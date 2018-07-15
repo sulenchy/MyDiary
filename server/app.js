@@ -20,3 +20,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);
 });
+
+export default app;
