@@ -8,44 +8,6 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Diary Entries', () => {
-  beforeEach((done) => { // Before each test we empty the database
-    dummyData.entries = {};
-    done();
-  });
-
-  describe('Undefined or empty diary entries object', () => {
-    // it('it should return error message when entries object is undefined', (done) => {
-    //   dummyData.entries = undefined;
-    //   chai.request(app)
-    //     .get('/api/v1/entries')
-    //     .type('form')
-    //     .end((err, res) => {
-    //       expect(res).to.have(404);
-    //       expect(res.body).to.be.an('object');
-    //       expect(res.body).to.have.property('error');
-    //       expect(res.body.error.message).to.be.equal('Request unsucessful');
-    //       done();
-    //     });
-    // });
-
-    it('should GET empty diary entry when the entries object is {}', (done) => {
-      chai.request(app)
-        .get('/api/v1/entries')
-        .type('form')
-        .end((err, res) => {
-          expect(res).to.have(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('data');
-          expect(res.body.data).to.be.an('object');
-          expect(res.body.data).to.be.equal('{}');
-          expect(res.body).to.have.property('status');
-          expect(res.body.error.status).to.be.equal('fail');
-          expect(res.body.message).to.be.equal('No dairy entry available currently');
-          done();
-        });
-    });
-  });
-
   describe('/api/v1/entries', () => {
     it('it should POST a diary entry', (done) => {
       const entry = {
@@ -76,11 +38,11 @@ describe('Diary Entries', () => {
         .get('/api/v1/entries')
         .type('form')
         .end((err, res) => {
-          expect(res).to.have(200);
+          expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data)).to.have.lengthOf(1);
-          expect(res.body.message).to.be.equal('Request gotten sucessfully');
+          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
+          expect(res.body.data.message).to.be.equal('Diary entries gotten successfully');
           done();
         });
     });
@@ -100,7 +62,7 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(res.body.data).to.include({ userId: 3000 });
+          expect(res.body.data.entries).to.include({ userId: 3000 });
           expect(res.body.message).to.equal('New diary entry created successfully');
           done();
         });
@@ -111,11 +73,11 @@ describe('Diary Entries', () => {
         .get('/api/v1/entries')
         .type('form')
         .end((err, res) => {
-          expect(res).to.have(200);
+          expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data)).to.have.lengthOf(2);
-          expect(res.body.message).to.be.equal('Request gotten sucessfully');
+          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
+          expect(res.body.data.message).to.be.equal('Diary entries gotten successfully');
           done();
         });
     });
@@ -127,10 +89,10 @@ describe('Diary Entries', () => {
         .get('/api/v1/entries/1')
         .type('form')
         .end((err, res) => {
-          expect(res).to.have(200);
+          expect(res).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data)).to.have.lengthOf(1);
+          expect(Object.keys(res.body.data)).to.have.lengthOf(5);
           expect(res.body.message).to.be.equal('Request gotten sucessfully');
           done();
         });
@@ -141,7 +103,7 @@ describe('Diary Entries', () => {
         .get('/api/v1/entries/10')
         .type('form')
         .end((err, res) => {
-          expect(res.status).to.have(404);
+          expect(res.status).to.equal(404);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('status');
           expect(res.body.status).to.be.equal('fail');
@@ -167,6 +129,29 @@ describe('Diary Entries', () => {
           expect(res.body).to.have.property('data');
           expect(res.body.message).to.equal('request updated successfully');
           expect(res.body.status).to.be.equal('success');
+          done();
+        });
+    });
+  });
+
+  describe('Diary entries object', () => {
+    before((done) => { // Before each test we empty the database
+      dummyData.entries = {};
+      done();
+    });
+    it('should GET empty diary entry when the entries object is {}', (done) => {
+      chai.request(app)
+        .get('/api/v1/entries')
+        .type('form')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.ownPropertyDescriptor('data');
+          expect(res.body.data).to.be.an('object');
+          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(0);
+          expect(res.body).to.have.ownPropertyDescriptor('status');
+          expect(res.body.status).to.be.equal('success');
+          expect(res.body.data.message).to.be.equal('No dairy entry available currently');
           done();
         });
     });
