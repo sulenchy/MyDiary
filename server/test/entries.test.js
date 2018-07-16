@@ -153,10 +153,10 @@ describe('Diary Entries', () => {
     it('it should PUT (update) a specific diary entry', (done) => {
       const entry = {
         date: '3rd may 2010',
-        time: '1:00 PM',
+        time: '1:00 AM',
         userId: 3000,
         title: 'I woke up late',
-        description: 'On this day, I woke up late. I could not believe it',
+        description: 'I woke up late. I could not believe it',
       };
       chai.request(app)
         .put('/api/v1/entries/2')
