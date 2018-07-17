@@ -33,7 +33,7 @@ describe('Diary Entries', () => {
         });
     });
 
-    it('should GET entries object with one entry', (done) => {
+    it('should GET all entries in entries object', (done) => {
       chai.request(app)
         .get('/api/v1/entries')
         .type('form')
@@ -42,7 +42,7 @@ describe('Diary Entries', () => {
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
           expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
-          expect(res.body.data.message).to.be.equal('Diary entries gotten successfully');
+          expect(res.body.message).to.be.equal('Diary entries gotten successfully');
           done();
         });
     });
@@ -77,7 +77,7 @@ describe('Diary Entries', () => {
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
           expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
-          expect(res.body.data.message).to.be.equal('Diary entries gotten successfully');
+          expect(res.body.message).to.be.equal('Diary entries gotten successfully');
           done();
         });
     });
@@ -89,16 +89,16 @@ describe('Diary Entries', () => {
         .get('/api/v1/entries/1')
         .type('form')
         .end((err, res) => {
-          expect(res).to.equal(200);
+          expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data)).to.have.lengthOf(5);
-          expect(res.body.message).to.be.equal('Request gotten sucessfully');
+          expect(Object.keys(res.body.data)).to.have.lengthOf(1);
+          expect(res.body.message).to.be.equal('Diary entry gotten successfully');
           done();
         });
     });
 
-    it('should GET entries object with one entry', (done) => {
+    it('should not GET entry', (done) => {
       chai.request(app)
         .get('/api/v1/entries/10')
         .type('form')
@@ -151,7 +151,7 @@ describe('Diary Entries', () => {
           expect(Object.keys(res.body.data.entries)).to.have.lengthOf(0);
           expect(res.body).to.have.ownPropertyDescriptor('status');
           expect(res.body.status).to.be.equal('success');
-          expect(res.body.data.message).to.be.equal('No dairy entry available currently');
+          expect(res.body.message).to.be.equal('No dairy entry available currently');
           done();
         });
     });
