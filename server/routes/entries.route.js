@@ -11,5 +11,6 @@ router.get('/', (req, res) => {
 
 router.get('/entries', entriesController.getAllEntries);
 router.get('/entries/:id', entriesController.getDiaryEntryById);
+router.post('/entries', entriesController.addNewDiaryEntry);
 
 export default router;

@@ -24,9 +24,9 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('status');
-          expect(res.body.message).to.equal('success');
+          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
-          expect(res.body.data).to.include({ userId: 1000 });
+          expect(res.body.data.Entry).to.include({ userId: 1000 });
           expect(res.body.data).to.be.an('object');
           expect(res.body.message).to.equal('New diary entry created successfully');
           done();
@@ -41,7 +41,7 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
+          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(6);
           expect(res.body.message).to.be.equal('Diary entries gotten successfully');
           done();
         });
@@ -62,7 +62,8 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(res.body.data.entries).to.include({ userId: 3000 });
+          expect(res.body.status).to.equal('success');
+          expect(res.body.data.Entry).to.include({ userId: 3000 });
           expect(res.body.message).to.equal('New diary entry created successfully');
           done();
         });
@@ -76,7 +77,7 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(5);
+          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(7);
           expect(res.body.message).to.be.equal('Diary entries gotten successfully');
           done();
         });

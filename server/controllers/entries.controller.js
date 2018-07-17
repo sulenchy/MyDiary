@@ -8,7 +8,7 @@ export default class entriesController {
           return res.status(200)
             .json({
               data: {
-                entries,               
+                entries,
               },
               message: 'No dairy entry available currently',
               status: 'success',
@@ -41,13 +41,51 @@ export default class entriesController {
   static getDiaryEntryById(req, res) {
     const { id } = req.params;
     entriesHelper.getDiaryEntryById(id)
-      .then((entry) => {
-        return res.status(200)
+      .then((entry) => res.status(200)
           .json({
             data: {
               entry,
             },
             message: 'Diary entry gotten successfully',
+            status: 'success',
+          }))
+      .catch((err) => {
+        if (err) {
+          return res.status(404)
+            .json({
+              error: {
+                message: err.message,
+              },
+              status: 'fail',
+            });
+        }
+      });
+  }
+
+  static addNewDiaryEntry(req, res) {
+    const {
+      date,
+      time,
+      userId,
+      title,
+      description,
+    } = req.body;
+
+    entriesHelper.addNewDiaryEntry(date, time, userId, title, description)
+      .then((newEntry) => {
+        if (newEntry === undefined) {
+          return res.status(400)
+            .json({
+              message: 'Invalid diary entry',
+              status: 'fail',
+            });
+        }
+        return res.status(201)
+          .json({
+            data: {
+              Entry: newEntry,
+            },
+            message: 'New diary entry created successfully',
             status: 'success',
           });
       })

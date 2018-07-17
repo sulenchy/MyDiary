@@ -22,7 +22,27 @@ export default class entriesHelper {
         resolve(data);
       } else {
         reject({
-          message: `Diary entry cannot be found`,
+          message: 'Diary entry cannot be found',
+        });
+      }
+    });
+  }
+
+  static addNewDiaryEntry(date, time, userId, title, description) {
+    return new Promise((resolve, reject) => {
+      dummyData.entries.push({
+        date,
+        time,
+        userId,
+        title,
+        description,
+      });
+      const data = dummyData.entries[dummyData.entries.length - 1];
+      if (data) {
+        resolve(data);
+      } else {
+        reject({
+          message: 'Sorry, New diary entry cannot be created',
         });
       }
     });
