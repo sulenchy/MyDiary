@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import winston from 'winston';
 import entriesRouter from './routes/entries.route';
+import entriesController from './controllers/entries.controller';
 
 dotenv.config();
 
@@ -25,7 +26,15 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(logger('dev'));
 
-app.use('/api/v1', entriesRouter);
+// app.use('/api/v1', entriesRouter);
+
+app.get('/me', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.get('/api/v1/entries', entriesController.getAllEntries);
+
+app.get('/api/v1/entries/:id', entriesController.getDiaryEntryById);
 
 
 app.listen(port, () => {

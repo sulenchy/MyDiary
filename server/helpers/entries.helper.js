@@ -14,4 +14,23 @@ export default class entriesHelper {
       }
     });
   }
+
+  static getDiaryEntryById(entryId) {
+    return new Promise((resolve, reject) => {
+      // let data;
+      // Object.keys(dummyData.entries).filter((entry) => {
+      //   if (entry === entryId) {
+      //     data = dummyData.entries[entryId];
+      //   }
+      // });
+      const data = dummyData.entries[entryId];
+      if (data) {
+        resolve(data);
+      } else {
+        reject({
+          message: `Diary entry cannot be found`,
+        });
+      }
+    });
+  }
 }

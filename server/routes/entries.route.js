@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/entries', entriesController.getAllEntries);
-
+router.get('/entries/:id', entriesController.getDiaryEntryById);
 
 export default router;
