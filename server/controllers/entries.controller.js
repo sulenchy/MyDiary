@@ -101,4 +101,31 @@ export default class entriesController {
         }
       });
   }
+
+  static updateDiaryEntry(req, res) {
+    const { ...update } = req.body;
+    const { id } = req.params;
+    entriesHelper.updateDiaryEntry(id, update)
+      .then((updatedEntry) => {
+        return res.status(200)
+          .json({
+            data: {
+              Entry: updatedEntry,
+            },
+            message: 'Diary entry updated successfully',
+            status: 'success',
+          });
+      })
+      .catch((err) => {
+        if (err) {
+          return res.status(404)
+            .json({
+              error: {
+                message: err.message,
+              },
+              status: 'fail',
+            });
+        }
+      });
+  }
 }

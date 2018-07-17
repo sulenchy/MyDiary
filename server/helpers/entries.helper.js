@@ -47,4 +47,19 @@ export default class entriesHelper {
       }
     });
   }
+
+  static updateDiaryEntry(id, update) {
+    return new Promise((resolve, reject) => {
+      const existingEntry = dummyData.entries[id];
+      const updatedData = Object.assign(existingEntry, update);
+      if (updatedData) {
+        dummyData.entries[id] = updatedData;
+        resolve(updatedData);
+      } else {
+        reject({
+          message: 'Sorry, diary entry cannot be updated',
+        });
+      }
+    });
+  }
 }

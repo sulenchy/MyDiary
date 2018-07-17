@@ -128,7 +128,7 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('data');
-          expect(res.body.message).to.equal('request updated successfully');
+          expect(res.body.message).to.equal('Diary entry updated successfully');
           expect(res.body.status).to.be.equal('success');
           done();
         });
