@@ -40,7 +40,6 @@ export default class entriesController {
 
   static getDiaryEntryById(req, res) {
     const { id } = req.params;
-    console.log(id);
     entriesHelper.getDiaryEntryById(id)
       .then((entry) => {
         return res.status(200)
