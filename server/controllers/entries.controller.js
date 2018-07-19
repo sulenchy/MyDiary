@@ -19,7 +19,7 @@ export default class entriesController {
           .json({
             data: {
               entries,
-              message: 'Diary entries gotten successfully',
+              Total: entries.length,
             },
             message: 'Diary entries gotten successfully',
             status: 'success',
