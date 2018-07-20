@@ -15,5 +15,13 @@ https://sulenchy.github.io/MyDiary/ui/
 - /user-entries.html
 - /user-profile.html
 
+## API Routes
+|   HTTP VERB   | ENDPOINT                  | FUCTIONALITY                                          |
+| ------------- | --------------------------| ----------------------------------------------------- |
+| GET           | api/v1/entries            | Get all diary entries                                 |
+| GET           | api/v1/entries/:id        | Get a specific diary entry                            |
+| POST          | api/v1/entry              | Create a new diary entry                              |
+| PUT           | api/v1/entry              | Modify an existing diary entry                        |
+
 # Author
 Abudu Abiodun Sulaiman @sulenchy
