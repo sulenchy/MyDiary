@@ -2,7 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import path from 'path';
+// import path from 'path';
 import winston from 'winston';
 import entriesRouter from './routes/entries.route';
 
@@ -21,7 +21,7 @@ app.use(logger('dev'));
 
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '/public')));
+// app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(logger('dev'));
 
