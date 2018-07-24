@@ -1,19 +1,13 @@
-#### What does this PR do?
+### What does this PR do?
 
-[TrelloCard/Issue/Story](LINK_TO_STORY)
+#### Description of Task to be completed?
 
-##### Why are we doing this? Any context or related work?
+#### How should this be manually tested?
 
-#### Where should a reviewer start?
+#### Any background context you want to provide?
 
-#### Manual testing steps?
+#### What are the relevant pivotal tracker stories?
 
-#### Screenshots
+#### Screenshots (if appropriate)
 
----
-
-#### Database changes
-
-#### Deployment instructions
-
-#### New ENV variables
+#### Questions:
