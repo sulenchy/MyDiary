@@ -177,6 +177,7 @@ button.btn.text-center {
     background: #fff;
     padding: 0 20px 20px 20px;
     border-radius: 20px;
+    padding-top: 20px;
 }
  
  
@@ -190,6 +191,7 @@ button.btn.text-center {
  /* Center the image and position the close button */
  .imgcontainer {
      text-align: center;
+     padding-bottom: 10px;
      margin: 24px 0 12px 0;
      position: relative;
  }
@@ -425,6 +427,7 @@ a .card:hover{
     @media screen and (min-width:600px){
         .left{
             width  :50%;
+            padding-left:10px;
         }
         
         .full-width{
