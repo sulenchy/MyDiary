@@ -21,9 +21,7 @@ export default class EntriesHelper {
       if (data) {
         resolve(data);
       } else {
-        reject(new Error({
-          message: 'Diary entry cannot be found',
-        }));
+        reject(new Error('Diary entry cannot be found'));
       }
     });
   }
