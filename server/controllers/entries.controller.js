@@ -1,6 +1,6 @@
 import entriesHelper from '../helpers/entries.helper';
 
-export default class entriesController {
+export default class EntriesController {
   static getAllEntries(req, res) {
     entriesHelper.getAllEntries()
       .then((entries) => {
@@ -25,41 +25,33 @@ export default class entriesController {
             status: 'success',
           });
       })
-      .catch((err) => {
-        if (err) {
-          return res.status(404)
-            .json({
-              error: {
-                message: err.message,
-              },
-              status: 'fail',
-            });
-        }
-      });
+      .catch(err => res.status(404)
+        .json({
+          error: {
+            message: err.message,
+          },
+          status: 'fail',
+        }));
   }
 
   static getDiaryEntryById(req, res) {
     const { id } = req.params;
     entriesHelper.getDiaryEntryById(id)
-      .then((entry) => res.status(200)
-          .json({
-            data: {
-              entry,
-            },
-            message: 'Diary entry gotten successfully',
-            status: 'success',
-          }))
-      .catch((err) => {
-        if (err) {
-          return res.status(404)
-            .json({
-              error: {
-                message: err.message,
-              },
-              status: 'fail',
-            });
-        }
-      });
+      .then(entry => res.status(200)
+        .json({
+          data: {
+            entry,
+          },
+          message: 'Diary entry gotten successfully',
+          status: 'success',
+        }))
+      .catch(err => res.status(404)
+        .json({
+          error: {
+            message: err.message,
+          },
+          status: 'fail',
+        }));
   }
 
   static addNewDiaryEntry(req, res) {
@@ -89,43 +81,33 @@ export default class entriesController {
             status: 'success',
           });
       })
-      .catch((err) => {
-        if (err) {
-          return res.status(404)
-            .json({
-              error: {
-                message: err.message,
-              },
-              status: 'fail',
-            });
-        }
-      });
+      .catch(err => res.status(404)
+        .json({
+          error: {
+            message: err.message,
+          },
+          status: 'fail',
+        }));
   }
 
   static updateDiaryEntry(req, res) {
     const { ...update } = req.body;
     const { id } = req.params;
     entriesHelper.updateDiaryEntry(id, update)
-      .then((updatedEntry) => {
-        return res.status(200)
-          .json({
-            data: {
-              Entry: updatedEntry,
-            },
-            message: 'Diary entry updated successfully',
-            status: 'success',
-          });
-      })
-      .catch((err) => {
-        if (err) {
-          return res.status(404)
-            .json({
-              error: {
-                message: err.message,
-              },
-              status: 'fail',
-            });
-        }
-      });
+      .then(updatedEntry => res.status(200)
+        .json({
+          data: {
+            Entry: updatedEntry,
+          },
+          message: 'Diary entry updated successfully',
+          status: 'success',
+        }))
+      .catch(err => res.status(404)
+        .json({
+          error: {
+            message: err.message,
+          },
+          status: 'fail',
+        }));
   }
 }

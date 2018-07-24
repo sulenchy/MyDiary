@@ -1,16 +1,16 @@
 import dummyData from '../models/dummyData';
 
 
-export default class entriesHelper {
+export default class EntriesHelper {
   static getAllEntries() {
     return new Promise((resolve, reject) => {
       const data = dummyData.entries;
       if (data) {
         resolve(data);
       } else {
-        reject({
+        reject(new Error({
           message: 'Request unsuccessful',
-        });
+        }));
       }
     });
   }
@@ -21,9 +21,7 @@ export default class entriesHelper {
       if (data) {
         resolve(data);
       } else {
-        reject({
-          message: 'Diary entry cannot be found',
-        });
+        reject(new Error('Diary entry cannot be found'));
       }
     });
   }
@@ -41,9 +39,9 @@ export default class entriesHelper {
       if (data) {
         resolve(data);
       } else {
-        reject({
+        reject(new Error({
           message: 'Sorry, New diary entry cannot be created',
-        });
+        }));
       }
     });
   }
@@ -56,9 +54,9 @@ export default class entriesHelper {
         dummyData.entries[id] = updatedData;
         resolve(updatedData);
       } else {
-        reject({
+        reject(new Error({
           message: 'Sorry, diary entry cannot be updated',
-        });
+        }));
       }
     });
   }
