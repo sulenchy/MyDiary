@@ -5,6 +5,10 @@ body, html {
     color:#0a0072;
     font-family: "Lato", sans-serif;
     background-color: #fff;
+    font-size: 18px;
+}
+h2 {
+    font-size: 18px;
 }
 
 a{
@@ -82,6 +86,10 @@ nav a, button{
     font-size:1rem;
 }
 
+button.btn.text-center {
+    width: 100%;
+}
+
 .btn {
     background-color: #0a0072;
     color: white;
@@ -91,7 +99,7 @@ nav a, button{
     cursor: pointer;
     opacity: 0.9;
     margin: 5px 0 5px 0;
-    font-size:1rem;
+    font-size:0.8rem;
 }
 
 .btn:hover {
@@ -102,7 +110,7 @@ nav a, button{
 
 .bg { 
     /* The image used */
-    background: url("../img/bg.jpg") no-repeat center center fixed;
+    background: url("../img/bg.jpg") no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -110,6 +118,21 @@ nav a, button{
     height: 100%;
     overflow: hidden;
 }
+
+#overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,9,0.8);
+    z-index: 2;
+    text-align: center;
+    padding-top: 100px;
+}
+
+
 
 .story-section{
   width:60%;
@@ -153,6 +176,8 @@ nav a, button{
     margin: auto;
     background: #fff;
     padding: 0 20px 20px 20px;
+    border-radius: 20px;
+    padding-top: 20px;
 }
  
  
@@ -166,6 +191,7 @@ nav a, button{
  /* Center the image and position the close button */
  .imgcontainer {
      text-align: center;
+     padding-bottom: 10px;
      margin: 24px 0 12px 0;
      position: relative;
  }
@@ -254,7 +280,7 @@ img {
     .sidenav a {
         padding: 8px 8px 8px 32px;
         text-decoration: none;
-        font-size: 25px;
+        font-size: 20px;
         color: #ffffff;
         display: block;
         transition: 0.3s;
@@ -313,6 +339,8 @@ a .card:hover{
 .buttons{
     flex: 50%;
 }
+
+
 
 
 .right{
@@ -399,6 +427,7 @@ a .card:hover{
     @media screen and (min-width:600px){
         .left{
             width  :50%;
+            padding-left:10px;
         }
         
         .full-width{
@@ -460,8 +489,8 @@ a .card:hover{
             flex:70%;
             order:1;
         }
-          .story-section{    
-            margin-top:15%;
+          .story-section{
+            padding: 0 100px 0 100px;
             color:#fff;
           }
         
