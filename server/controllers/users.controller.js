@@ -25,42 +25,28 @@ export default class UsersController {
   static signupUser(req, res) {
     const password = bcrypt.hashSync(req.body.password.trim(), 10);
     const {
-      fullname,
-      email,
-      gender,
+      fullname, email, gender,
     } = req.body;
 
     const user = `
-    INSERT INTO users (
-        fullname,
-        email,
-        password,
-        gender
-    )
-    VALUES (
-      '${fullname}',
-      '${email}',
-      '${password}',
-      '${gender}'
-    ) RETURNING *;`;
+    INSERT INTO users (fullname,email,password,gender)
+    VALUES ('${fullname}','${email}','${password}','${gender}') RETURNING *;`;
     client.query(user)
-      .then((newUser) => {
-        return res.status(201)
-          .json({
-            data: {
-              user: {
-                id: newUser.rows[0].id,
-                fullname,
-                email,
-                gender,
-                notification: newUser.rows[0].notification,
-                role: newUser.rows[0].role,
-              },
+      .then(newUser => res.status(201)
+        .json({
+          data: {
+            user: {
+              id: newUser.rows[0].id,
+              fullname,
+              email,
+              gender,
+              notification: newUser.rows[0].notification,
+              role: newUser.rows[0].role,
             },
-            message: 'user created successfully',
-            status: 'success',
-          });
-      }).catch((err) => {
+          },
+          message: 'user created successfully',
+          status: 'success',
+        })).catch((err) => {
         res.status(500).send(err);
       });
   }

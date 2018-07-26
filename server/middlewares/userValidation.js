@@ -15,16 +15,10 @@ export default class ValidateUser {
      */
   static validateSignupInput(req, res, next) {
     const {
-      email,
-      password,
-      fullname,
-      gender,
+      email, password, fullname, gender,
     } = req.body;
     const data = {
-      email,
-      password,
-      fullname,
-      gender,
+      email, password, fullname, gender,
     };
 
     const rules = {
