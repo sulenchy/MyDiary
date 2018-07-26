@@ -15,6 +15,10 @@ if (process.env.NODE_ENV === 'development') {
 const client = new Client(config);
 client.connect();
 client.query(queries, (error) => {
-  winston.log('error', error);
+  if (error) {
+    winston.log('error', error);
+  } else {
+    winston.log('info', 'Database setup succeeded');
+  }
   client.end();
 });
