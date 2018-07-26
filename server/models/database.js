@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, 10);
+const hashedLong = bcrypt.hashSync('longlife', 10);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;
@@ -16,11 +17,25 @@ CREATE TABLE users(
   email VARCHAR(50) NOT NULL,
   password VARCHAR(255) NOT NULL,
   gender VARCHAR(50) NOT NULL,
-  passportUrl VARCHAR(255) NOT NULL,
-  notification BOOLEAN NOT NULL,
+  passportUrl VARCHAR(255) DEFAULT '',
+  notification BOOLEAN DEFAULT 'false',
   role status DEFAULT 'user');
-INSERT INTO users(fullname,email,password,gender,passportUrl,notification,role)
-VALUES ('ABUDU ABIODUN SULAIMAN','sulaiman@gmail.com','${hashedPassword}','male','sulaiman.jpg','true','admin');`;
+INSERT INTO users(
+  fullname,
+  email,
+  password,
+  gender,
+  passportUrl,
+  notification,
+  role)
+VALUES ('ABUDU ABIODUN SULAIMAN','sulaiman@gmail.com','${hashedPassword}','male','sulaiman.jpg','true','admin');
+INSERT INTO users(
+  fullname,
+  email,
+  password,
+  gender,
+  passportUrl)
+VALUES ('Long Life','long@gmail.com','${hashedLong}','female','life.jpg');`;
 
 
 const entrySeed = `
