@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import connection from '../helpers/connection';
-import createToken from '../helpers/createToken';
 
 
 const client = connection();
