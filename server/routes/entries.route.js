@@ -14,4 +14,5 @@ router.get('/entries/:id', entriesController.getDiaryEntryById);
 router.post('/entries', entriesController.addNewDiaryEntry);
 router.put('/entries/:id', entriesController.updateDiaryEntry);
 
+
 export default router;

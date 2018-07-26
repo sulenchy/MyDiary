@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Client } from 'pg';
-import { winston } from 'winston';
+import winston from 'winston';
 import configurations from '../config/config';
 import queries from './database';
 
