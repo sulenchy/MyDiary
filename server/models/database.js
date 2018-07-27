@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, 10, null);
+const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
+const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, salt);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;

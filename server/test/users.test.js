@@ -42,6 +42,7 @@ describe('Test default route', () => {
 
 describe('POST /api/v1/auth/signup', () => {
   beforeEach((done) => {
+    resetDb();
     done();
   });
   it('It Should create users with right signup details', (done) => {
