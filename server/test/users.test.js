@@ -2,8 +2,11 @@ import chaiHttp from 'chai-http';
 import chai from 'chai';
 import app from '../app';
 import dummyData from '../models/dummyData';
+import resetDb from '../models/index';
+
 
 const { expect } = chai;
+
 chai.use(chaiHttp);
 const signupUrl = '/api/v1/auth/signup';
 
@@ -38,11 +41,16 @@ describe('Test default route', () => {
 });
 
 describe('POST /api/v1/auth/signup', () => {
+  beforeEach((done) => {
+    resetDb();
+    console.log('database reset');
+    done();
+  });
   it('It Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
       .send(dummyData.users[3])
-      .end((err, res) => {
+      .end((err, res) => {        
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
         expect(res.body.message).to.equal('user created successfully');
@@ -51,10 +59,10 @@ describe('POST /api/v1/auth/signup', () => {
         done();
       });
   });
-  it('should not register a new user with an already existing email', (done) => {
+  it('It Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
-      .send(dummyData.users[3])
+      .send(dummyData.users[4])
       .end((err, res) => {
         expect(res).to.have.status(409);
         expect(res.body).to.be.an('object');
@@ -104,9 +112,10 @@ describe('POST /api/v1/auth/signup', () => {
     chai.request(app)
       .post(`${signupUrl}`)
       .send({
-        fullname: 'hhhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+        fullname: '',
         email: 'maureen@gmailcom',
         password: 'maureen123',
+        gender: 'female',
       })
       .end((err, res) => {
         expect(res).to.have.status(406);

@@ -36,6 +36,15 @@ const dummyData = {
       notification: true,
       role: 'user',
     },
+    {
+      email: 'sulaiman@gmail.com',
+      fullname: 'ABUDU ABIODUN SULAIMAN',
+      password: 'louderandhigh',
+      gender: 'male',
+      passportUrl: 'sulaiman.jpg',
+      notification: true,
+      role: 'admin',
+    },
   ],
 
   entries: [
