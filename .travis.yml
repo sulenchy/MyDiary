@@ -3,7 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=39ac8d5ddfbac96759005595b2d7e76aee7f9491adc69b02486b1cc33331a3c6
 language: node_js
 node_js:
-  - "stable" 
+  - "8.8.0" 
 
 env:
 - NODE_ENV=test
