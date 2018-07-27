@@ -28,13 +28,10 @@ const dummyData = {
       role: 'user',
     },
     {
-      email: 'ngozi@ekekwe.com',
       fullname: 'Ngozi Ekekwe',
+      email: 'ngozi@ekekwe.com',
       password: 'ngozi1234',
       gender: 'Female',
-      passportUrl: '/aa.jpg',
-      notification: true,
-      role: 'user',
     },
     {
       email: 'sulaiman@gmail.com',

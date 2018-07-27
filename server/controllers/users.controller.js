@@ -23,7 +23,7 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    let password = req.body.password.trim();    
+    let password = req.body.password.trim();
     if (password !== undefined && password !== null) {
       const cryptr = new Cryptr('myTotalySecretKey');
       password = cryptr.encrypt(`${password}`);
