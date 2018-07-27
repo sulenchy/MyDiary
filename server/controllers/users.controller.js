@@ -23,7 +23,7 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    const password = bcrypt.hashSync(req.body.password.trim(), 10);
+    const password = bcrypt.hashSync(req.body.password.trim(), 10, null);
     const { fullname, email, gender } = req.body;
     const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${password}','${gender}') RETURNING *;`;
     client.query(user)
