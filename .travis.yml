@@ -15,6 +15,11 @@ before_script:
 script:
 - npm test
 
+services:
+  - postgresql
+
+cache: 
+  - npm install
 
 after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 

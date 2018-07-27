@@ -1,6 +1,7 @@
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
+const bcrypt = require('bcrypt');
 
 dotenv.config();
 
