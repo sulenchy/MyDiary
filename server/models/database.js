@@ -1,13 +1,15 @@
-// import bcrypt from 'bcrypt';
+import Cryptr from 'cryptr';
 import dotenv from 'dotenv';
 
-const bcrypt = require('bcrypt');
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr('myTotalySecretKey');
+ 
+// const encryptedString = cryptr.encrypt('bacon');
 
 dotenv.config();
 
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
-const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, salt);
+const cryptr = new Cryptr('myTotalySecretKey');
+const hashedPassword = cryptr.encrypt(process.env.H_PASSWORD);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;

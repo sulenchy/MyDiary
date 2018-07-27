@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import Cryptr from 'cryptr';
 import connection from '../helpers/connection';
 import createToken from '../helpers/createToken';
 
@@ -23,11 +23,10 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    const saltRounds = 10;
-    const salt = bcrypt.genSaltSync(saltRounds);
     let password = req.body.password.trim();
     if (password !== undefined) {
-      password = bcrypt.hashSync(password, salt, null);
+      const cryptr = new Cryptr('myTotalySecretKey');
+      password = cryptr.encrypt(password);
     }
 
     const { fullname, email, gender } = req.body;
