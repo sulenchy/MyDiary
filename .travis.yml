@@ -3,8 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=39ac8d5ddfbac96759005595b2d7e76aee7f9491adc69b02486b1cc33331a3c6
 language: node_js
 node_js:
-  - "stable"
- 
+  - "stable" 
 
 env:
 - NODE_ENV=test
@@ -13,14 +12,10 @@ before_script:
   - npm install nyc coveralls codeclimate-test-reporter -g
 
 
-
 script:
 - npm test
 
 
-
-
 after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
-
 
 after_success: npm run coverage
