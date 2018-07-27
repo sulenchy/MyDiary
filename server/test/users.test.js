@@ -47,6 +47,19 @@ describe('POST /api/v1/auth/signup', () => {
   it('It Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
+      .send(dummyData.users[3])
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('user created successfully');
+        expect(res.body.status).to.equal('success');
+        expect(res.body).to.have.property('data');
+        done();
+      });
+  });
+  it('It Should create users with right signup details', (done) => {
+    chai.request(app)
+      .post(`${signupUrl}`)
       .send(dummyData.users[4])
       .end((err, res) => {
         expect(res).to.have.status(409);
