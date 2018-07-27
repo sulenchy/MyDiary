@@ -4,14 +4,14 @@
   "description": "MyDiary is an online journal where users can pen down their thoughts and feelings.",
   "main": "app.js",
   "scripts": {
-    "test": "npm run build && nyc --reporter=html --reporter=lcov --reporter=text mocha --timeout 250000 server/test/*.js --compilers js:babel-core/register --exit",
+    "test": "set NODE_ENV=test&&npm run test:db&&npm run build && nyc --reporter=html --reporter=lcov --reporter=text mocha --timeout 250000 server/test/*.js --compilers js:babel-core/register --exit",
     "build": "babel server -d ./dist",
     "lint": "./node_modules/.bin/eslint server/** ",
     "start": "npm run build && babel-node server/app.js",
     "start:prod": "npm run build && nodemon --watch server --exec babel-node server/app.js",
     "coveralls": "jscoverage lib && YOURPACKAGE_COVERAGE=1 nodeunit --reporter=lcov test | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test-db": "babel-node server/models/index.js"
+    "test:db": "babel-node server/models/index.js"
   },
   "repository": {
     "type": "git",
