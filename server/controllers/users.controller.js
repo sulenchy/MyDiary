@@ -26,7 +26,7 @@ export default class UsersController {
     let password = req.body.password.trim();
     if (password !== undefined) {
       const cryptr = new Cryptr('myTotalySecretKey');
-      password = cryptr.encrypt(password);
+      password = cryptr.encrypt('password');
     }
 
     const { fullname, email, gender } = req.body;

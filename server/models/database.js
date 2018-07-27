@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const cryptr = new Cryptr('myTotalySecretKey');
-const hashedPassword = cryptr.encrypt(process.env.H_PASSWORD);
+const hashedPassword = cryptr.encrypt('sulenchy');
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;

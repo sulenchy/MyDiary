@@ -30,7 +30,7 @@ const dummyData = {
     {
       email: 'ngozi@ekekwe.com',
       fullname: 'Ngozi Ekekwe',
-      password: 'ngozi123',
+      password: 'ngozi1234',
       gender: 'Female',
       passportUrl: '/aa.jpg',
       notification: true,
