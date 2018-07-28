@@ -41,7 +41,7 @@ describe('Test default route', () => {
 });
 
 describe('POST /api/v1/auth/signup', () => {
-  before((done) => {
+  beforeEach((done) => {
     resetDb();
     done();
   });
