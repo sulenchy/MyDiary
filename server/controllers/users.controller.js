@@ -49,6 +49,13 @@ export default class UsersController {
           message: 'user created successfully',
           status: 'success',
         });
-      }).catch((err) => { res.status(500).send(err); });
+      })
+      .catch(err => res.status(404)
+        .json({
+          error: {
+            message: err.message,
+          },
+          status: 'fail',
+        }));
   }
 }
