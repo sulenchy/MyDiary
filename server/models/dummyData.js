@@ -11,7 +11,7 @@ const dummyData = {
     },
     {
       email: 'solomon@kingsley.com',
-      username: 'Solomon Kingsley',
+      fullname: 'Solomon Kingsley',
       password: 'solomon123',
       gender: 'Male',
       passportUrl: '/sk.jpg',
@@ -20,7 +20,7 @@ const dummyData = {
     },
     {
       email: 'abdulsamii@ajala.com',
-      username: 'Abdulsamii Ajala',
+      fullname: 'Abdulsamii Ajala',
       password: 'abdulsamii123',
       gender: 'Male',
       passportUrl: '/aa.jpg',
@@ -28,13 +28,21 @@ const dummyData = {
       role: 'user',
     },
     {
+      fullname: 'Ngozi Ekekwe',
       email: 'ngozi@ekekwe.com',
-      username: 'Ngozi Ekekwe',
-      password: 'ngozi123',
+      password: 'ngozi1234',
       gender: 'Female',
-      imgUrl: '/ne.jpg',
+      passportUrl: 'ngo.jpg',
       notification: true,
-      role: 'user',
+    },
+    {
+      email: 'sulaiman@gmail.com',
+      fullname: 'ABUDU ABIODUN SULAIMAN',
+      password: 'louderandhigh',
+      gender: 'male',
+      passportUrl: 'sulaiman.jpg',
+      notification: true,
+      role: 'admin',
     },
   ],
 

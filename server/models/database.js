@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr('myTotalySecretKey');
+// const encryptedString = cryptr.encrypt('bacon');
 
 dotenv.config();
-
-const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, 10);
-const hashedLong = bcrypt.hashSync('longlife', 10);
+const hashedPassword = bcrypt.hashSync(`${process.env.H_PASSWORD}`, 10);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;
@@ -35,7 +36,7 @@ INSERT INTO users(
   password,
   gender,
   passportUrl)
-VALUES ('Long Life','long@gmail.com','${hashedLong}','female','life.jpg');`;
+VALUES ('Long Life','long@gmail.com','${hashedPassword}','female','life.jpg');`;
 
 
 const entrySeed = `
