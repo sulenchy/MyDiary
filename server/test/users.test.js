@@ -39,13 +39,6 @@ describe('Test default route', () => {
       });
   });
 });
-describe('Reset the database', () => {
-  beforeEach((done) => {
-    resetDb();
-    done();
-  });
-});
-
 describe('POST /api/v1/auth/signup', () => {
   beforeEach((done) => {
     resetDb();
@@ -54,7 +47,7 @@ describe('POST /api/v1/auth/signup', () => {
   it('It Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
-      .send(dummyData.users[3])
+      .send(dummyData.users[1])
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
