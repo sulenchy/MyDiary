@@ -101,8 +101,6 @@ describe('POST /api/v1/auth/signup', () => {
         email: 'ngozi@ekekwe.com',
         password: 'ngozi1234',
         gender: 'Female',
-        passportUrl: 'ngo.jpg',
-        notification: true,
       })
       .end((err, res) => {
         expect(res).to.have.status(201);
