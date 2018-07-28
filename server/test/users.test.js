@@ -288,3 +288,6 @@ describe('POST /api/v1/auth/signup', () => {
       });
   });
 });
+describe('POST /api/v1/auth/login', () => {
+  
+})
