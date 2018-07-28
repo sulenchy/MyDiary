@@ -39,6 +39,12 @@ describe('Test default route', () => {
       });
   });
 });
+describe('Reset the database', () => {
+  beforeEach((done) => {
+    resetDb();
+    done();
+  });
+});
 
 describe('POST /api/v1/auth/signup', () => {
   beforeEach((done) => {
