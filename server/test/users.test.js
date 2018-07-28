@@ -93,19 +93,6 @@ describe('POST /api/v1/auth/signup', () => {
         done();
       });
   });
-  it('It Should create users with right signup details', (done) => {
-    chai.request(app)
-      .post(`${signupUrl}`)
-      .send(dummyData.users[1])
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('user created successfully');
-        expect(res.body.status).to.equal('success');
-        expect(res.body).to.have.property('data');
-        done();
-      });
-  });
   it('should not register user with an empty fullname field ', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
@@ -117,19 +104,6 @@ describe('POST /api/v1/auth/signup', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(406);
-        done();
-      });
-  });
-  it('It Should create users with right signup details', (done) => {
-    chai.request(app)
-      .post(`${signupUrl}`)
-      .send(dummyData.users[1])
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('user created successfully');
-        expect(res.body.status).to.equal('success');
-        expect(res.body).to.have.property('data');
         done();
       });
   });
