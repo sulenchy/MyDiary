@@ -89,7 +89,7 @@ describe('POST /api/v1/auth/signup', () => {
         done();
       });
   });
-  it('Should create users with wrong signup details', (done) => {
+  it('Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
       .send({
@@ -99,6 +99,7 @@ describe('POST /api/v1/auth/signup', () => {
         gender: 'Female',
       })
       .end((err, res) => {
+        console.log('dddddd==>', res)
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
         expect(res.body.message).to.equal('user created successfully');
