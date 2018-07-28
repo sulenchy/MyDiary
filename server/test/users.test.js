@@ -93,10 +93,17 @@ describe('POST /api/v1/auth/signup', () => {
         done();
       });
   });
-  it('Should not create users with wrong signup details', (done) => {
+  it('Should create users with wrong signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
-      .send(dummyData.users[3])
+      .send({
+        fullname: 'Ngozi Ekekwe',
+        email: 'ngozi@ekekwe.com',
+        password: 'ngozi1234',
+        gender: 'Female',
+        passportUrl: 'ngo.jpg',
+        notification: true,
+      })
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
