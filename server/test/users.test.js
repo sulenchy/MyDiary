@@ -1,7 +1,6 @@
 import chaiHttp from 'chai-http';
 import chai from 'chai';
 import app from '../app';
-import dummyData from '../models/dummyData';
 import resetDb from '../models/index';
 
 
@@ -43,19 +42,6 @@ describe('POST /api/v1/auth/signup', () => {
   beforeEach((done) => {
     resetDb();
     done();
-  });
-  it('Should not create users with wrong signup details', (done) => {
-    chai.request(app)
-      .post(`${signupUrl}`)
-      .send(dummyData.users[3])
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('user created successfully');
-        expect(res.body.status).to.equal('success');
-        expect(res.body).to.have.property('data');
-        done();
-      });
   });
   it('should not register user with a wrong email format', (done) => {
     chai.request(app)
