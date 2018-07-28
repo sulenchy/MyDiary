@@ -39,30 +39,10 @@ describe('Test default route', () => {
       });
   });
 });
-describe('Reset the database', () => {
-  beforeEach((done) => {
-    resetDb();
-    done();
-  });
-});
-
 describe('POST /api/v1/auth/signup', () => {
   beforeEach((done) => {
     resetDb();
     done();
-  });
-  it('It Should create users with right signup details', (done) => {
-    chai.request(app)
-      .post(`${signupUrl}`)
-      .send(dummyData.users[3])
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('user created successfully');
-        expect(res.body.status).to.equal('success');
-        expect(res.body).to.have.property('data');
-        done();
-      });
   });
   it('It Should create users with right signup details', (done) => {
     chai.request(app)
@@ -124,6 +104,19 @@ describe('POST /api/v1/auth/signup', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(406);
+        done();
+      });
+  });
+  it('It Should create users with right signup details', (done) => {
+    chai.request(app)
+      .post(`${signupUrl}`)
+      .send(dummyData.users[1])
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('user created successfully');
+        expect(res.body.status).to.equal('success');
+        expect(res.body).to.have.property('data');
         done();
       });
   });

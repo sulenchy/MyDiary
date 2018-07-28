@@ -32,6 +32,8 @@ const dummyData = {
       email: 'ngozi@ekekwe.com',
       password: 'ngozi1234',
       gender: 'Female',
+      passportUrl: 'ngo.jpg',
+      notification: true,
     },
     {
       email: 'sulaiman@gmail.com',
