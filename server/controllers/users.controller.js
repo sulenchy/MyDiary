@@ -1,4 +1,4 @@
-import Cryptr from 'cryptr';
+import bcrypt from 'bcrypt';
 import connection from '../helpers/connection';
 import createToken from '../helpers/createToken';
 
@@ -23,11 +23,7 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    let password = req.body.password.trim();
-    if (password !== undefined && password !== null) {
-      const cryptr = new Cryptr('myTotalySecretKey');
-      password = cryptr.encrypt(`${password}`);
-    }
+    const password = bcrypt.hashSync(req.body.password.trim(), 10);
 
     const { fullname, email, gender } = req.body;
     const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${password}','${gender}') RETURNING *;`;

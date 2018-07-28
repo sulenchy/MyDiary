@@ -1,4 +1,4 @@
-import Cryptr from 'cryptr';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 // const Cryptr = require('cryptr');
@@ -8,8 +8,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const cryptr = new Cryptr('myTotalySecretKey');
-const hashedPassword = cryptr.encrypt('sulenchy');
+const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, 10);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;
