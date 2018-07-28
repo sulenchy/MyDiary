@@ -39,10 +39,6 @@ describe('Test default route', () => {
   });
 });
 describe('POST /api/v1/auth/signup', () => {
-  beforeEach((done) => {
-    resetDb();
-    done();
-  });
   it('should not register user with a wrong email format', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
@@ -91,6 +87,26 @@ describe('POST /api/v1/auth/signup', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(406);
+        done();
+      });
+  });
+  it('Should not create users with wrong signup details', (done) => {
+    chai.request(app)
+      .post(`${signupUrl}`)
+      .send(
+        {
+          fullname: 'Ngozi Ekekwe',
+          email: 'ngozi@ekekwe.com',
+          password: 'ngozi1234',
+          gender: 'Female',
+        }
+      )
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('user created successfully');
+        expect(res.body.status).to.equal('success');
+        expect(res.body).to.have.property('data');
         done();
       });
   });
