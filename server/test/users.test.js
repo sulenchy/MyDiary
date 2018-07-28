@@ -44,15 +44,16 @@ describe('POST /api/v1/auth/signup', () => {
     resetDb();
     done();
   });
-  it('It Should create users with right signup details', (done) => {
+  it('Should not create users with wrong signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
-      .send(dummyData.users[4])
+      .send(dummyData.users[3])
       .end((err, res) => {
-        expect(res).to.have.status(409);
+        expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
-        expect(res.body.message).to.equal('email already exists');
-        expect(res.body.status).to.equal('fail');
+        expect(res.body.message).to.equal('user created successfully');
+        expect(res.body.status).to.equal('success');
+        expect(res.body).to.have.property('data');
         done();
       });
   });
