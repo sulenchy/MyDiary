@@ -3,12 +3,10 @@ import dotenv from 'dotenv';
 
 // const Cryptr = require('cryptr');
 // const cryptr = new Cryptr('myTotalySecretKey');
- 
 // const encryptedString = cryptr.encrypt('bacon');
 
 dotenv.config();
-
-const hashedPassword = bcrypt.hashSync(process.env.H_PASSWORD, 10);
+const hashedPassword = bcrypt.hashSync(`${process.env.H_PASSWORD}`, 10);
 
 const userSeed = `
 DROP TABLE IF EXISTS users CASCADE;

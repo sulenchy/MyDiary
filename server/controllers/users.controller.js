@@ -1,9 +1,5 @@
-import bcrypt from 'bcrypt';
-import connection from '../helpers/connection';
 import createToken from '../helpers/createToken';
-
-const client = connection();
-client.connect();
+import usersHelper from '../helpers/users.helper';
 
 /**
  * @class userController
@@ -23,29 +19,25 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    const password = bcrypt.hashSync(req.body.password.trim(), 10);
-
-    const { fullname, email, gender } = req.body;
-    const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${password}','${gender}') RETURNING *;`;
-    client.query(user)
-      .then((newUser) => {
-        const token = createToken(newUser.rows[0]);
-        return res.status(201).json({
-          data: {
-            user: {
-              id: newUser.rows[0].id,
-              fullname,
-              email,
-              gender,
-              notification: newUser.rows[0].notification,
-              role: newUser.rows[0].role,
-            },
-            token,
+    const {
+      fullname, email, password, gender,
+    } = req.body;
+    usersHelper.signupUser(fullname, email, password, gender)
+      .then(newUser => res.status(201).json({
+        data: {
+          user: {
+            id: newUser.rows[0].id,
+            fullname,
+            email,
+            gender,
+            notification: newUser.rows[0].notification,
+            role: newUser.rows[0].role,
           },
-          message: 'user created successfully',
-          status: 'success',
-        });
-      })
+          token: createToken(newUser.rows[0]),
+        },
+        message: 'user created successfully',
+        status: 'success',
+      }))
       .catch(err => res.status(404)
         .json({
           error: {
