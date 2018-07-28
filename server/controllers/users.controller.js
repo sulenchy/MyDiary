@@ -19,9 +19,7 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    const {
-      fullname, email, password, gender,
-    } = req.body;
+    const { fullname, email, password, gender } = req.body;
     usersHelper.signupUser(fullname, email, password, gender)
       .then(newUser => res.status(201).json({
         data: {
