@@ -1,8 +1,8 @@
 const dummyData = {
   users: [
     {
-      email: 'sulaiman@gmail.com',
       fullname: 'Abudu Abiodun',
+      email: 'sulaiman@gmail.com',
       password: 'salama123',
       gender: 'Male',
       passportUrl: '/aa.jpg',
@@ -10,8 +10,8 @@ const dummyData = {
       role: 'admin',
     },
     {
-      email: 'solomon@kingsley.com',
       fullname: 'Solomon Kingsley',
+      email: 'solomon@kingsley.com',
       password: 'solomon123',
       gender: 'Male',
       passportUrl: '/sk.jpg',
@@ -19,8 +19,8 @@ const dummyData = {
       role: 'user',
     },
     {
-      email: 'abdulsamii@ajala.com',
       fullname: 'Abdulsamii Ajala',
+      email: 'abdulsamii@ajala.com',
       password: 'abdulsamii123',
       gender: 'Male',
       passportUrl: '/aa.jpg',
@@ -36,13 +36,10 @@ const dummyData = {
       notification: true,
     },
     {
-      email: 'sulaiman@gmail.com',
       fullname: 'ABUDU ABIODUN SULAIMAN',
+      email: 'sulaiman@gmail.com',
       password: 'louderandhigh',
       gender: 'male',
-      passportUrl: 'sulaiman.jpg',
-      notification: true,
-      role: 'admin',
     },
   ],
 
