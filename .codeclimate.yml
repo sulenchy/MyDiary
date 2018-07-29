@@ -8,4 +8,5 @@ checks:
   file-lines:
     enabled: false
   method-lines:
-    enable: false
+    config:
+      threshold: 50
