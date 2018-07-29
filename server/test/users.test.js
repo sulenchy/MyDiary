@@ -42,13 +42,12 @@ describe('Test default route', () => {
       });
   });
 });
-describe('Signup and login', () => {
+describe('General user input', () => {
   after((done) => {
     resetDb();
     done();
   });
-
-  describe('POST /api/v1/auth/signup', () => {
+  describe('Signup and login', () => {
     it('It Should create users with right signup details', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
@@ -311,8 +310,40 @@ describe('Signup and login', () => {
         });
     });
   });
-
   describe('POST /api/v1/auth/login', () => {
+    it('Should login user with right login details', (done) => {
+      chai.request(app)
+        .post(`${loginUrl}`)
+        .send({
+          email: 'sulaiman@gmail.com',
+          password: 'load4life',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User logged in successfully');
+          expect(res.body.status).to.equal('success');
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('user');
+          done();
+        });
+    });
+    it('Should not login the user if the password is invalid', (done) => {
+      chai.request(app)
+        .post(`${loginUrl}`)
+        .send({
+          email: 'sulaiman@gmail.com',
+          password: 'load4life1234',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Password is incorrect. Please try again');
+          expect(res.body.status).to.equal('fail');
+          done();
+        });
+    });
     it('Should create users with right signup details', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
