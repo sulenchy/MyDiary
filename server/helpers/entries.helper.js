@@ -1,4 +1,3 @@
-
 import connection from './connection';
 
 const client = connection();
@@ -6,7 +5,6 @@ client.connect();
 
 
 export default class EntriesHelper {
-  
   static createEntry(userid, title, content) {
     const entry = `INSERT INTO entries (userid, title, content) VALUES (${userid},'${title}','${content}') RETURNING *;`;
     return new Promise((resolve, reject) => {

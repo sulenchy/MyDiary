@@ -71,7 +71,7 @@ export default class UsersController {
               status: 'fail',
             });
         }
-        res.status(200).json({
+        return res.status(200).json({
           data: {
             user: {
               id: user.rows[0].id,
