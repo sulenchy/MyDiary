@@ -17,5 +17,6 @@ router.get('/entries/:id', entriesController.getDiaryEntryById);
 router.post('/entries', entriesController.addNewDiaryEntry);
 router.put('/entries/:id', entriesController.updateDiaryEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
+router.post('/auth/login', usersController.loginUser);
 
 export default router;

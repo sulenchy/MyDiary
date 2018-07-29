@@ -19,4 +19,18 @@ export default class EntriesHelper {
       }
     });
   }
+
+  static loginUser(email) {
+    const user = `SELECT * FROM users where email = '${email}';`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, user does not exist',
+        }));
+      }
+    });
+  }
 }

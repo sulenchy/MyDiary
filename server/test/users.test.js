@@ -1,14 +1,17 @@
 import chaiHttp from 'chai-http';
 import chai from 'chai';
-import app from '../app';
+import dotenv from 'dotenv';
 import dummyData from '../models/dummyData';
+import app from '../app';
 import resetDb from '../models/index';
 
+dotenv.config();
 
 const { expect } = chai;
 
 chai.use(chaiHttp);
 const signupUrl = '/api/v1/auth/signup';
+const loginUrl = '/api/v1/auth/login';
 
 describe('Test default route', () => {
   it('Should return 200 for the default route', (done) => {
@@ -40,6 +43,10 @@ describe('Test default route', () => {
   });
 });
 describe('POST /api/v1/auth/signup', () => {
+  after((done) => {
+    resetDb();
+    done();
+  });
   it('It Should create users with right signup details', (done) => {
     chai.request(app)
       .post(`${signupUrl}`)
@@ -99,7 +106,6 @@ describe('POST /api/v1/auth/signup', () => {
         gender: 'Female',
       })
       .end((err, res) => {
-        console.log('dddddd==>', res)
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
         expect(res.body.message).to.equal('user created successfully');
@@ -304,5 +310,52 @@ describe('POST /api/v1/auth/signup', () => {
   });
 });
 describe('POST /api/v1/auth/login', () => {
-  
-})
+  it('Should login user with right login details', (done) => {
+    chai.request(app)
+      .post(`${loginUrl}`)
+      .send({
+        email: 'sulaiman@gmail.com',
+        password: 'load4life',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('User logged in successfully');
+        expect(res.body.status).to.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.have.property('token');
+        expect(res.body.data).to.have.property('user');
+        done();
+      });
+  });
+  it('Should not login the user if the password is invalid', (done) => {
+    chai.request(app)
+      .post(`${loginUrl}`)
+      .send({
+        email: 'sulaiman@gmail.com',
+        password: 'load4life1234',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal('Password is incorrect. Please try again');
+        expect(res.body.status).to.equal('fail');
+        done();
+      });
+  });
+  it('Should not login the user if the email is not supply', (done) => {
+    chai.request(app)
+      .post(`${loginUrl}`)
+      .send({
+        email: '',
+        password: 'load4life1234',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.equal(undefined);
+        expect(res.body.status).to.equal('fail');
+        done();
+      });
+  });
+});
