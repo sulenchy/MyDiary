@@ -8,15 +8,17 @@ node_js:
 env:
 - NODE_ENV=test
 
+services:
+  - postgresql
+
 before_script:
   - npm install nyc coveralls codeclimate-test-reporter -g
+  - psql -c 'DROP database if exists mydiarytest;' -U postgres
+  - psql -c 'CREATE database mydiarytest;' -U postgres
 
 
 script:
 - npm test
-
-services:
-  - postgresql
 
 cache: 
   - npm install

@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import createToken from '../helpers/createToken';
 import usersHelper from '../helpers/users.helper';
 
@@ -19,7 +20,9 @@ export default class UsersController {
  *
  */
   static signupUser(req, res) {
-    const { fullname, email, password, gender } = req.body;
+    const {
+      fullname, email, password, gender,
+    } = req.body;
     usersHelper.signupUser(fullname, email, password, gender)
       .then(newUser => res.status(201).json({
         data: {
@@ -43,5 +46,51 @@ export default class UsersController {
           },
           status: 'fail',
         }));
+  }
+
+  /**
+ * @description - Logs in an existing user
+ * @static
+ *  *
+ * @param {object} request - HTTP Request
+ * @param {object} response- HTTP Response
+ *
+ * @memberof userController
+ *
+ */
+  static loginUser(req, res) {
+    const {
+      email, password,
+    } = req.body;
+    usersHelper.loginUser(email)
+      .then((user) => {
+        if (!bcrypt.compareSync(password.trim(), user.rows[0].password)) {
+          return res.status(401)
+            .json({
+              message: 'Password is incorrect. Please try again',
+              status: 'fail',
+            });
+        }
+        res.status(200).json({
+          data: {
+            user: {
+              id: user.rows[0].id,
+              email,
+            },
+            token: createToken(user.rows[0]),
+          },
+          message: 'User logged in successfully',
+          status: 'success',
+        });
+      })
+      .catch((err) => {
+        res.status(404)
+          .json({
+            error: {
+              message: err.message,
+            },
+            status: 'fail',
+          });
+      });
   }
 }
