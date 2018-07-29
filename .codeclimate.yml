@@ -7,3 +7,5 @@ checks:
     enabled: false
   file-lines:
     enabled: false
+  method-lines:
+    enable: false
