@@ -315,8 +315,8 @@ describe('General user input', () => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
-          email: 'sulaiman@gmail.com',
-          password: 'load4life',
+          email: 'ngozi@ekekwe.com',
+          password: 'ngozi1234',
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -333,7 +333,7 @@ describe('General user input', () => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
-          email: 'sulaiman@gmail.com',
+          email: 'ngozi@ekekwe.com',
           password: 'load4life1234',
         })
         .end((err, res) => {
