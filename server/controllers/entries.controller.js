@@ -1,113 +1,38 @@
 import entriesHelper from '../helpers/entries.helper';
 
 export default class EntriesController {
-  static getAllEntries(req, res) {
-    entriesHelper.getAllEntries()
-      .then((entries) => {
-        if (Object.keys(entries).length === 0) {
-          return res.status(200)
-            .json({
-              data: {
-                entries,
-              },
-              message: 'No dairy entry available currently',
-              status: 'success',
-            });
-        }
-
-        return res.status(200)
-          .json({
-            data: {
-              entries,
-              Total: entries.length,
-            },
-            message: 'Diary entries gotten successfully',
-            status: 'success',
-          });
-      })
-      .catch(err => res.status(404)
-        .json({
-          error: {
-            message: err.message,
-          },
-          status: 'fail',
-        }));
-  }
-
-  static getDiaryEntryById(req, res) {
-    const { id } = req.params;
-    entriesHelper.getDiaryEntryById(id)
-      .then(entry => res.status(200)
-        .json({
-          data: {
-            entry,
-          },
-          message: 'Diary entry gotten successfully',
-          status: 'success',
-        }))
-      .catch(err => res.status(404)
-        .json({
-          error: {
-            message: err.message,
-          },
-          status: 'fail',
-        }));
-  }
-
-  static addNewDiaryEntry(req, res) {
+/* @description - Creates a new entry
+ * @static
+ *  *
+ * @param {object} request - HTTP Request
+ * @param {object} response- HTTP Response
+ *
+ * @memberof EntryController
+ *
+ */
+  static createEntry(req, res) {
     const {
-      date,
-      time,
-      userId,
-      title,
-      description,
+      title, content,
     } = req.body;
-
-    entriesHelper.addNewDiaryEntry(date, time, userId, title, description)
-      .then((newEntry) => {
-        if (newEntry === undefined) {
-          return res.status(400)
-            .json({
-              message: 'Invalid diary entry',
-              status: 'fail',
-            });
-        }
-        return res.status(201)
+    const userid = req.token.user;
+    entriesHelper.createEntry(userid, title, content)
+      .then(newEntry => res.status(201).json({
+        user: {
+          id: newEntry.rows[0].id,
+          title,
+          content,
+          created: newEntry.rows[0].created,
+          edited: newEntry.rows[0].edited,
+        },
+        message: 'New entry created successfully',
+      }))
+      .catch((err) => {
+        res.status(404)
           .json({
-            data: {
-              Entry: newEntry,
+            error: {
+              message: err.message,
             },
-            message: 'New diary entry created successfully',
-            status: 'success',
           });
-      })
-      .catch(err => res.status(404)
-        .json({
-          error: {
-            message: err.message,
-          },
-          status: 'fail',
-        }));
-  }
-
-  static updateDiaryEntry(req, res) {
-    const { ...update } = req.body;
-    const { id } = req.params;
-    entriesHelper.updateDiaryEntry(id, update)
-      .then(updatedEntry => res.status(200)
-        .json({
-          data: {
-            Entry: updatedEntry,
-          },
-          message: 'Diary entry updated successfully',
-          status: 'success',
-        }))
-      .catch(err => res.status(404)
-        .json({
-          error: {
-            message: err.message,
-          },
-          status: 'fail',
-        }));
+      });
   }
 }

@@ -1,158 +1,110 @@
 import chaiHttp from 'chai-http';
 import chai from 'chai';
 import app from '../app';
-import dummyData from '../models/dummyData';
 
 const { expect } = chai;
 
 chai.use(chaiHttp);
 
+let userToken = '';
+const entriesUrl = '/api/v1/entries';
+const userSignup = '/api/v1/auth/signup';
+
 describe('Diary Entries', () => {
-  describe('/api/v1/entries', () => {
-    it('it should POST a diary entry', (done) => {
+  describe('Unauthorized User', () => {
+    it('User should not  be able to POST a diary entry', (done) => {
       const entry = {
-        date: '1st may 2010',
-        time: '9:30 AM',
-        userId: 1000,
         title: 'Last time I ate bread',
-        description: 'The last time I ate bread was Feb 22nd 2009',
+        content: 'The last time I ate bread was Feb 22nd 2009',
       };
       chai.request(app)
-        .post('/api/v1/entries')
+        .post(`${entriesUrl}`)
+        .set('token', userToken)
         .send(entry)
         .end((err, res) => {
-          expect(res.status).to.equal(201);
+          expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('status');
-          expect(res.body.status).to.equal('success');
-          expect(res.body).to.have.property('data');
-          expect(res.body.data.Entry).to.include({ userId: 1000 });
-          expect(res.body.data).to.be.an('object');
-          expect(res.body.message).to.equal('New diary entry created successfully');
-          done();
-        });
-    });
-
-    it('should GET all entries in entries object', (done) => {
-      chai.request(app)
-        .get('/api/v1/entries')
-        .type('form')
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(6);
-          expect(res.body.message).to.be.equal('Diary entries gotten successfully');
-          done();
-        });
-    });
-
-    it('it should POST a diary entry', (done) => {
-      const entry = {
-        date: '2nd may 2010',
-        time: '9:00 PM',
-        userId: 3000,
-        title: 'I woke up late',
-        description: 'On this day, I woke up late. I could not believe it',
-      };
-      chai.request(app)
-        .post('/api/v1/entries')
-        .send(entry)
-        .end((err, res) => {
-          expect(res.status).to.equal(201);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('data');
-          expect(res.body.status).to.equal('success');
-          expect(res.body.data.Entry).to.include({ userId: 3000 });
-          expect(res.body.message).to.equal('New diary entry created successfully');
-          done();
-        });
-    });
-
-    it('should GET entries object with two entries', (done) => {
-      chai.request(app)
-        .get('/api/v1/entries')
-        .type('form')
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(7);
-          expect(res.body.message).to.be.equal('Diary entries gotten successfully');
+          expect(res.body.message).to.equal('User is unauthorized');
           done();
         });
     });
   });
 
-  describe('/api/v1/entries/:entryId', () => {
-    it('should GET entries object with one entry', (done) => {
+  describe('/api/v1/entries', () => {
+    it('should be able to signup with right signup details', (done) => {
       chai.request(app)
-        .get('/api/v1/entries/1')
-        .type('form')
+        .post(`${userSignup}`)
+        .send({
+          fullname: 'Ngolo Kante',
+          email: 'ngolo@kante.com',
+          password: 'ngozi1234',
+          gender: 'Female',
+        })
         .end((err, res) => {
-          expect(res.status).to.equal(200);
+          expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('user created successfully');
           expect(res.body).to.have.property('data');
-          expect(Object.keys(res.body.data)).to.have.lengthOf(1);
-          expect(res.body.message).to.be.equal('Diary entry gotten successfully');
+          expect(res.body.data).to.have.property('token');
+          userToken = res.body.data.token;
           done();
         });
     });
-
-    it('should not GET entry', (done) => {
-      chai.request(app)
-        .get('/api/v1/entries/10')
-        .type('form')
-        .end((err, res) => {
-          expect(res.status).to.equal(404);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('status');
-          expect(res.body.status).to.be.equal('fail');
-          expect(res.body.error.message).to.be.equal('Diary entry cannot be found');
-          done();
-        });
-    });
-
-    it('it should PUT (update) a specific diary entry', (done) => {
+    it('User should be able to POST a diary entry', (done) => {
       const entry = {
-        date: '3rd may 2010',
-        time: '1:00 AM',
-        userId: 3000,
-        title: 'I woke up late',
-        description: 'I woke up late. I could not believe it',
+        title: 'Last time I ate bread',
+        content: 'The last time I ate bread was Feb 22nd 2009',
       };
       chai.request(app)
-        .put('/api/v1/entries/2')
+        .post(`${entriesUrl}`)
+        .set('token', userToken)
         .send(entry)
         .end((err, res) => {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('data');
-          expect(res.body.message).to.equal('Diary entry updated successfully');
-          expect(res.body.status).to.be.equal('success');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user).to.be.an('object');
+          expect(res.body.message).to.equal('New entry created successfully');
           done();
         });
     });
-  });
-
-  describe('Diary entries object', () => {
-    before((done) => { // Before each test we empty the database
-      dummyData.entries = {};
-      done();
-    });
-    it('should GET empty diary entry when the entries object is {}', (done) => {
+    it('User should not  be able to POST a diary entry', (done) => {
+      const entry = {
+        title: 'La',
+        content: 'The last time I ate bread was Feb 22nd 2009',
+      };
       chai.request(app)
-        .get('/api/v1/entries')
-        .type('form')
+        .post(`${entriesUrl}`)
+        .set('token', userToken)
+        .send(entry)
         .end((err, res) => {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(406);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.ownPropertyDescriptor('data');
+          expect(res.body.status).to.equal('fail');
+          expect(res.body).to.have.property('data');
           expect(res.body.data).to.be.an('object');
-          expect(Object.keys(res.body.data.entries)).to.have.lengthOf(0);
-          expect(res.body).to.have.ownPropertyDescriptor('status');
-          expect(res.body.status).to.be.equal('success');
-          expect(res.body.message).to.be.equal('No dairy entry available currently');
+          expect(res.body.data.errors.title[0]).to.equal('The title must not be less than 3 characters.');
+          done();
+        });
+    });
+
+    it('User should not  be able to POST a diary entry', (done) => {
+      const entry = {
+        title: 'Last time I saw you',
+        content: 'The last',
+      };
+      chai.request(app)
+        .post(`${entriesUrl}`)
+        .set('token', userToken)
+        .send(entry)
+        .end((err, res) => {
+          expect(res.status).to.equal(406);
+          expect(res.body).to.be.an('object');
+          expect(res.body.status).to.equal('fail');
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.be.an('object');
+          expect(res.body.data.errors.content[0]).to.equal('The content must not be less than 10 characters.');
           done();
         });
     });

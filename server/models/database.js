@@ -44,16 +44,16 @@ DROP TABLE IF EXISTS entries CASCADE;
 CREATE TABLE entries(
   id SERIAL PRIMARY KEY,
   userid INTEGER NOT NULL,
-  entrydate date NOT NULL,
   title VARCHAR(50) NOT NULL,
   content VARCHAR(255) NOT NULL,
+  created TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
+  edited TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
   FOREIGN KEY (userid) REFERENCES users(id));
   INSERT INTO entries(
     userid,
-    entrydate,
     title,
     content)
-  VALUES (1, '1999-01-08', 'Being a landlord', 'Being a landlord is a serious business in lagos ...');`;
+  VALUES (1, 'Being a landlord', 'Being a landlord is a serious business in lagos ...');`;
 
 
 const queries = `${userSeed}${entrySeed}`;

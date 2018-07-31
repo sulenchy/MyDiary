@@ -32,8 +32,6 @@ const dummyData = {
       email: 'ngozi@ekekwe.com',
       password: 'ngozi1234',
       gender: 'Female',
-      passportUrl: 'ngo.jpg',
-      notification: true,
     },
     {
       fullname: 'ABUDU ABIODUN SULAIMAN',
