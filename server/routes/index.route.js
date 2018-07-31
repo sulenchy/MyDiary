@@ -4,7 +4,7 @@ import usersController from '../controllers/users.controller';
 import validateUser from '../middlewares/userValidation';
 import validateEntry from '../middlewares/entryValidation';
 import validateUserEmail from '../middlewares/checkEmail';
-import authenticatedUserLogin from '../middlewares/authenticateLogin';
+import authenticatedUserLogin from '../middlewares/authenticateUser';
 
 
 const router = express.Router();

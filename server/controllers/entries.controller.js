@@ -14,20 +14,17 @@ export default class EntriesController {
     const {
       title, content,
     } = req.body;
-    const userid = req.token.data.id;
+    const userid = req.token.user;
     entriesHelper.createEntry(userid, title, content)
       .then(newEntry => res.status(201).json({
-        data: {
-          user: {
-            id: newEntry.rows[0].id,
-            title,
-            content,
-            created: newEntry.rows[0].created,
-            edited: newEntry.rows[0].edited,
-          },
+        user: {
+          id: newEntry.rows[0].id,
+          title,
+          content,
+          created: newEntry.rows[0].created,
+          edited: newEntry.rows[0].edited,
         },
         message: 'New entry created successfully',
-        status: 'success',
       }))
       .catch((err) => {
         res.status(404)
@@ -35,7 +32,6 @@ export default class EntriesController {
             error: {
               message: err.message,
             },
-            status: 'fail',
           });
       });
   }

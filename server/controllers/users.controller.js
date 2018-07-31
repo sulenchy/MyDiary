@@ -34,17 +34,15 @@ export default class UsersController {
             notification: newUser.rows[0].notification,
             role: newUser.rows[0].role,
           },
-          token: createToken(newUser.rows[0]),
+          token: createToken(newUser.rows[0].id),
         },
         message: 'user created successfully',
-        status: 'success',
       }))
       .catch(err => res.status(404)
         .json({
           error: {
             message: err.message,
           },
-          status: 'fail',
         }));
   }
 
@@ -68,7 +66,6 @@ export default class UsersController {
           return res.status(401)
             .json({
               message: 'Password is incorrect. Please try again',
-              status: 'fail',
             });
         }
         return res.status(200).json({
@@ -77,10 +74,9 @@ export default class UsersController {
               id: user.rows[0].id,
               email,
             },
-            token: createToken(user.rows[0]),
+            token: createToken(user.rows[0].id),
           },
           message: 'User logged in successfully',
-          status: 'success',
         });
       })
       .catch((err) => {
@@ -89,7 +85,6 @@ export default class UsersController {
             error: {
               message: err.message,
             },
-            status: 'fail',
           });
       });
   }

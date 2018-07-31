@@ -3,7 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import winston from 'winston';
-import entriesRouter from './routes/entries.route';
+import entriesRouter from './routes/index.route';
 
 dotenv.config();
 

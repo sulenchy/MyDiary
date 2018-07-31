@@ -6,6 +6,6 @@ dotenv.config();
 const secret = process.env.JWT_SECRET;
 const lifeSpan = 60 * 60 * 24;
 
-const createToken = id => jwt.sign({ data: id }, secret, { expiresIn: lifeSpan });
+const createToken = id => jwt.sign({ user: id }, secret, { expiresIn: lifeSpan });
 
 export default createToken;

@@ -56,7 +56,6 @@ describe('General user input', () => {
           expect(res).to.have.status(409);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('email already exists');
-          expect(res.body.status).to.equal('fail');
           done();
         });
     });
@@ -110,7 +109,6 @@ describe('General user input', () => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('user created successfully');
-          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
           done();
         });
@@ -322,7 +320,6 @@ describe('General user input', () => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('User logged in successfully');
-          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('token');
           expect(res.body.data).to.have.property('user');
@@ -340,7 +337,6 @@ describe('General user input', () => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('Password is incorrect. Please try again');
-          expect(res.body.status).to.equal('fail');
           done();
         });
     });
@@ -357,7 +353,6 @@ describe('General user input', () => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('user created successfully');
-          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
           done();
         });
@@ -373,7 +368,6 @@ describe('General user input', () => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('User logged in successfully');
-          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('token');
           expect(res.body.data).to.have.property('user');
@@ -391,7 +385,6 @@ describe('General user input', () => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('Password is incorrect. Please try again');
-          expect(res.body.status).to.equal('fail');
           done();
         });
     });
@@ -406,7 +399,6 @@ describe('General user input', () => {
           expect(res).to.have.status(404);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal(undefined);
-          expect(res.body.status).to.equal('fail');
           done();
         });
     });

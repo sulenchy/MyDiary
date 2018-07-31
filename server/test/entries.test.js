@@ -12,7 +12,7 @@ const userSignup = '/api/v1/auth/signup';
 
 describe('Diary Entries', () => {
   describe('Unauthorized User', () => {
-    it('should not POST a diary entry', (done) => {
+    it('User should not  be able to POST a diary entry', (done) => {
       const entry = {
         title: 'Last time I ate bread',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -25,7 +25,6 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('status');
-          expect(res.body.status).to.equal('fail');
           expect(res.body.message).to.equal('User is unauthorized');
           done();
         });
@@ -33,7 +32,7 @@ describe('Diary Entries', () => {
   });
 
   describe('/api/v1/entries', () => {
-    it('Should create users with right signup details', (done) => {
+    it('should be able to signup with right signup details', (done) => {
       chai.request(app)
         .post(`${userSignup}`)
         .send({
@@ -46,14 +45,13 @@ describe('Diary Entries', () => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('user created successfully');
-          expect(res.body.status).to.equal('success');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('token');
           userToken = res.body.data.token;
           done();
         });
     });
-    it('should POST a diary entry', (done) => {
+    it('User should be able to POST a diary entry', (done) => {
       const entry = {
         title: 'Last time I ate bread',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -65,15 +63,13 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('status');
-          expect(res.body.status).to.equal('success');
-          expect(res.body).to.have.property('data');
-          expect(res.body.data).to.be.an('object');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user).to.be.an('object');
           expect(res.body.message).to.equal('New entry created successfully');
           done();
         });
     });
-    it('should POST a diary entry', (done) => {
+    it('User should not  be able to POST a diary entry', (done) => {
       const entry = {
         title: 'La',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -85,7 +81,6 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(406);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('status');
           expect(res.body.status).to.equal('fail');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.be.an('object');
@@ -94,7 +89,7 @@ describe('Diary Entries', () => {
         });
     });
 
-    it('should POST a diary entry', (done) => {
+    it('User should not  be able to POST a diary entry', (done) => {
       const entry = {
         title: 'Last time I saw you',
         content: 'The last',
@@ -106,7 +101,6 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(406);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('status');
           expect(res.body.status).to.equal('fail');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.be.an('object');
