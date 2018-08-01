@@ -17,17 +17,17 @@ export default class EntriesController {
     const userid = req.token.user;
     entriesHelper.createEntry(userid, title, content)
       .then(newEntry => res.status(201).json({
-        user: {
+        NewEntry: {
           id: newEntry.rows[0].id,
           title,
           content,
           created: newEntry.rows[0].created,
           edited: newEntry.rows[0].edited,
         },
-        message: 'New entry created successfully',
+        message: 'New entry created successfully.',
       }))
       .catch((err) => {
-        res.status(404)
+        res.status(500)
           .json({
             error: {
               message: err.message,
@@ -48,15 +48,20 @@ export default class EntriesController {
   static getAllEntry(req, res) {
     const userid = req.token.user;
     entriesHelper.getAllEntry(userid)
-      .then(entries => res.status(200).json({
-        data: {
+      .then((entries) => {
+        if (entries.rowCount === 0) {
+          return res.status(404).json({
+            message: 'No entry is found',
+          });
+        }
+        res.status(200).json({
           entries: entries.rows,
           length: entries.rowCount,
-        },
-        message: 'Diary entries gotten successfully',
-      }))
+          message: 'Diary entries gotten successfully',
+        });
+      })
       .catch((err) => {
-        res.status(404)
+        res.status(500)
           .json({
             error: {
               message: err.message,

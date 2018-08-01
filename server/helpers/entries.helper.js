@@ -37,7 +37,7 @@ export default class EntriesHelper {
  *
  */
   static getAllEntry(userid) {
-    const entry = `SELECT title, content FROM entries WHERE userid= ${userid};`;
+    const entry = `SELECT id, title, content FROM entries WHERE userid= ${userid};`;
     return new Promise((resolve, reject) => {
       const data = client.query(entry);
       if (data) {
