@@ -28,7 +28,7 @@ export default class EntriesHelper {
         resolve(data);
       } else {
         reject(new Error({
-          message: 'Sorry, user does not exist',
+          message: 'Sorry, user does not exist. Please, register now.',
         }));
       }
     });
