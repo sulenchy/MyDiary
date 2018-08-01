@@ -7,6 +7,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 let userToken = '';
+let expiredToken = 'shgsgasfdhjdsfhjkh.hdfurnjdghgrsd.tefgsfdgfgsd';
 const entriesUrl = '/api/v1/entries';
 const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
@@ -115,11 +116,10 @@ describe('Diary Entries', () => {
           done();
         });
     });
-    it('Un authorised user should not be able to GET all diary entries', (done) => {
-      userToken = '';
+    it('Unauthorised user should not be able to GET all diary entries', (done) => {
       chai.request(app)
         .get(`${entriesUrl}`)
-        .set('token', userToken)
+        .set('token', expiredToken)
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
@@ -157,12 +157,11 @@ describe('Diary Entries', () => {
     });
   });
 
-  describe('Unauthorized User GET /entries/:id', () => {
+  describe('/entries/:id', () => {
     it('User should not be able to GET a diary entries', (done) => {
-      userToken = '';
       chai.request(app)
         .get(`${entriesUrl}/1`)
-        .set('token', userToken)
+        .set('token', expiredToken)
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
@@ -170,8 +169,72 @@ describe('Diary Entries', () => {
           done();
         });
     });
+    it('Authenticate user should be able to update only his entry', (done) => {
+      const entry = {
+        title: 'Last time I ate bread updated',
+        content: 'The last time I ate bread was Feb 22nd 2009 updated',
+      };
+      chai.request(app)
+        .put(`${entriesUrl}/1`)
+        .set('token', userToken)
+        .send(entry)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('No Entry is found');
+          done();
+        });
+    });
+    it('Unauthenticate user should be able to update only his entry', (done) => {
+      const entry = {
+        title: 'Last time I ate bread updated',
+        content: 'The last time I ate bread was Feb 22nd 2009 updated',
+      };
+      chai.request(app)
+        .put(`${entriesUrl}/1`)
+        .set('token', expiredToken)
+        .send(entry)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User is unauthorized');
+          done();
+        });
+    });
+    it('Authenticate user should be able to update only his entry', (done) => {
+      const entry = {
+        title: 'Last time I ate bread',
+        content: 'The last time I ate bread was Feb 22nd 2009',
+      };
+      chai.request(app)
+        .put(`${entriesUrl}/3`)
+        .set('token', userToken)
+        .send(entry)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('No Entry is found');
+          done();
+        });
+    });
+    it('Authenticate user should be able to update only his entry', (done) => {
+      const entry = {
+        title: 'Last time I ate bread updated',
+        content: 'The last time I ate bread was Feb 22nd 2009 updated',
+      };
+      chai.request(app)
+        .put(`${entriesUrl}/2`)
+        .set('token', userToken)
+        .send(entry)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Diary entry updated successfully');
+          done();
+        });
+    });
   });
-  describe('Authorized User GET /entries', () => {
+  describe('GET /entries', () => {
     it('should be able to signup with right signup details', (done) => {
       chai.request(app)
         .post(`${userLogin}`)

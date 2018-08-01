@@ -100,4 +100,32 @@ export default class EntriesController {
           });
       });
   }
+
+
+  static updateEntry(req, res) {
+    const userid = req.token.user;
+    const {
+      title, content,
+    } = req.body;
+    const id = parseInt(req.params.id, 10);
+    entriesHelper.updateEntry(userid, id, title, content)
+      .then((entry) => {
+        if (entry.rowCount === 0) {
+          return res.status(404).json({
+            message: 'No Entry is found',
+          });
+        }
+        return res.status(200).json({
+          message: 'Diary entry updated successfully',
+        });
+      })
+      .catch((err) => {
+        res.status(500)
+          .json({
+            error: {
+              message: err.message,
+            },
+          });
+      });
+  }
 }

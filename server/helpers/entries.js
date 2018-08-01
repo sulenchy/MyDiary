@@ -70,4 +70,28 @@ export default class EntriesHelper {
       }
     });
   }
+
+  /**
+   * @description updates a given entry
+   *
+   * @param {*} userid
+   * @param {*} id
+   * @param {*} title
+   * @param {*} content
+   *
+   * @memberOf EntriesHelper Class
+   */
+  static updateEntry(userid, id, title, content) {
+    const entry = `UPDATE entries SET title = '${title}', content = '${content}' WHERE userid = ${userid} AND id = ${id}`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(entry);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Entry not found',
+        }));
+      }
+    });
+  }
 }
