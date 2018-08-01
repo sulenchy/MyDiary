@@ -35,4 +35,33 @@ export default class EntriesController {
           });
       });
   }
+
+  /* @description - Creates a new entry
+ * @static
+ *  *
+ * @param {object} request - HTTP Request
+ * @param {object} response- HTTP Response
+ *
+ * @memberof EntryController
+ *
+ */
+  static getAllEntry(req, res) {
+    const userid = req.token.user;
+    entriesHelper.getAllEntry(userid)
+      .then(entries => res.status(200).json({
+        data: {
+          entries: entries.rows,
+          length: entries.rowCount,
+        },
+        message: 'Diary entries gotten successfully',
+      }))
+      .catch((err) => {
+        res.status(404)
+          .json({
+            error: {
+              message: err.message,
+            },
+          });
+      });
+  }
 }

@@ -111,9 +111,10 @@ describe('Diary Entries', () => {
   });
 
   describe('Unauthorized User GET /entries', () => {
-    it('User should not  be able to GET all diary entries', (done) => {
+    it('User should not be able to GET all diary entries', (done) => {
+      userToken = '';
       chai.request(app)
-        .post(`${entriesUrl}`)
+        .get(`${entriesUrl}`)
         .set('token', userToken)
         .end((err, res) => {
           expect(res.status).to.equal(401);
@@ -134,7 +135,7 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('user Login successfully');
+          expect(res.body.message).to.equal('User logged in successfully');
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('token');
           userToken = res.body.data.token;
@@ -142,14 +143,14 @@ describe('Diary Entries', () => {
         });
     });
 
-    it('User should not  be able to GET all diary entries', (done) => {
+    it('User should be able to GET all diary entries', (done) => {
       chai.request(app)
-        .post(`${entriesUrl}`)
+        .get(`${entriesUrl}`)
         .set('token', userToken)
         .end((err, res) => {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('User is unauthorized');
+          expect(res.body.message).to.equal('Diary entries gotten successfully');
           done();
         });
     });
