@@ -1,14 +1,13 @@
-import entriesHelper from '../helpers/entries.helper';
+import entriesHelper from '../helpers/entries';
 
 export default class EntriesController {
-/* @description - Creates a new entry
- * @static
- *  *
- * @param {object} request - HTTP Request
- * @param {object} response- HTTP Response
+/**
+ * @description create new entry
  *
- * @memberof EntriesController
+ * @param {Obeject} req
+ * @param {Object} res
  *
+ * @memberOf Entries Controller
  */
   static createEntry(req, res) {
     const {
@@ -36,15 +35,14 @@ export default class EntriesController {
       });
   }
 
-  /* @description - gets all entries
- * @static
- *  *
- * @param {object} request - HTTP Request
- * @param {object} response- HTTP Response
- *
- * @memberof EntriesController
- *
- */
+  /**
+  * @description get all entries
+  *
+  * @param {*} req
+  * @param {*} res
+  *
+  * @memberOf EntriesController Class
+  */
   static getAllEntry(req, res) {
     const userid = req.token.user;
     entriesHelper.getAllEntry(userid)
@@ -54,10 +52,43 @@ export default class EntriesController {
             message: 'No entry is found',
           });
         }
-        res.status(200).json({
+        return res.status(200).json({
           entries: entries.rows,
           length: entries.rowCount,
           message: 'Diary entries gotten successfully',
+        });
+      })
+      .catch((err) => {
+        res.status(500)
+          .json({
+            error: {
+              message: err.message,
+            },
+          });
+      });
+  }
+
+  /**
+   * @description get an entry for a user
+   *
+   * @param {*} req
+   * @param {*} res
+   *
+   * @memberOf EntriesController Class
+   */
+  static getEntry(req, res) {
+    const userid = req.token.user;
+    const id = parseInt(req.params.id, 10);
+    entriesHelper.getEntry(userid, id)
+      .then((entry) => {
+        if (entry.rowCount === 0) {
+          return res.status(404).json({
+            message: 'No Entry is found',
+          });
+        }
+        return res.status(200).json({
+          entry: entry.rows,
+          message: 'Diary entry gotten successfully',
         });
       })
       .catch((err) => {

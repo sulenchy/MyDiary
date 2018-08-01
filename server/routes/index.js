@@ -1,6 +1,6 @@
 import express from 'express';
-import entriesController from '../controllers/entries.controller';
-import usersController from '../controllers/users.controller';
+import entriesController from '../controllers/entries';
+import usersController from '../controllers/users.';
 import validateUser from '../middlewares/userValidation';
 import validateEntry from '../middlewares/entryValidation';
 import validateUserEmail from '../middlewares/checkEmail';
@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
 
 
 router.post('/entries', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.createEntry);
+router.get('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.getEntry);
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
 router.post('/auth/login', usersController.loginUser);

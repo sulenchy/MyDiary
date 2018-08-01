@@ -3,7 +3,7 @@ import chai from 'chai';
 import dotenv from 'dotenv';
 import dummyData from '../models/dummyData';
 import app from '../app';
-import resetDb from '../models/index';
+import resetDb from '../models';
 
 dotenv.config();
 

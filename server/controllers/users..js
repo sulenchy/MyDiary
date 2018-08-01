@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import createToken from '../helpers/createToken';
-import usersHelper from '../helpers/users.helper';
+import usersHelper from '../helpers/users';
 
 /**
  * @class userController
