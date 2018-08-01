@@ -8,7 +8,6 @@ chai.use(chaiHttp);
 
 let userToken = '';
 const entriesUrl = '/api/v1/entries';
-const entriesByIdUrl = '/api/v1/entries/:id';
 const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
 
@@ -116,7 +115,7 @@ describe('Diary Entries', () => {
     it('User should not be able to GET a diary entries', (done) => {
       userToken = '';
       chai.request(app)
-        .get(`${entriesByIdUrl}`)
+        .get(`${entriesUrl}/1`)
         .set('token', userToken)
         .end((err, res) => {
           expect(res.status).to.equal(401);
@@ -126,7 +125,7 @@ describe('Diary Entries', () => {
         });
     });
   });
-  describe('Unauthorized User GET /entries', () => {
+  describe('Authorized User GET /entries', () => {
     it('should be able to signup with right signup details', (done) => {
       chai.request(app)
         .post(`${userLogin}`)
@@ -145,14 +144,15 @@ describe('Diary Entries', () => {
         });
     });
 
-    it('User should be able to GET all diary entries', (done) => {
+    it('User should be able to GET a diary entries', (done) => {
       chai.request(app)
-        .get(`${entriesByIdUrl}`)
+        .get(`${entriesUrl}/2`)
         .set('token', userToken)
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('Diary entries gotten successfully');
+          expect(res.body.entry).to.be.an('array');
+          expect(res.body.message).to.equal('Diary entry gotten successfully');
           done();
         });
     });

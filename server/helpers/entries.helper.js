@@ -18,4 +18,18 @@ export default class EntriesHelper {
       }
     });
   }
+
+  static getEntry(userid, id) {
+    const entry = `SELECT id, title, content FROM entries WHERE userid= ${userid} AND id= ${id};`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(entry);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, entry not found',
+        }));
+      }
+    });
+  }
 }

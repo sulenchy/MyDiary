@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
 
 
 router.post('/entries', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.createEntry);
+router.get('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.getEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
 router.post('/auth/login', usersController.loginUser);
 
