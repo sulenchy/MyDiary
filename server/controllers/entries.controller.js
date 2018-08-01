@@ -7,7 +7,7 @@ export default class EntriesController {
  * @param {object} request - HTTP Request
  * @param {object} response- HTTP Response
  *
- * @memberof EntryController
+ * @memberof EntriesController
  *
  */
   static createEntry(req, res) {
@@ -36,13 +36,13 @@ export default class EntriesController {
       });
   }
 
-  /* @description - Creates a new entry
+  /* @description - gets all entries
  * @static
  *  *
  * @param {object} request - HTTP Request
  * @param {object} response- HTTP Response
  *
- * @memberof EntryController
+ * @memberof EntriesController
  *
  */
   static getAllEntry(req, res) {
