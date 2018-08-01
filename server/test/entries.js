@@ -12,8 +12,8 @@ const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
 
 describe('Diary Entries', () => {
-  describe('Unauthorized User', () => {
-    it('User should not  be able to POST a diary entry', (done) => {
+  describe('/api/v1/entries', () => {
+    it('Unauthorised user should not  be able to POST a diary entry', (done) => {
       const entry = {
         title: 'Last time I ate bread',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -25,15 +25,11 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('status');
           expect(res.body.message).to.equal('User is unauthorized');
           done();
         });
     });
-  });
-
-  describe('/api/v1/entries', () => {
-    it('should be able to signup with right signup details', (done) => {
+    it('User should be able to signup with right signup details', (done) => {
       chai.request(app)
         .post(`${userSignup}`)
         .send({
@@ -45,14 +41,25 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('user created successfully');
-          expect(res.body).to.have.property('data');
-          expect(res.body.data).to.have.property('token');
-          userToken = res.body.data.token;
+          expect(res.body.message).to.equal('New user created successfully');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user).to.have.property('token');
+          userToken = res.body.user.token;
           done();
         });
     });
-    it('User should be able to POST a diary entry', (done) => {
+    it('Authorised user should be able to GET all diary entries', (done) => {
+      chai.request(app)
+        .get(`${entriesUrl}`)
+        .set('token', userToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('No entry is found');
+          done();
+        });
+    });
+    it('Authorised user should be able to POST a diary entry', (done) => {
       const entry = {
         title: 'Last time I ate bread',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -64,13 +71,13 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.property('user');
-          expect(res.body.user).to.be.an('object');
-          expect(res.body.message).to.equal('New entry created successfully');
+          expect(res.body).to.have.property('NewEntry');
+          expect(res.body.NewEntry).to.be.an('object');
+          expect(res.body.message).to.equal('New entry created successfully.');
           done();
         });
     });
-    it('User should not  be able to POST a diary entry', (done) => {
+    it('Authorised user should not POST if title is less than 3 letters', (done) => {
       const entry = {
         title: 'La',
         content: 'The last time I ate bread was Feb 22nd 2009',
@@ -89,8 +96,7 @@ describe('Diary Entries', () => {
           done();
         });
     });
-
-    it('User should not  be able to POST a diary entry', (done) => {
+    it('Authorised user should not POST if the content is less than 10 character', (done) => {
       const entry = {
         title: 'Last time I saw you',
         content: 'The last',
@@ -106,6 +112,46 @@ describe('Diary Entries', () => {
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.be.an('object');
           expect(res.body.data.errors.content[0]).to.equal('The content must not be less than 10 characters.');
+          done();
+        });
+    });
+    it('Un authorised user should not be able to GET all diary entries', (done) => {
+      userToken = '';
+      chai.request(app)
+        .get(`${entriesUrl}`)
+        .set('token', userToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User is unauthorized');
+          done();
+        });
+    });
+    it('User should login to be authorised', (done) => {
+      chai.request(app)
+        .post(`${userLogin}`)
+        .send({
+          email: 'ngolo@kante.com',
+          password: 'ngozi1234',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User logged in successfully');
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
+          userToken = res.body.data.token;
+          done();
+        });
+    });
+    it('Authorised user should be able to GET all diary entries', (done) => {
+      chai.request(app)
+        .get(`${entriesUrl}`)
+        .set('token', userToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Diary entries gotten successfully');
           done();
         });
     });

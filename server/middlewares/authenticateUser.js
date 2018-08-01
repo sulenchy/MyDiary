@@ -26,7 +26,6 @@ export default class AuthenticateUserLogin {
       return next();
     } catch (error) {
       return res.status(401).json({
-        status: 'fail',
         message: 'User is unauthorized',
       });
     }

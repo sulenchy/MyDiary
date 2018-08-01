@@ -3,7 +3,7 @@ import chai from 'chai';
 import dotenv from 'dotenv';
 import dummyData from '../models/dummyData';
 import app from '../app';
-import resetDb from '../models/index';
+import resetDb from '../models';
 
 dotenv.config();
 
@@ -47,19 +47,19 @@ describe('General user input', () => {
     resetDb();
     done();
   });
-  describe('Signup and login', () => {
-    it('It Should create users with right signup details', (done) => {
+  describe('POST /api/v1/auth/signup', () => {
+    it('Should not create new user with an existing email', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send(dummyData.users[4])
         .end((err, res) => {
           expect(res).to.have.status(409);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('email already exists');
+          expect(res.body.message).to.equal('Email already exists');
           done();
         });
     });
-    it('should not register user with a wrong email format', (done) => {
+    it('should not create new user with a wrong email format', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -74,12 +74,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.email)
+          expect(res.body.errors.email)
             .to.include('The email format is invalid.');
           done();
         });
     });
-    it('should take required character format error', (done) => {
+    it('Should not create new user if the fullname is too long', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -93,10 +93,12 @@ describe('General user input', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(406);
+          expect(res.body.errors.fullname)
+            .to.include('The fullname must not be greater than 20 characters.');
           done();
         });
     });
-    it('Should create users with right signup details', (done) => {
+    it('Should create new user with right signup details', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -108,26 +110,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('user created successfully');
-          expect(res.body).to.have.property('data');
+          expect(res.body.message).to.equal('New user created successfully');
+          expect(res.body).to.have.property('user');
           done();
         });
     });
-    it('should not register user with an empty fullname field ', (done) => {
-      chai.request(app)
-        .post(`${signupUrl}`)
-        .send({
-          fullname: '',
-          email: 'maureen@gmailcom',
-          password: 'maureen123',
-          gender: 'female',
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(406);
-          done();
-        });
-    });
-    it('should not register user with an fullname field that is not letters ', (done) => {
+    it('should not create new user if fullname contains special characters', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -142,12 +130,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.fullname)
+          expect(res.body.errors.fullname)
             .to.include('The fullname format is invalid.');
           done();
         });
     });
-    it('should not register user with an empty fullname field ', (done) => {
+    it('should not create ne user if the fullname is empty', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -162,12 +150,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.fullname)
+          expect(res.body.errors.fullname)
             .to.include('The fullname field is required.');
           done();
         });
     });
-    it('should not register fullname with less than 3 characters', (done) => {
+    it('should not create new user if  fullname is less than 3 characters', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -182,12 +170,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.fullname)
+          expect(res.body.errors.fullname)
             .to.include('The fullname must not be less than 3 characters.');
           done();
         });
     });
-    it('should not register a fullname with more than 20 characters', (done) => {
+    it('should not create new user if fullname is more than 20 characters', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -202,12 +190,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.fullname)
+          expect(res.body.errors.fullname)
             .to.include('The fullname must not be greater than 20 characters.');
           done();
         });
     });
-    it('should not register a fullname with wierd characters', (done) => {
+    it('should not create a user if the fullname is wierd characters', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -222,12 +210,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.fullname)
+          expect(res.body.errors.fullname)
             .to.include('The fullname format is invalid.');
           done();
         });
     });
-    it('should not register with less than 8 password characters', (done) => {
+    it('should not create new user if the password is less than 8 password characters', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -242,12 +230,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.password)
+          expect(res.body.errors.password)
             .to.include('The password must not be less than 8 characters.');
           done();
         });
     });
-    it('should not register user with an empty email field ', (done) => {
+    it('should not create new user if the email field is empty', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -262,12 +250,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.email)
+          expect(res.body.errors.email)
             .to.include('The email field is required.');
           done();
         });
     });
-    it('should not register user with an empty password field ', (done) => {
+    it('should not create new user if the password field is empty', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -282,12 +270,12 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.password)
+          expect(res.body.errors.password)
             .to.include('The password field is required.');
           done();
         });
     });
-    it('should not register user with an empty string field ', (done) => {
+    it('should not create new user if any of the fields is empty', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send({
@@ -302,14 +290,31 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(406);
           expect(res.body).to.be.an('object');
-          expect(res.body.data.errors.gender)
+          expect(res.body.errors.gender)
             .to.include('The gender field is required.');
+          done();
+        });
+    });
+    it('Should create new user with right signup details', (done) => {
+      chai.request(app)
+        .post(`${signupUrl}`)
+        .send({
+          fullname: 'sulenchy abiodun',
+          email: 'sulaiman@sulenchy.com',
+          password: 'sulenchy12',
+          gender: 'male',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('New user created successfully');
+          expect(res.body).to.have.property('user');
           done();
         });
     });
   });
   describe('POST /api/v1/auth/login', () => {
-    it('Should login user with right login details', (done) => {
+    it('Should login a user with right login details', (done) => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
@@ -326,7 +331,7 @@ describe('General user input', () => {
           done();
         });
     });
-    it('Should not login the user if the password is invalid', (done) => {
+    it('Should not login a user if the password is invalid', (done) => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
@@ -336,24 +341,7 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('Password is incorrect. Please try again');
-          done();
-        });
-    });
-    it('Should create users with right signup details', (done) => {
-      chai.request(app)
-        .post(`${signupUrl}`)
-        .send({
-          fullname: 'Kelvin Nelson',
-          email: 'kelvin@nelson.com',
-          password: 'kelvin12345',
-          gender: 'male',
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('user created successfully');
-          expect(res.body).to.have.property('data');
+          expect(res.body.message).to.equal('Password or username is incorrect. Please try again');
           done();
         });
     });
@@ -361,8 +349,8 @@ describe('General user input', () => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
-          email: 'kelvin@nelson.com',
-          password: 'kelvin12345',
+          email: 'sulaiman@sulenchy.com',
+          password: 'sulenchy12',
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -378,13 +366,13 @@ describe('General user input', () => {
       chai.request(app)
         .post(`${loginUrl}`)
         .send({
-          email: 'sulaiman@gmail.com',
-          password: 'load4life1234',
+          email: 'sulaiman@sulenchy.com',
+          password: 'sulenchy',
         })
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('Password is incorrect. Please try again');
+          expect(res.body.message).to.equal('Password or username is incorrect. Please try again');
           done();
         });
     });
@@ -398,7 +386,7 @@ describe('General user input', () => {
         .end((err, res) => {
           expect(res).to.have.status(404);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal(undefined);
+          expect(res.body.message).to.equal('User not found. Please, register now');
           done();
         });
     });

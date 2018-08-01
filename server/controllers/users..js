@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import createToken from '../helpers/createToken';
-import usersHelper from '../helpers/users.helper';
+import usersHelper from '../helpers/users';
 
 /**
  * @class userController
@@ -25,20 +25,18 @@ export default class UsersController {
     } = req.body;
     usersHelper.signupUser(fullname, email, password, gender)
       .then(newUser => res.status(201).json({
-        data: {
-          user: {
-            id: newUser.rows[0].id,
-            fullname,
-            email,
-            gender,
-            notification: newUser.rows[0].notification,
-            role: newUser.rows[0].role,
-          },
+        user: {
+          id: newUser.rows[0].id,
+          fullname,
+          email,
+          gender,
+          notification: newUser.rows[0].notification,
+          role: newUser.rows[0].role,
           token: createToken(newUser.rows[0].id),
         },
-        message: 'user created successfully',
+        message: 'New user created successfully',
       }))
-      .catch(err => res.status(404)
+      .catch(err => res.status(500)
         .json({
           error: {
             message: err.message,
@@ -62,10 +60,16 @@ export default class UsersController {
     } = req.body;
     usersHelper.loginUser(email)
       .then((user) => {
+        if (user.rowCount === 0) {
+          return res.status(404)
+            .json({
+              message: 'User not found. Please, register now',
+            });
+        }
         if (!bcrypt.compareSync(password.trim(), user.rows[0].password)) {
           return res.status(401)
             .json({
-              message: 'Password is incorrect. Please try again',
+              message: 'Password or username is incorrect. Please try again',
             });
         }
         return res.status(200).json({
@@ -80,7 +84,7 @@ export default class UsersController {
         });
       })
       .catch((err) => {
-        res.status(404)
+        res.status(500)
           .json({
             error: {
               message: err.message,
