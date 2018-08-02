@@ -58,11 +58,11 @@ export default class EntriesController {
           message: 'Diary entries gotten successfully',
         });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .json({
             error: {
-              message: err.message,
+              message: 'Sorry, an error occurred',
             },
           });
       });

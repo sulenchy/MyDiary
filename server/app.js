@@ -3,6 +3,8 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import winston from 'winston';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 import entriesRouter from './routes/index';
 
 dotenv.config();
@@ -21,7 +23,7 @@ const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', entriesRouter);
 
 app.listen(port, () => {
