@@ -1,78 +1,282 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "MyDairy API",
-      "description": "MyDiary API is an API that allows user to create an online journal where users can pen down their thoughts and feelings."
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "MyDairy API",
+    "description": "MyDiary API is an API that allows user to create an online journal where users can pen down their thoughts and feelings."
+  },
+  "host": "sulenchy-my-diary.herokuapp.com",
+	"basePath": "/api/v1",
+	
+  "tags": [
+    {
+      "name": "users",
+      "description": "The users of MyDiary"
     },
-    "schemes": [
-      "https"
-    ],
-    "host": "sulenchy-my-diary.herokuapp.com",
-    "basePath": "/api/v1",
-    "paths": {
-      "/entries": {
-        "get": {
-          "summary": "Gets some diary entries",
-          "description": "Returns a list containing all entries for the user.",
-          "responses": {
-            "200": {
-              "description": "A list of entries",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "required": [
-                    "title",
-                    "content"
-                  ],
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
+    {
+      "name": "entries",
+      "description": "The entries are what users keep in MyDiary"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    
+    "/entries": {
+      "post": {
+        "tags": [
+          "entries"
+        ],
+        "summary": "Add a new entry",
+        "description": "",
+        "operationId": "addEntry",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pet object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pet"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entry created successfully"
           }
         }
       },
-      "/entries/:id": {
-        "get": {
-          "summary": "Gets a diary entry",
-          "description": "Returns an object containing an entry for the user.",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "query",
-              "description": "ID of the entry",
-              "type": "integer"
+      "get": {
+        "tags": [
+          "entries"
+        ],
+        "summary": "gets all diary entries",
+        "description": "gets all diary entries of an authorised user",
+        "operationId": "getEntries",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "token",
+            "description": "A text of character",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "User is unauthorised"
+          },          
+          "404": {
+            "description": "Entry not found"
+          },
+          "500": {
+            "description": "Error occurred"
+          }
+        }
+      }
+    },
+    "/entries/entryId": {
+      "get": {
+        "tags": [
+          "entry"
+        ],
+        "summary": "Finds user's entry",
+        "description": "Find the user's entry using entry id",
+        "operationId": "findEntryById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "entry id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array"
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "An entries",
-              "schema": {
-                "type": "object",
-                "items": {
-                  "required": [
-                    "id"
-                  ],
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
+          }
+        }
+      },      
+      "put": {
+        "tags": [
+          "entry"
+        ],
+        "summary": "Add a new entry",
+        "description": "",
+        "operationId": "addEntry",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The entry id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userid",
+            "in": "body",
+            "description": "The user id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "body",
+            "description": "The title of the entry",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "in": "body",
+            "description": "The entry content",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entry updated successfully"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates new user",
+        "description": "",
+        "operationId": "createNewUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "fullname",
+            "in": "body",
+            "description": "The user fullname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "The user email",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "The password in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "body",
+            "description": "The password in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "New user created successfully",
+            "schema": {
+              "type": "string"
             }
+          },
+          "409": {
+            "description": "Email already exists"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the MyDiary",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "description": "The user email for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged in successfully",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "User not found. Please, register now"
           }
         }
       }
     }
+  },  
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
   }
+}
