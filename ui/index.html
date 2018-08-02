@@ -17,6 +17,17 @@
 
 <body>
     <div class="main">
+        <section id="right" class="about bg">
+            <div id="overlay" class="story-section">        
+                <h1>My Dairy.</h1>
+                <h1>Your space to capture your thoughts and feelings.</h1>
+                <p>Getting started is only a few click away.</p>
+                <div class="">
+                    <button class="btn responsive-btn">Learn more</button>
+                    <button class="btn responsive-btn" onclick="document.getElementById('modalBox').style.display='block'">Login</button>
+                </div>
+            </div>
+        </section>
         <section id="left" class="register container">
             <div class="text-center">
                 <h1>My Diary.</h1>
@@ -31,12 +42,12 @@
             
                     <div class="input-container">
                         <i class="fa fa-envelope icon"></i>
-                        <input class="input-field" type="text" placeholder="Email" name="email">
+                        <input class="input-field" type="email" placeholder="Email" name="email" required>
                     </div>
             
                     <div class="input-container">
                         <i class="fa fa-key icon"></i>
-                        <input class="input-field" type="password" placeholder="Password" name="psw">
+                        <input class="input-field" type="password" placeholder="Password" name="psw" required>
                     </div>
             
                     <button type="submit" class="btn text-center">Register</button>
@@ -44,17 +55,6 @@
                 <p>Already have an account?
                     <a class="" href="">Login</a>
                 </p>
-            </div>
-        </section>
-        <section id="right" class="about bg">
-            <div id="overlay" class="story-section">        
-                <h1>My Dairy.</h1>
-                <h1>Your space to capture your thoughts and feelings.</h1>
-                <p>Getting started is only a few click away.</p>
-                <div class="">
-                    <button class="btn responsive-btn">Learn more</button>
-                    <button class="btn responsive-btn" onclick="document.getElementById('modalBox').style.display='block'">Login</button>
-                </div>
             </div>
         </section>
         <div id="modalBox" class="modal">
