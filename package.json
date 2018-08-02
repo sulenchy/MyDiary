@@ -7,7 +7,7 @@
     "test": "set NODE_ENV=test&&npm run build && nyc --reporter=html --reporter=lcov --reporter=text mocha --timeout 250000 server/test/*.js --compilers js:babel-core/register --exit",
     "build": "babel server -d ./dist",
     "lint": "./node_modules/.bin/eslint server/** ",
-    "start": "npm run build && babel-node server/app.js",
+    "start": "set NODE_ENV=production&&npm run build && babel-node server/app.js",
     "start:prod": "npm run build && nodemon --watch server --exec babel-node server/app.js",
     "coveralls": "jscoverage lib && YOURPACKAGE_COVERAGE=1 nodeunit --reporter=lcov test | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
