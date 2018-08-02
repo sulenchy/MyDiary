@@ -112,7 +112,7 @@ export default class EntriesController {
       .then((entry) => {
         if (entry.rowCount === 0) {
           return res.status(404).json({
-            message: 'No Entry is found',
+            message: 'Selected entry cannot be updated',
           });
         }
         return res.status(200).json({

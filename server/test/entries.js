@@ -7,7 +7,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 let userToken = '';
-let expiredToken = 'shgsgasfdhjdsfhjkh.hdfurnjdghgrsd.tefgsfdgfgsd';
+const expiredToken = 'shgsgasfdhjdsfhjkh.hdfurnjdghgrsd.tefgsfdgfgsd';
 const entriesUrl = '/api/v1/entries';
 const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
@@ -181,7 +181,7 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('No Entry is found');
+          expect(res.body.message).to.equal('Selected entry cannot be updated');
           done();
         });
     });
@@ -213,7 +213,7 @@ describe('Diary Entries', () => {
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('No Entry is found');
+          expect(res.body.message).to.equal('Selected entry cannot be updated');
           done();
         });
     });
