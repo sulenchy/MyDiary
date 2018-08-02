@@ -19,6 +19,11 @@ const closeNav = () => {
   document.getElementById('main').style.marginLeft = '0';
 };
 
+
 const redirect = () => {
   window.location = './user-entries.html';
+};
+
+const goToAddNew = () => {
+  window.location = './add-edit.html';
 };

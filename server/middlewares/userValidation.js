@@ -36,8 +36,7 @@ export default class ValidateUser {
       return next();
     }
     return res.status(406).json({
-      status: 'fail',
-      data: { errors: validations.errors.all() },
+      errors: validations.errors.all(),
     });
   }
 }

@@ -7,11 +7,12 @@
     "test": "set NODE_ENV=test&&npm run build && nyc --reporter=html --reporter=lcov --reporter=text mocha --timeout 250000 server/test/*.js --compilers js:babel-core/register --exit",
     "build": "babel server -d ./dist",
     "lint": "./node_modules/.bin/eslint server/** ",
-    "start": "npm run build && babel-node server/app.js",
+    "start": "set NODE_ENV=production&&npm run build && babel-node server/app.js",
     "start:prod": "npm run build && nodemon --watch server --exec babel-node server/app.js",
     "coveralls": "jscoverage lib && YOURPACKAGE_COVERAGE=1 nodeunit --reporter=lcov test | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test:db": "babel-node server/models/index.js"
+    "reset:db": "babel-node server/models/index.js",
+    "reset:test:db": "set NODE_ENV=test&&babel-node server/models/index.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
@@ -39,6 +41,7 @@
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.0",
     "pg": "^7.4.3",
+    "swagger-ui-express": "^3.0.10",
     "validatorjs": "^3.14.2",
     "winston": "^3.0.0"
   },
@@ -46,7 +49,6 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
-    "chai": "^4.1.2",
     "coveralls": "^3.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",

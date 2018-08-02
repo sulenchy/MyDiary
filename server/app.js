@@ -3,7 +3,9 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import winston from 'winston';
-import entriesRouter from './routes/entries.route';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
+import entriesRouter from './routes/index';
 
 dotenv.config();
 
@@ -15,13 +17,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use(logger('dev'));
-
 const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', entriesRouter);
 
 app.listen(port, () => {
