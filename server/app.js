@@ -17,8 +17,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use(logger('dev'));
-
 const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));

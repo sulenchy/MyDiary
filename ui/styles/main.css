@@ -172,12 +172,13 @@ button.btn.text-center {
 
 /**** modal styles **/
 .modal-container {
-    width: 50%;
+    width: 100%;
     margin: auto;
     background: #fff;
     padding: 0 20px 20px 20px;
     border-radius: 20px;
     padding-top: 20px;
+    margin-left:40px;
 }
  
  
@@ -429,6 +430,11 @@ a .card:hover{
             width  :50%;
             padding-left:10px;
         }
+
+        .modal-container {
+            width: 50%;
+            margin:0 auto;
+        }
         
         .full-width{
             width:50%;
@@ -439,14 +445,28 @@ a .card:hover{
             flex-wrap: wrap;
         }
 
+        .row-entry{
+            display:fles;
+            fles-wrap: wrap;
+        }
+        .entry-date{
+            width:20%;
+            order:2;
+        }
         .entry-title{
-            width: 100%;
+            width: 80%;
+            order: 1;
         }
 
+        .entry-img{
+            width:30%;
+            order:3;
+        }
         .entry-desc{
-            width: 100%;
+            padding: 20px;
+            width:70%;
+            order:4;
         }
-
         .sidenav{
             width:20%;
             order:1;

@@ -25,11 +25,11 @@ export default class EntriesController {
         },
         message: 'New entry created successfully.',
       }))
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .json({
             error: {
-              message: err.message,
+              message: 'Sorry, an error occurred',
             },
           });
       });
@@ -91,11 +91,11 @@ export default class EntriesController {
           message: 'Diary entry gotten successfully',
         });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .json({
             error: {
-              message: err.message,
+              message: 'Sorry, an error occurred',
             },
           });
       });
@@ -119,11 +119,11 @@ export default class EntriesController {
           message: 'Diary entry updated successfully',
         });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .json({
             error: {
-              message: err.message,
+              message: 'Sorry, an error occurred',
             },
           });
       });
