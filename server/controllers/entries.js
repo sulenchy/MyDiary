@@ -1,4 +1,5 @@
 import entriesHelper from '../helpers/entries';
+import usersHelper from '../helpers/users';
 
 export default class EntriesController {
 /**
@@ -14,17 +15,37 @@ export default class EntriesController {
       title, content,
     } = req.body;
     const userid = req.token.user;
-    entriesHelper.createEntry(userid, title, content)
-      .then(newEntry => res.status(201).json({
-        NewEntry: {
-          id: newEntry.rows[0].id,
-          title,
-          content,
-          created: newEntry.rows[0].created,
-          edited: newEntry.rows[0].edited,
-        },
-        message: 'New entry created successfully.',
-      }))
+    usersHelper.getUserById(userid)
+      .then((user) => {
+        if (user.rows.length <= 0) {
+          return res.status(401)
+            .json({
+              error: {
+                message: 'Sorry, user doesn\'t exist',
+              },
+            });
+        }
+
+        return entriesHelper.createEntry(userid, title, content)
+          .then(newEntry => res.status(201).json({
+            NewEntry: {
+              id: newEntry.rows[0].id,
+              title,
+              content,
+              created: newEntry.rows[0].created,
+              edited: newEntry.rows[0].edited,
+            },
+            message: 'New entry created successfully.',
+          }))
+          .catch(() => {
+            res.status(500)
+              .json({
+                error: {
+                  message: 'Sorry, an error occurred',
+                },
+              });
+          });
+      })
       .catch(() => {
         res.status(500)
           .json({

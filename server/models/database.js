@@ -20,23 +20,7 @@ CREATE TABLE users(
   gender VARCHAR(50) NOT NULL,
   passportUrl VARCHAR(255) DEFAULT '',
   notification BOOLEAN DEFAULT 'false',
-  role status DEFAULT 'user');
-INSERT INTO users(
-  fullname,
-  email,
-  password,
-  gender,
-  passportUrl,
-  notification,
-  role)
-VALUES ('ABUDU ABIODUN SULAIMAN','sulaiman@gmail.com','${hashedPassword}','male','sulaiman.jpg','true','admin');
-INSERT INTO users(
-  fullname,
-  email,
-  password,
-  gender,
-  passportUrl)
-VALUES ('Long Life','long@gmail.com','${hashedPassword}','female','life.jpg');`;
+  role status DEFAULT 'user');`;
 
 
 const entrySeed = `
@@ -48,12 +32,7 @@ CREATE TABLE entries(
   content VARCHAR(255) NOT NULL,
   created TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
   edited TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
-  FOREIGN KEY (userid) REFERENCES users(id));
-  INSERT INTO entries(
-    userid,
-    title,
-    content)
-  VALUES (1, 'Being a landlord', 'Being a landlord is a serious business in lagos ...');`;
+  FOREIGN KEY (userid) REFERENCES users(id));`;
 
 
 const queries = `${userSeed}${entrySeed}`;
