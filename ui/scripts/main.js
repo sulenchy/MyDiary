@@ -27,3 +27,12 @@ const redirect = () => {
 const goToAddNew = () => {
   window.location = './add-edit.html';
 };
+
+const enableInput = () => {
+  document.userprofile.upload.disabled = !document.userprofile.upload.disabled ;
+  document.userprofile.firstname.disabled = !document.userprofile.firstname.disabled ;
+  document.userprofile.lastname.disabled = !document.userprofile.lastname.disabled ;
+  document.userprofile.notify.disabled = !document.userprofile.notify.disabled ;
+  let editBtn = document.getElementById("editBtn")
+  editBtn.value === 'Edit' ? (editBtn.value = 'Save' : editBtn.value = 'Edit';
+};

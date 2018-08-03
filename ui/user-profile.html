@@ -40,9 +40,9 @@
             <div class="container">
                 <h2>User Profile</h2>
                 <div class="row container">
-                    <form action="#" class="userprofile">
+                    <form name="userprofile" class="userprofile" onsubmit="return false">
                         <label for="fname">Upload</label>
-                        <input type="file" id="fname" name="firstname" disabled placeholder="Username">
+                        <input type="file" id="fname" name="upload" disabled placeholder="Username">
 
                         <label for="fname">Username</label>
                         <input type="text" id="fname" name="firstname" disabled placeholder="Username">
@@ -51,13 +51,12 @@
                         <input type="text" id="lname" name="lastname" disabled placeholder="305 Entries">
                     
                         <label for="country">Notification</label>
-                        <select id="country" name="country" disabled>
-                            <option value="australia">Off</option>
-                            <option value="canada">On</option>
+                        <select id="country" name="notify" disabled>
+                            <option value="off">Off</option>
+                            <option value=on>On</option>
                         </select>
 
-                        <input type="submit" class="btn" value="Edit">
-                    
+                        <input type="submit" id="editBtn" class="btn" value="Edit" onclick="enableInput();">
                     </form>
                 </div>
 
