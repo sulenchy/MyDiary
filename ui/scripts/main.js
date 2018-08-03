@@ -34,5 +34,5 @@ const enableInput = () => {
   document.userprofile.lastname.disabled = !document.userprofile.lastname.disabled ;
   document.userprofile.notify.disabled = !document.userprofile.notify.disabled ;
   let editBtn = document.getElementById("editBtn")
-  editBtn.value === 'Edit' ? (editBtn.value = 'Save' : editBtn.value = 'Edit';
+  editBtn.value === 'Edit' ? editBtn.value = 'Save' : editBtn.value = 'Edit';
 };
