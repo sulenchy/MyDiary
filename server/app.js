@@ -24,6 +24,8 @@ app.use(logger('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', entriesRouter);
 
+app.use(express.static('public'))
+
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);
 });
