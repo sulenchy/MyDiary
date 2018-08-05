@@ -69,8 +69,8 @@ export default class EntriesController {
     entriesHelper.getAllEntry(userid)
       .then((entries) => {
         if (entries.rowCount === 0) {
-          return res.status(404).json({
-            message: 'No entry is found',
+          return res.status(200).json({
+            message: 'No entry. Pls, add one now',
           });
         }
         return res.status(200).json({
@@ -132,12 +132,38 @@ export default class EntriesController {
     entriesHelper.updateEntry(userid, id, title, content)
       .then((entry) => {
         if (entry.rowCount === 0) {
-          return res.status(404).json({
-            message: 'Selected entry cannot be updated',
+          return res.status(403).json({
+            message: 'Entry cannot be updated by you',
           });
         }
         return res.status(200).json({
           message: 'Diary entry updated successfully',
+        });
+      })
+      .catch(() => {
+        res.status(500)
+          .json({
+            error: {
+              message: 'Sorry, an error occurred',
+            },
+          });
+      });
+  }
+
+  static deleteEntry(req, res) {
+    const userId = req.token.user;
+
+    const id = parseInt(req.params.id, 10);
+
+    entriesHelper.deleteEntry(userId, id)
+      .then((entry) => {
+        if (entry.rowCount === 0) {
+          return res.status(403).json({
+            message: 'Entry cannot be deleted by you',
+          });
+        }
+        return res.status(200).json({
+          message: 'Diary entry deleted successfully',
         });
       })
       .catch(() => {

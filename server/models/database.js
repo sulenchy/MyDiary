@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 // const Cryptr = require('cryptr');
@@ -6,9 +5,8 @@ import dotenv from 'dotenv';
 // const encryptedString = cryptr.encrypt('bacon');
 
 dotenv.config();
-const hashedPassword = bcrypt.hashSync(`${process.env.H_PASSWORD}`, 10);
 
-const userSeed = `
+const user = `
 DROP TABLE IF EXISTS users CASCADE;
 DROP TYPE IF EXISTS status;
 CREATE TYPE status AS ENUM('user','admin');
@@ -23,7 +21,7 @@ CREATE TABLE users(
   role status DEFAULT 'user');`;
 
 
-const entrySeed = `
+const entry = `
 DROP TABLE IF EXISTS entries CASCADE;
 CREATE TABLE entries(
   id SERIAL PRIMARY KEY,
@@ -35,6 +33,6 @@ CREATE TABLE entries(
   FOREIGN KEY (userid) REFERENCES users(id));`;
 
 
-const queries = `${userSeed}${entrySeed}`;
+const queries = `${user}${entry}`;
 
 export default queries;
