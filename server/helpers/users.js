@@ -4,7 +4,7 @@ import connection from './connection';
 const client = connection();
 client.connect();
 
-export default class EntriesHelper {
+export default class UsersHelper {
   static signupUser(fullname, email, password, gender) {
     const hashedPassword = bcrypt.hashSync(`${password}`, 10);
     const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${hashedPassword}','${gender}') RETURNING *;`;
@@ -22,6 +22,20 @@ export default class EntriesHelper {
 
   static loginUser(email) {
     const user = `SELECT * FROM users where email = '${email}';`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, user does not exist. Please, register now.',
+        }));
+      }
+    });
+  }
+
+  static getUserById(id) {
+    const user = `SELECT * FROM users where id = '${id}';`;
     return new Promise((resolve, reject) => {
       const data = client.query(user);
       if (data) {

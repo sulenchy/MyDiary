@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
 
 router.post('/entries', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.createEntry);
 router.get('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.getEntry);
+router.delete('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.deleteEntry);
 router.put('/entries/:id', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.updateEntry);
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
