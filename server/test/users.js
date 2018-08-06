@@ -48,14 +48,14 @@ describe('General user input', () => {
     done();
   });
   describe('POST /api/v1/auth/signup', () => {
-    it('Should not create new user with an existing email', (done) => {
+    it('Should create new user with valid signup detail', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
         .send(dummyData.users[4])
         .end((err, res) => {
-          expect(res).to.have.status(409);
+          expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.equal('Email already exists');
+          expect(res.body.message).to.equal('New user created successfully');
           done();
         });
     });
@@ -76,6 +76,17 @@ describe('General user input', () => {
           expect(res.body).to.be.an('object');
           expect(res.body.errors.email)
             .to.include('The email format is invalid.');
+          done();
+        });
+    });
+    it('Should not create new user with an existing email address', (done) => {
+      chai.request(app)
+        .post(`${signupUrl}`)
+        .send(dummyData.users[4])
+        .end((err, res) => {
+          expect(res).to.have.status(409);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Email already exists');
           done();
         });
     });

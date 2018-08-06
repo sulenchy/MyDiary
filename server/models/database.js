@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 // const Cryptr = require('cryptr');
@@ -6,9 +5,8 @@ import dotenv from 'dotenv';
 // const encryptedString = cryptr.encrypt('bacon');
 
 dotenv.config();
-const hashedPassword = bcrypt.hashSync(`${process.env.H_PASSWORD}`, 10);
 
-const userSeed = `
+const user = `
 DROP TABLE IF EXISTS users CASCADE;
 DROP TYPE IF EXISTS status;
 CREATE TYPE status AS ENUM('user','admin');
@@ -20,26 +18,10 @@ CREATE TABLE users(
   gender VARCHAR(50) NOT NULL,
   passportUrl VARCHAR(255) DEFAULT '',
   notification BOOLEAN DEFAULT 'false',
-  role status DEFAULT 'user');
-INSERT INTO users(
-  fullname,
-  email,
-  password,
-  gender,
-  passportUrl,
-  notification,
-  role)
-VALUES ('ABUDU ABIODUN SULAIMAN','sulaiman@gmail.com','${hashedPassword}','male','sulaiman.jpg','true','admin');
-INSERT INTO users(
-  fullname,
-  email,
-  password,
-  gender,
-  passportUrl)
-VALUES ('Long Life','long@gmail.com','${hashedPassword}','female','life.jpg');`;
+  role status DEFAULT 'user');`;
 
 
-const entrySeed = `
+const entry = `
 DROP TABLE IF EXISTS entries CASCADE;
 CREATE TABLE entries(
   id SERIAL PRIMARY KEY,
@@ -48,14 +30,9 @@ CREATE TABLE entries(
   content VARCHAR(255) NOT NULL,
   created TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
   edited TIMESTAMPTZ NOT NULL DEFAULT timezone('Africa/Lagos',NOW()),
-  FOREIGN KEY (userid) REFERENCES users(id));
-  INSERT INTO entries(
-    userid,
-    title,
-    content)
-  VALUES (1, 'Being a landlord', 'Being a landlord is a serious business in lagos ...');`;
+  FOREIGN KEY (userid) REFERENCES users(id));`;
 
 
-const queries = `${userSeed}${entrySeed}`;
+const queries = `${user}${entry}`;
 
 export default queries;

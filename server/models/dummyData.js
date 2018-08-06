@@ -34,7 +34,7 @@ const dummyData = {
       gender: 'Female',
     },
     {
-      fullname: 'ABUDU ABIODUN SULAIMAN',
+      fullname: 'ABUDU ABIODUN',
       email: 'sulaiman@gmail.com',
       password: 'louderandhigh',
       gender: 'male',

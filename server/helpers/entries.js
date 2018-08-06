@@ -94,4 +94,26 @@ export default class EntriesHelper {
       }
     });
   }
+
+  /**
+   * @description deletes a given entry for a user
+   *
+   * @param {*} userId
+   * @param {*} id
+   *
+   * @memberOf EntriesHelper
+   */
+  static deleteEntry(userId, id) {
+    const deleteEntrySql = `DELETE FROM entries where userid = ${userId} AND id = ${id}`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(deleteEntrySql);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Error encountered during delete operation',
+        }));
+      }
+    });
+  }
 }

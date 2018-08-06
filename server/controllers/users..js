@@ -21,8 +21,9 @@ export default class UsersController {
  */
   static signupUser(req, res) {
     const {
-      fullname, email, password, gender,
+      fullname, password, gender,
     } = req.body;
+    const email = req.body.email.toLowerCase();
     usersHelper.signupUser(fullname, email, password, gender)
       .then(newUser => res.status(201).json({
         user: {
@@ -55,9 +56,8 @@ export default class UsersController {
  *
  */
   static loginUser(req, res) {
-    const {
-      email, password,
-    } = req.body;
+    const email = req.body.email.toLowerCase();
+    const { password } = req.body;
     usersHelper.loginUser(email)
       .then((user) => {
         if (user.rowCount === 0) {
@@ -83,11 +83,11 @@ export default class UsersController {
           message: 'User logged in successfully',
         });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500)
           .json({
             error: {
-              message: err.message,
+              message: 'Sorry, an error occurred',
             },
           });
       });
