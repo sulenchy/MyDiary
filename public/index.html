@@ -1,12 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My Diary... Your space for thoughts and feelings</title>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Coda+Caption:800" rel="stylesheet">    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+
 </head>
+
 <body>
-    <h2>This is Andela</h2>
+    <div class="main">
+        <section id="right" class="about bg">
+            <div id="overlay" class="story-section">        
+                <h1>My Dairy.</h1>
+                <h1>Your space to capture your thoughts and feelings.</h1>
+                <p>Getting started is only a few click away.</p>
+                <div class="">
+                    <button class="btn responsive-btn">Learn more</button>
+                    <button class="btn responsive-btn" onclick="document.getElementById('modalBox').style.display='block'">Login</button>
+                </div>
+            </div>
+        </section>
+        <section id="left" class="register container">
+            <div class="text-center">
+                <h1>My Diary.</h1>
+                <h1>Get your thoughts and feelings captured.</h1>
+                <p>Getting started is quite simple and easy. Just fill out the info below.</p>
+            
+                <form>
+                    <ul id='errors' class="text-red"></ul>
+                    <div class="input-container">
+                        <i class="fa fa-user icon"></i>
+                        <input class="input-field" type="text" id="fullname" placeholder="Full name" name="username">
+                    </div>
+                    <div class="input-container">
+                        <i class="fa fa-envelope icon"></i>
+                        <input class="input-field" type="email" placeholder="Email" id="email" name="email" required>
+                    </div>
+                    <div class="input-container">
+                        <i class="fa fa-key icon"></i>
+                        <select class="input-field" id="gender" name="gender">
+                            <option value="">Choose your gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="input-container">
+                        <i class="fa fa-key icon"></i>
+                        <input class="input-field" type="password" placeholder="Password" id="password" name="password" required>
+                    </div>
+                    <div class="input-container">
+                        <i class="fa fa-key icon"></i>
+                        <input class="input-field" type="password" placeholder="Retype Password" id="retypePassword" name="password" required>
+                    </div>
+            
+                    <button type="submit" id='register' class="btn text-center">Register</button>
+                </form>
+                <p>Already have an account?
+                    <a class="#" href="#"  onclick="document.getElementById('modalBox').style.display='block'">Login</a>
+                </p>
+            </div>
+        </section>
+        <div id="modalBox" class="modal">
+            <div class="modal-container">
+                <form>
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <h2>Login</h2>
+                    </div>
+                    <div class="input-container">
+                        <i class="fa fa-envelope icon"></i>
+                        <input class="input-field" type="text" placeholder="Email" name="email">
+                    </div>
+        
+                    <div class="input-container">
+                        <i class="fa fa-key icon"></i>
+                        <input class="input-field" type="password" placeholder="Password" name="psw">
+                    </div>
+        
+                    <input type="button"  class="btn" value="Login" onclick="redirect();" />
+        
+                    <span class="">Forgot
+                        <a href="#">password?</a>
+                    </span>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/index.js"></script>
+
 </body>
+
 </html>

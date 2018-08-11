@@ -10,6 +10,9 @@ body, html {
 h2 {
     font-size: 18px;
 }
+li{
+    list-style: none;
+}
 
 a{
     text-decoration: none;
@@ -21,6 +24,11 @@ a{
 
 .about{
   width:100%;
+}
+
+.text-red{
+    color:red;
+    text-transform: capitalize;
 }
 
 img{
