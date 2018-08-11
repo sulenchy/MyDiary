@@ -1,0 +1,599 @@
+body, html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color:#0a0072;
+    font-family: "Lato", sans-serif;
+    background-color: #fff;
+    font-size: 18px;
+}
+h2 {
+    font-size: 18px;
+}
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.register{
+  width:100%;
+}
+
+.about{
+  width:100%;
+}
+
+.text-red{
+    color:red;
+    text-transform: capitalize;
+}
+
+img{
+  width:100%;
+  max-width: 100%;
+}
+
+
+/** Styling tap target tags **/
+
+nav a, button{
+  min-width: 48px;
+  min-height: 48px;
+}
+
+
+/** Form styling **/
+* {box-sizing: border-box;}
+
+.input-container {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.icon {
+    padding: 10px;
+    background: #0a0072;
+    color: white;
+    min-width: 50px;
+    text-align: center;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+}
+
+.input-field:focus {
+    border: 2px solid #65717b;
+}
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+/* Set a style for the submit button */
+.btn-rounded {
+    background-color: #0a0072;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    opacity: 0.9;
+    margin: 5px 0 5px 0;
+    font-size:1rem;
+}
+
+button.btn.text-center {
+    width: 100%;
+}
+
+
+/** Column styles */
+
+.col-1-3{
+    width:100%;
+}
+
+/*-------------------------*/
+
+
+/***hide the overlay part of the landing page **/
+
+section#right {
+    display: none;
+}
+
+/*--------------------------------------------*/
+
+.btn {
+    background-color: #0a0072;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.9;
+    margin: 5px 0 5px 0;
+    font-size:0.8rem;
+}
+
+.btn:hover {
+    opacity: 1;
+}
+
+
+
+.bg { 
+    /* The image used */
+    background: url("../img/bg.jpg") no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+}
+
+#overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,9,0.8);
+    z-index: 2;
+    text-align: center;
+    padding-top: 100px;
+}
+
+
+
+.story-section{
+  width:60%;
+  margin:auto;
+  font-family: 'PT Sans', sans-serif;
+  color:#fff;
+  text-transform: capitalize;
+}
+
+.story-section h1{
+  font-size: 40px;
+}
+
+
+.story-section p{
+  color:#1d2932;
+}
+
+
+.container{
+  width:80%;
+  margin:auto;
+  padding: 16px;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.text-left{
+  text-align: left;
+}
+
+.text-right{
+  text-align: right;
+}
+
+/**** modal styles **/
+.modal-container {
+    width: 100%;
+    margin: auto;
+    background: #fff;
+    padding: 0 20px 20px 20px;
+    border-radius: 20px;
+    padding-top: 20px;
+    margin-left:40px;
+    border: 1px solid;
+}
+ 
+ 
+ /* Extra styles for the cancel button */
+ .cancelbtn {
+     width: auto;
+     padding: 10px 18px;
+     background-color: #f44336;
+ }
+ 
+ /* Center the image and position the close button */
+ .imgcontainer {
+     text-align: center;
+     padding-bottom: 10px;
+     margin: 24px 0 12px 0;
+     position: relative;
+ }
+ 
+ img.avatar {
+     width: 40%;
+     border-radius: 50%;
+ }
+ 
+ span.psw {
+     float: right;
+     padding-top: 16px;
+ }
+ 
+ /* The Modal (background) */
+ .modal {
+     display: none; /* Hidden by default */
+     position: fixed; /* Stay in place */
+     z-index: 1; /* Sit on top */
+     left: 0;
+     top: 0;
+     width: 80%; /* Full width */
+     height: 100%; /* Full height */
+     padding-top: 60px;
+ }
+ 
+ /* Modal Content/Box */
+ .modal-content {
+     background-color: #fefefe;
+     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+     border: 1px solid #888;
+     width: 80%; /* Could be more or less, depending on screen size */
+ }
+ 
+ /* The Close Button (x) */
+ .close {
+     position: absolute;
+     right: 1px;
+     top: -10px;
+     color: #000;
+     font-size: 35px;
+     font-weight: bold;
+ }
+ 
+ .close:hover,
+ .close:focus {
+     color: red;
+     cursor: pointer;
+ }
+ 
+ /* Add Zoom Animation */
+ .animate {
+     -webkit-animation: animatezoom 0.6s;
+     animation: animatezoom 0.6s
+ }
+ 
+ @-webkit-keyframes animatezoom {
+     from {-webkit-transform: scale(0)} 
+     to {-webkit-transform: scale(1)}
+ }
+     
+ @keyframes animatezoom {
+     from {transform: scale(0)} 
+     to {transform: scale(1)}
+ }
+ 
+ /** user-entries style **/ 
+img {
+    border-radius: 50%;
+}
+
+.sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        color:#fff;
+        top: 0;
+        left:0;
+        background-color: #0a0072;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #ffffff;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+.card {
+    /* Add shadows to create the "card" effect */
+    width:100%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    text-align: center;
+    height: auto;
+    margin: 10px 0 10px 0;
+}
+
+.card-dash {
+    /* Add shadows to create the "card" effect */
+    width:100%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    text-align: center;
+    height:100px;
+    margin: 10px 0 10px 0;
+}
+
+.hamburgerIcon{
+    font-size:30px;
+    cursor:pointer;
+}
+
+a .card:hover{
+    opacity: 1;
+}
+
+/** entry card styles **/
+
+.row-entry{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h2#txt {
+    font-size: 30px;
+}
+
+.day{
+    flex:25%;
+}
+
+.entry{
+    flex:50%;
+}
+
+.bottom-border{
+    border-bottom: 3px solid;
+}
+
+.buttons{
+    flex: 50%;
+}
+
+
+
+
+.right{
+    float:right;
+    margin-top:5px;
+}
+
+.left{
+    width  :100%;
+}
+
+.full-width{
+    width:100%;
+}
+
+
+.btn-float{
+    position: absolute;
+    top:200px;
+    right: 40px;
+    border-radius:50%;
+}
+
+.push-down{
+    margin-top:40px
+}
+
+
+.entry-img img{
+    height: 200px;
+    border-radius:0;
+}
+
+/*-------------------------------------------------------------*/
+/* Style inputs with type="text", select elements and textareas */
+.userprofile input[type=text],input[type=file], select, textarea {
+    width: 100%; /* Full width */
+    padding: 12px; /* Some padding */  
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 6px; /* Add a top margin */
+    margin-bottom: 16px; /* Bottom margin */
+    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+/* Style the submit button with a specific background color etc */
+.userprofile input[type=submit] {
+    background-color: #818181;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* When moving the mouse over the submit button, add a darker green color */
+.userprfile input[type=submit]:hover {
+    background-color: #818181;
+}
+
+
+/** Hide the logout button **/
+a.right.btn {
+    display: none;
+}
+
+a.logout {
+    display: block;
+}
+/*-----------------------------------*/
+
+
+/**** Media query styles ******/
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+    .day{
+        border-right:2px solid black;
+    }
+}
+
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+
+    @media screen and (min-width:600px){
+        section#right {
+            display: block;
+        }
+        .left{
+            width  :50%;
+            padding-left:10px;
+        }
+
+        .modal-container {
+            width: 50%;
+            margin:0 auto;
+            border:none;
+        }
+        
+        .full-width{
+            width:50%;
+        }
+
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .row-entry{
+            display:fles;
+            fles-wrap: wrap;
+        }
+        .entry-date{
+            width:20%;
+            order:2;
+        }
+        .entry-title{
+            width: 80%;
+            order: 1;
+        }
+
+        .entry-img{
+            width:30%;
+            order:3;
+        }
+        .entry-desc{
+            padding: 20px;
+            width:70%;
+            order:4;
+        }
+        .sidenav{
+            width:20%;
+            order:1;
+        }
+        .text-center{
+            text-align: center;
+        }
+
+        .day{
+            border-right:2px solid black;
+        }
+
+        a.logout {
+            display: none;
+        }
+
+        a.right.btn {
+            display: block;
+        }
+
+        .main-form{
+            width:80%;
+            order: 2;
+            margin-left: 250px;
+        }
+
+        a.closebtn {
+            display: none;
+        }
+
+        .hamburgerIcon{
+            display: none;
+        }
+
+        .main{
+            display:flex;
+            flex-wrap: wrap;
+            height:100%;
+          }
+        
+          .register{
+            flex:30%;
+            order:2;
+            margin:auto;
+          }
+        
+          .about {
+            flex:70%;
+            order:1;
+        }
+          .story-section{
+            padding: 0 100px 0 100px;
+            color:#fff;
+          }
+        
+          .story-section p{
+            color:#fff;
+          }
+        
+          .btn.responsive-btn{
+            width:40%;
+            margin-right:5px;
+          }
+
+          .col-1-3{
+              width:33.3%;
+              float:left;
+          }
+    }
