@@ -78,7 +78,7 @@ const login = (event) => {
         });
       } else {
         localStorage.setItem('token', user.data.token);
-        alert(`${user.message} into his account. Congratulation to you, ${email}. Enjoy your Diary on the go.....`);
+        window.location = './landing-page.html';
       }
     }).catch(err => err.message);
 };
