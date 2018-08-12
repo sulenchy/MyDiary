@@ -56,7 +56,7 @@ export default class UsersController {
  *
  */
   static loginUser(req, res) {
-    const email = req.body.email.toLowerCase();
+    const email = !req.body.email ? req.body.email : req.body.email.toLowerCase();
     const { password } = req.body;
     usersHelper.loginUser(email)
       .then((user) => {
