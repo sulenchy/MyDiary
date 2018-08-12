@@ -1,5 +1,7 @@
 
-const url = 'http://localhost:8080/api/v1/auth/signup';
+const registerUrl = 'http://localhost:8080/api/v1/auth/signup';
+const loginUrl = 'http://localhost:8080/api/v1/auth/login';
+
 
 const register = (event) => {
   event.preventDefault();
@@ -15,7 +17,7 @@ const register = (event) => {
     document.getElementById('errors').innerHTML = '<li>Password mismatch. Please, re-enter the password</li>';
   }
 
-  fetch(url, {
+  fetch(registerUrl, {
     method: 'POST',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
@@ -25,7 +27,7 @@ const register = (event) => {
   })
     .then((response) => {
       if (response.status === 409) {
-        document.getElementById('error_others').innerHTML = 'Email already exists';
+        document.getElementById('error').innerHTML = 'Email already exists';
       }
       return response.json();
     })
@@ -39,9 +41,47 @@ const register = (event) => {
         });
       } else {
         localStorage.setItem('token', user.user.token);
-        alert(`Congratulation to you, ${fullname}. You have successfully creates your account. Enjoy your Diary on the go.....`)
+        alert(`Congratulation to you, ${fullname}. You have successfully created your account. Enjoy your Diary on the go.....`);
       }
     }).catch(err => err.message);
 };
 
+
+const login = (event) => {
+  event.preventDefault();
+  document.getElementById('errors_login').innerHTML = '';
+
+  const email = document.getElementById('emailL').value;
+  const password = document.getElementById('passwordL').value;
+
+  fetch(loginUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email, password,
+    }),
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        document.getElementById('errors_login').innerHTML = 'Username or password is incorrect';
+      }
+      return response.json();
+    })
+    .then((user) => {
+      if (user.errors) {
+        Object.keys(user.errors).forEach((key) => {
+          const ul = document.getElementById('errors_login');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(user.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        localStorage.setItem('token', user.data.token);
+        alert(`${user.message} into his account. Congratulation to you, ${email}. Enjoy your Diary on the go.....`);
+      }
+    }).catch(err => err.message);
+};
+
+document.getElementById('login').addEventListener('click', login);
 document.getElementById('register').addEventListener('click', register);

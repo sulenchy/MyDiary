@@ -75,17 +75,18 @@
                         <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
                         <h2>Login</h2>
                     </div>
+                    <ul id='errors_login' class="text-red"></ul>
                     <div class="input-container">
                         <i class="fa fa-envelope icon"></i>
-                        <input class="input-field" type="text" placeholder="Email" name="email">
+                        <input class="input-field" id="emailL" type="text" placeholder="Email" name="email">
                     </div>
         
                     <div class="input-container">
                         <i class="fa fa-key icon"></i>
-                        <input class="input-field" type="password" placeholder="Password" name="psw">
+                        <input class="input-field" id="passwordL" type="password" placeholder="Password" name="password">
                     </div>
         
-                    <input type="button"  class="btn" value="Login" onclick="redirect();" />
+                    <input type="button" id="login"  class="btn" value="Login" />
         
                     <span class="">Forgot
                         <a href="#">password?</a>
