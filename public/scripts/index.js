@@ -1,6 +1,6 @@
 
-const registerUrl = 'http://localhost:8080/api/v1/auth/signup';
-const loginUrl = 'http://localhost:8080/api/v1/auth/login';
+const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
+const loginUrl = 'http://localhost:8081/api/v1/auth/login';
 
 
 const register = (event) => {
