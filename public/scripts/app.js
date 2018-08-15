@@ -38,7 +38,6 @@ const fetchViewAllEntries = () => {
           if (groupedEntries.hasOwnProperty(key)) {
             const keyLength = groupedEntries[key].length;
             userEntriesLength += keyLength;
-            const entryVal = (keyLength === 1) ? ' entry' : ' entries';
             localStorage.setItem('entries', JSON.stringify(groupedEntries));
           }
         }
@@ -62,9 +61,6 @@ const filterEntriesList = (filter = '') => {
   }
   return myObject === undefined ? entriesList : myObject;
 };
-
-console.log(filterEntriesList());
-
 
 /**
  * entryByDateList(): gets list of entry of a user grouped by date
@@ -139,8 +135,7 @@ const showAllEntries = () => {
 
 // filter entries
 const searchValue = () => {
-  const val = document.getElementById('search').value;
-  console.log(val);
+  const val = document.getElementById('search').value;  
   entryByDateList(filterEntriesList(val));
   showAllEntries();
 };
