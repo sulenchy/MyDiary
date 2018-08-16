@@ -36,7 +36,8 @@ export default class EntriesHelper {
  * @memberOf EntriesHelper Class
  */
   static getAllEntry(userid) {
-    const entries = `SELECT id, userid, title, content, created, edited, TO_CHAR(created :: DATE, 'Mon dd, yyyy') as date FROM entries WHERE userid= ${userid};`;
+    const entries = `SELECT id, title, content, created, edited, TO_CHAR(created :: DATE, 'Mon dd, yyyy') as date FROM entries WHERE userid= ${userid};`;
+
     return new Promise((resolve, reject) => {
       const data = client.query(entries);
       if (data) {
