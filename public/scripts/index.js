@@ -1,6 +1,6 @@
 
-const registerUrl = 'http://localhost:8080/api/v1/auth/signup';
-const loginUrl = 'http://localhost:8080/api/v1/auth/login';
+const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
+const loginUrl = 'http://localhost:8081/api/v1/auth/login';
 
 
 const register = (event) => {
@@ -40,7 +40,7 @@ const register = (event) => {
           ul.appendChild(li);
         });
       } else {
-        localStorage.setItem('token', user.user.token);
+        // localStorage.setItem('token', user.user.token);
         alert(`Congratulation to you, ${fullname}. You have successfully created your account. Enjoy your Diary on the go.....`);
       }
     }).catch(err => err.message);
@@ -63,22 +63,22 @@ const login = (event) => {
     }),
   })
     .then((response) => {
-      if (response.status !== 200) {
+      if (response.status === 401) {
         document.getElementById('errors_login').innerHTML = 'Username or password is incorrect';
       }
       return response.json();
     })
     .then((user) => {
-      if (user.errors) {
-        Object.keys(user.errors).forEach((key) => {
+      if (user.data.errors) {
+        Object.keys(user.data.errors).forEach((key) => {
           const ul = document.getElementById('errors_login');
           const li = document.createElement('li');
-          li.appendChild(document.createTextNode(user.errors[key]));
+          li.appendChild(document.createTextNode(user.data.errors[key]));
           ul.appendChild(li);
         });
       } else {
         localStorage.setItem('token', user.data.token);
-        window.location = './landing-page.html';
+        document.location = './landing-page.html';
       }
     }).catch(err => err.message);
 };
