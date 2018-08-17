@@ -44,31 +44,27 @@
             </div>
             <div id="modalBox" class="modal">
                 <div class="modal-container">
-                    <div class="">
-                        <form class="userprofile">
+                    <div id="modal-app">
+                        <form>
                             <div class="imgcontainer">
                             <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
                             <h2>Add Entry</h2>
                             </div>
                             <ul id='add_new_error' class="text-red"></ul>
                             <div class="input-container">
-                            <input class="input-field" id="title" type="text" placeholder="Entry Title" name="title">
+                            <input class="input-field" id="title" type="text" placeholder="Entry Title">
                             </div>
-                        
                             <div class="input-container">
                             <textarea rows="4" class="input-field" id="content" placeholder="Entry content"></textarea>
                             </div>
-                            
-                        
-                            <button type="submit" class="btn" id="file-submit">Save</button>
+                            <button type="submit" class="btn" id="file-submit1" onClick="addNewEntry();">Save</button>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>  
-    <script src="scripts/app.js"></script>    
+    <script src="scripts/app.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 

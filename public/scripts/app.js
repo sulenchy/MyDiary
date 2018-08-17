@@ -10,22 +10,18 @@ let url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
 
 let state = false;
 
-function groupBy(objectArray, property) {
-  return objectArray.reduce((acc, obj) => {
-    const key = obj[property];
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc;
-  }, {});
-}
+const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
+  const key = obj[property];
+  if (!acc[key]) {
+    acc[key] = [];
+  }
+  acc[key].push(obj);
+  return acc;
+}, {});
 
 // loads all entries of a user
 const fetchViewAllEntries = () => {
-  let len;
   token = localStorage.getItem('token');
-
   fetch(entryUrl, {
     method: 'GET',
     mode: 'cors',
@@ -38,7 +34,6 @@ const fetchViewAllEntries = () => {
     .then((entries) => {
       if (entries.entries) {
         const groupedEntries = groupBy(entries.entries, 'date');
-        console.log('return groupedEntries =====>', groupedEntries);
         let userEntriesLength = 0;
         for (const key in groupedEntries) {
           if (groupedEntries.hasOwnProperty(key)) {
@@ -49,7 +44,7 @@ const fetchViewAllEntries = () => {
         localStorage.setItem('entries', JSON.stringify(groupedEntries));
         localStorage.setItem('entriesNumber', userEntriesLength);
       }
-    }).catch(err => console.log(err));
+    }).catch(err => err.message);
 };
 
 // gets list of entries from the localStorag
@@ -62,7 +57,6 @@ let list = '';
 
 const filterEntriesList = (filter = '', localEntryList) => {
   const filteredList = Object.keys(localEntryList).filter(entry => entry.indexOf(filter) > -1);
-  console.log('return filtered entries ======>', filteredList);
   const myObject = {};
   for (const key in filteredList) {
     myObject[filteredList[key]] = localEntryList[filteredList[key]];
@@ -107,24 +101,24 @@ const entryByDayList = (arg) => {
     if (arg) {
       tempList += `<div class="card row">
       <div class="day">
-          <a href="./entry-content.html">
+          <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key]["title"]}","${arg[key]["content"]}")'>
               <h2>${arg[key].created.split('T')[1].split('.')[0]}</h2>
           </a>
       </div>
       <div class="entry">
-          <a href="./entry-content.html">
+          <a id="title-${arg[key].id}" href="#" onclick='readEntry("${arg[key]["title"]}","${arg[key]["content"]}")'>
               <h2>${arg[key].title}</h2>
           </a>
       </div>
       <div class="row">
           <div class="buttons">
               <div class="container">
-                  <a href="#">
+                  <a href="">
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
               <div class="container">
-                  <a href="#">
+                  <a href="">
                       <i class="fa fa-edit"></i>
                   </a>
               </div>
@@ -140,54 +134,6 @@ const entryByDayList = (arg) => {
 entryByDateList(filterEntriesList('', entriesList));
 
 // if (url === 'http://localhost:8081/client/landing-page.html#entries-by-time') { entryByDayList(filterDayEntriesByTitle('', entriesList[selectedDate])); }
-
-const showAllEntries = () => {
-  fetchViewAllEntries();
-  const allEntries = `<div id="dashboard" class="container">
-  <div class="card-dash col-1-3">
-      <h2>Total entry</h2>
-      <h2>${localStorage.getItem('entriesNumber')}</h2>
-  </div>
-  <div class="card-dash col-1-3">
-      <h2>Add New</h2>
-      <h2>
-          <i class="fas fa-plus-circle" id="add-new"></i>
-      </h2>
-  </div>
-  <div class="card-dash col-1-3">
-      <h2 id="txt"></h2>
-  </div>
-</div>
-<div class="container">
-  <h2>${title}</h2>
-  <input type="text" class="input-field" id="search" placeholder="Search" name="search" onchange="searchValue()">
-  
-  ${list}
-
-  <div class="row text-center push-down">
-      <a href="#" class="btn">
-        View more
-      </a>
-  </div>
-</div>`;
-  // initializes the app tag
-  document.getElementById('app').innerHTML = allEntries;
-  document.getElementById('add-new').addEventListener('click', showAddNewForm);
-  document.getElementById('file-submit').addEventListener('click', addNewEntry);
-
-  const today = new Date();
-  const h = today.getHours();
-  let m = today.getMinutes();
-  let s = today.getSeconds();
-  m = checkTime(m);
-  s = checkTime(s);
-  document.getElementById('txt').innerHTML = `${h}:${m}:${s}`;
-  const t = setTimeout(startTime, 500);
-};
-
-const show = () => {
-  showAllEntries();
-};
 
 // filter entries
 const searchValue = () => {
@@ -212,13 +158,11 @@ const viewEntry = (id) => {
 };
 
 const addNewEntry = (event) => {
-  event.preventDefault();
+  // event.preventDefault();
   document.getElementById('add_new_error').innerHTML = '';
-
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   token = localStorage.getItem('token');
-
   fetch(entryUrl, {
     method: 'POST',
     mode: 'cors',
@@ -251,28 +195,103 @@ const addNewEntry = (event) => {
         ul.appendChild(li);
         document.getElementById('title').innerText = '';
         document.getElementById('content').innerText = '';
-        console.log('working mode');
       }
     }).catch(err => err.message);
 };
 
 const editEntry = () => '<div> <h1>Modifies an entry</h1></div>';
-
 const deleteEntry = () => '<div> <h1>Delete an entry</h1></div>';
+const addNewForm = () => {
+  const form = `<form>
+  <div class="imgcontainer">
+  <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <h2>Add Entry</h2>
+  </div>
+  <ul id='add_new_error' class="text-red"></ul>
+  <div class="input-container">
+  <input class="input-field" id="title" type="text" placeholder="Entry Title">
+  </div>
+  <div class="input-container">
+  <textarea rows="4" class="input-field" id="content" placeholder="Entry content"></textarea>
+  </div>
+  <button type="submit" class="btn" id="file-submit" onClick="addNewEntry();">Save</button>
+</form>`;
+document.getElementById('modal-app').innerHTML = '';
+document.getElementById('modal-app').innerHTML = form;
+document.getElementById('modalBox').style.display = 'block';
+};
 
-const showAddNewForm = () => {
+
+
+const readEntry = (localTitle, content) => {
+  const form = `<div class="imgcontainer">
+  <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
+  </div>
+  <h2>${localTitle}</h2>
+  <p>${content}</p>`;
+  document.getElementById('modal-app').innerHTML = '';
+  document.getElementById('modal-app').innerHTML = form;
+  document.getElementById('modalBox').style.display = 'block';
+};
+
+const showModalBox = () => {
   document.getElementById('modalBox').style.display = 'block';
 };
 
 const userProfile = () => '<div> <h1>Shows the profile of the user</h1></div>';
 
+const showAllEntries = () => {
+  fetchViewAllEntries();
+  const allEntries = `<div id="dashboard" class="container">
+  <div class="card-dash col-1-3">
+      <h2>Total entry</h2>
+      <h2>${localStorage.getItem('entriesNumber')}</h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2>Add New</h2>
+      <h2>
+          <i class="fas fa-plus-circle" id="add-new" onclick="addNewForm();"></i>
+      </h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2 id="txt"></h2>
+  </div>
+</div>
+<div class="container">
+  <h2>${title}</h2>
+  <input type="text" class="input-field" id="search" placeholder="Search" name="search" onchange="searchValue()">
+  
+  ${list}
+
+  <div class="row text-center push-down">
+      <a href="#" class="btn">
+        View more
+      </a>
+  </div>
+</div>`;
+  // initializes the app tag
+  document.getElementById('app').innerHTML = allEntries;
+  document.getElementById('add-new').addEventListener('click', showModalBox);
+
+  const today = new Date();
+  const h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML = `${h}:${m}:${s}`;
+  const t = setTimeout(startTime, 500);
+};
+
+const show = () => {
+  showAllEntries();
+};
+
 const logout = () => {
   localStorage.clear();
-  console.log('return =====> the localStorage.clear() executed');
   window.location = './index.html';
 };
 
 document.getElementById('logout-small').addEventListener('click', logout);
 document.getElementById('logout-big').addEventListener('click', logout);
-
 document.getElementById('entries').addEventListener('click', show);
