@@ -34,7 +34,6 @@ const fetchViewAllEntries = () => {
     .then((entries) => {
       if (entries.entries) {
         const groupedEntries = groupBy(entries.entries, 'date');
-        console.log('return groupedEntries =====>', groupedEntries);
         let userEntriesLength = 0;
         for (const key in groupedEntries) {
           if (groupedEntries.hasOwnProperty(key)) {
@@ -45,7 +44,7 @@ const fetchViewAllEntries = () => {
         localStorage.setItem('entries', JSON.stringify(groupedEntries));
         localStorage.setItem('entriesNumber', userEntriesLength);
       }
-    }).catch(err => console.log(err));
+    }).catch(err => err.message);
 };
 
 // gets list of entries from the localStorag
@@ -58,7 +57,6 @@ let list = '';
 
 const filterEntriesList = (filter = '', localEntryList) => {
   const filteredList = Object.keys(localEntryList).filter(entry => entry.indexOf(filter) > -1);
-  console.log('return filtered entries ======>', filteredList);
   const myObject = {};
   for (const key in filteredList) {
     myObject[filteredList[key]] = localEntryList[filteredList[key]];
@@ -101,7 +99,6 @@ const entryByDayList = (arg) => {
   let tempList = '';
   for (const key in arg) {
     if (arg) {
-      console.log(arg[key]["title"]);
       tempList += `<div class="card row">
       <div class="day">
           <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key]["title"]}","${arg[key]["content"]}")'>
@@ -198,7 +195,6 @@ const addNewEntry = (event) => {
         ul.appendChild(li);
         document.getElementById('title').innerText = '';
         document.getElementById('content').innerText = '';
-        console.log('working mode');
       }
     }).catch(err => err.message);
 };
@@ -293,15 +289,9 @@ const show = () => {
 
 const logout = () => {
   localStorage.clear();
-  console.log('return =====> the localStorage.clear() executed');
   window.location = './index.html';
 };
 
-const test = () => {
-  console.log('testing mode');
-}
-
 document.getElementById('logout-small').addEventListener('click', logout);
 document.getElementById('logout-big').addEventListener('click', logout);
-// document.getElementById('file-submit').addEventListener('click', test);
 document.getElementById('entries').addEventListener('click', show);
