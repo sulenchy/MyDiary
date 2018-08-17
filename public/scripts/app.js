@@ -113,7 +113,7 @@ const entryByDayList = (arg) => {
       <div class="row">
           <div class="buttons">
               <div class="container">
-                  <a href="">
+                  <a id="delete" href="#" onClick='addDeleteForm(${arg[key]["id"]})'>
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
@@ -241,7 +241,40 @@ const updateEntry = (id) => {
     }).catch(err => err.message);
 };
 
-const deleteEntry = () => '<div> <h1>Delete an entry</h1></div>';
+const deleteEntry = (id) => {
+  // event.preventDefault();
+  document.getElementById('add_new_error').innerHTML = '';
+  const entryId = id;
+  token = localStorage.getItem('token');
+  deleteEntryUrl = `${entryUrl}/${entryId}`;
+  fetch(deleteEntryUrl, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Token: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 406) {
+        document.getElementById('add_new_error').innerHTML = 'An error has occured';
+      }
+      return response.json();
+    })
+    .then((entry) => {
+      if (entry.data.errors) {
+        Object.keys(entry.data.errors).forEach((key) => {
+          const ul = document.getElementById('add_new_error');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(entry.data.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        
+      }
+    }).catch(err => err.message);
+};
+
 const addNewForm = () => {
   const form = `<form>
   <div class="imgcontainer">
@@ -283,6 +316,20 @@ document.getElementById('modalBox').style.display = 'block';
 document.getElementById('title').value = localTitle;
 document.getElementById('content').value = content;
 };
+
+const addDeleteForm = (id) => {
+  const form = `<form>
+  <ul id='add_new_error' class="text-red"></ul>
+  <div class="input-container">
+  <h2>Are you sure?</h2>
+  </div>
+  <button type="submit" class="btn" id="file-submit" onClick="deleteEntry(${id});">Yes</button>
+  <button type="submit" class="btn" id="file-submit" onclick="document.getElementById('modalBox').style.display='none'">No</button>
+</form>`;
+document.getElementById('modal-app').innerHTML = '';
+document.getElementById('modal-app').innerHTML = form;
+document.getElementById('modalBox').style.display = 'block';
+}
 
 
 
