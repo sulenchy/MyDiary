@@ -270,7 +270,7 @@ const deleteEntry = (id) => {
           ul.appendChild(li);
         });
       } else {
-        console.log('Deletion succeeded');
+        
       }
     }).catch(err => err.message);
 };
