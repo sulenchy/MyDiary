@@ -1,6 +1,6 @@
 // Declaration and initialization of global variable
 let token = '';
-const entryUrl = 'http://localhost:8081/api/v1/entries';
+let entryUrl = 'http://localhost:8081/api/v1/entries';
 const entriesNumber = 0;
 const entryGroup = {};
 let entriesList = '';
@@ -118,7 +118,7 @@ const entryByDayList = (arg) => {
                   </a>
               </div>
               <div class="container">
-                  <a href="">
+                  <a id="edit" href="#" onClick='addUpdateForm(${arg[key]["id"]},"${arg[key]["title"]}","${arg[key]["content"]}")'>
                       <i class="fa fa-edit"></i>
                   </a>
               </div>
@@ -132,8 +132,6 @@ const entryByDayList = (arg) => {
 };
 
 entryByDateList(filterEntriesList('', entriesList));
-
-// if (url === 'http://localhost:8081/client/landing-page.html#entries-by-time') { entryByDayList(filterDayEntriesByTitle('', entriesList[selectedDate])); }
 
 // filter entries
 const searchValue = () => {
@@ -175,8 +173,8 @@ const addNewEntry = (event) => {
     }),
   })
     .then((response) => {
-      if (response.status === 409) {
-        document.getElementById('add_new_error').innerHTML = 'Email already exists';
+      if (response.status === 406) {
+        document.getElementById('add_new_error').innerHTML = 'An Error ann occurred';
       }
       return response.json();
     })
@@ -199,7 +197,50 @@ const addNewEntry = (event) => {
     }).catch(err => err.message);
 };
 
-const editEntry = () => '<div> <h1>Modifies an entry</h1></div>';
+const updateEntry = (id) => {
+  // event.preventDefault();
+  document.getElementById('add_new_error').innerHTML = '';
+  const entryId = id;
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  token = localStorage.getItem('token');
+  updateEntryUrl = `${entryUrl}/${entryId}`;
+  fetch(updateEntryUrl, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Token: token,
+    },
+    body: JSON.stringify({
+      title, content,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 406) {
+        document.getElementById('add_new_error').innerHTML = 'An error has occured';
+      }
+      return response.json();
+    })
+    .then((entry) => {
+      if (entry.data.errors) {
+        Object.keys(entry.data.errors).forEach((key) => {
+          const ul = document.getElementById('add_new_error');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(entry.data.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        const ul = document.getElementById('add_new_error');
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode('An entry has been updated successfully'));
+        ul.appendChild(li);
+        document.getElementById('title').innerText = '';
+        document.getElementById('content').innerText = '';
+      }
+    }).catch(err => err.message);
+};
+
 const deleteEntry = () => '<div> <h1>Delete an entry</h1></div>';
 const addNewForm = () => {
   const form = `<form>
@@ -221,6 +262,28 @@ document.getElementById('modal-app').innerHTML = form;
 document.getElementById('modalBox').style.display = 'block';
 };
 
+const addUpdateForm = (id, localTitle, content) => {
+  const form = `<form>
+  <div class="imgcontainer">
+  <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <h2>Edit Entry</h2>
+  </div>
+  <ul id='add_new_error' class="text-red"></ul>
+  <div class="input-container">
+  <input class="input-field" id="title" type="text" placeholder="Entry Title">
+  </div>
+  <div class="input-container">
+  <textarea rows="4" class="input-field" id="content" placeholder="Entry content"></textarea>
+  </div>
+  <button type="submit" class="btn" id="file-submit" onClick="updateEntry(${id});">Ok</button>
+</form>`;
+document.getElementById('modal-app').innerHTML = '';
+document.getElementById('modal-app').innerHTML = form;
+document.getElementById('modalBox').style.display = 'block';
+document.getElementById('title').value = localTitle;
+document.getElementById('content').value = content;
+};
+
 
 
 const readEntry = (localTitle, content) => {
@@ -233,6 +296,7 @@ const readEntry = (localTitle, content) => {
   document.getElementById('modal-app').innerHTML = form;
   document.getElementById('modalBox').style.display = 'block';
 };
+
 
 const showModalBox = () => {
   document.getElementById('modalBox').style.display = 'block';
