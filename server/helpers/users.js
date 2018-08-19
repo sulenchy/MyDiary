@@ -47,4 +47,19 @@ export default class UsersHelper {
       }
     });
   }
+
+  static updateUser(fullname, email, password, gender, passportUrl, notification, passwordRestStatus) {
+    const hashedPassword = (passwordRestStatus) ? bcrypt.hashSync(`${password}`, 10) : password;
+    const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', password = '${hashedPassword}',gender = '${gender}'), passporturl = '${passportUrl}, notification = '${notification} RETURNING *;`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, user profile cannot be updated',
+        }));
+      }
+    });
+  }
 }

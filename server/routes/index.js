@@ -21,6 +21,7 @@ router.delete('/entries/:id', authenticatedUserLogin.authenticateUser, entriesCo
 router.put('/entries/:id', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.updateEntry);
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
+router.put('/auth/user/:id', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.updateUser);
 router.post('/auth/login', usersController.loginUser);
 
 

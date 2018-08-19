@@ -92,4 +92,31 @@ export default class UsersController {
           });
       });
   }
+
+
+  static updateUser(req, res) {
+    const {
+      fullname, password, gender, notification, passwordResetStatus,
+    } = req.body;
+    const email = req.body.email.toLowerCase();
+    usersHelper.signupUser(fullname, email, password, gender, notification, passwordResetStatus)
+      .then(user => res.status(200).json({
+        user: {
+          id: user.rows[0].id,
+          fullname,
+          email,
+          gender,
+          notification: user.rows[0].notification,
+          role: user.rows[0].role,
+          token: createToken(user.rows[0].id),
+        },
+        message: 'User profile updated successfully',
+      }))
+      .catch(err => res.status(500)
+        .json({
+          error: {
+            message: err.message,
+          },
+        }));
+  }
 }
