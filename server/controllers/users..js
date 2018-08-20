@@ -96,19 +96,20 @@ export default class UsersController {
 
   static updateUser(req, res) {
     const {
-      fullname, password, gender, notification, passwordResetStatus,
+      fullname, gender, passportUrl, notification,
     } = req.body;
     const email = req.body.email.toLowerCase();
-    usersHelper.signupUser(fullname, email, password, gender, notification, passwordResetStatus)
+    const userid = req.token.user;
+    usersHelper.updateUser(userid, fullname, email, gender, passportUrl, notification)
       .then(user => res.status(200).json({
         user: {
           id: user.rows[0].id,
-          fullname,
-          email,
-          gender,
+          fullname: user.rows[0].fullname,
+          email: user.rows[0].email,
+          gender: user.rows[0].gender,
+          passportUrl: user.rows[0].passportUrl,
           notification: user.rows[0].notification,
           role: user.rows[0].role,
-          token: createToken(user.rows[0].id),
         },
         message: 'User profile updated successfully',
       }))

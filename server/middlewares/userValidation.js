@@ -39,4 +39,28 @@ export default class ValidateUser {
       errors: validations.errors.all(),
     });
   }
+
+  static validateUpdateInput(req, res, next) {
+    const {
+      email, fullname, gender,
+    } = req.body;
+    const data = {
+      email, fullname, gender,
+    };
+    const rules = {
+      fullname: ['required', 'regex:/^[a-z\\d\\-_,.*()!\\s]+$/i', 'min:3', 'max:20', 'string'],
+      email: 'required|email|string',
+      gender: 'required|min:4|max:6|string',
+    };
+    const validations = new Validate(data, rules, {
+      'min.fullname': 'The :attribute must not be less than 3 characters.',
+      'max.fullname': 'The :attribute must not be greater than 20 characters.',
+    });
+    if (validations.passes()) {
+      return next();
+    }
+    return res.status(406).json({
+      errors: validations.errors.all(),
+    });
+  }
 }

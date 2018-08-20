@@ -48,9 +48,8 @@ export default class UsersHelper {
     });
   }
 
-  static updateUser(fullname, email, password, gender, passportUrl, notification, passwordRestStatus) {
-    const hashedPassword = (passwordRestStatus) ? bcrypt.hashSync(`${password}`, 10) : password;
-    const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', password = '${hashedPassword}',gender = '${gender}'), passporturl = '${passportUrl}, notification = '${notification} RETURNING *;`;
+  static updateUser(userid, fullname, email, gender, passportUrl, notification) {
+    const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', gender = '${gender}', passporturl = '${passportUrl}', notification = '${notification}' WHERE id = ${userid}  RETURNING *;`;
     return new Promise((resolve, reject) => {
       const data = client.query(user);
       if (data) {
