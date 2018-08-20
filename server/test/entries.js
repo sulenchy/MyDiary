@@ -49,7 +49,7 @@ describe('Diary Entries', () => {
           validToken = res.body.user.token;
           done();
         });
-    });    
+    });
     it('Authorised user should be able to GET all diary entries', (done) => {
       chai.request(app)
         .get(`${entriesUrl}`)
