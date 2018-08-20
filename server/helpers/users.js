@@ -34,6 +34,13 @@ export default class UsersHelper {
     });
   }
 
+  /**
+   * @description get  a user
+   *
+   * @param {*} id
+   *
+   * @memberOf UsersHelper Class
+   */
   static getUserById(id) {
     const user = `SELECT * FROM users where id = '${id}';`;
     return new Promise((resolve, reject) => {
@@ -47,6 +54,7 @@ export default class UsersHelper {
       }
     });
   }
+
 
   static updateUser(userid, fullname, email, gender, passportUrl, notification) {
     const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', gender = '${gender}', passporturl = '${passportUrl}', notification = '${notification}' WHERE id = ${userid}  RETURNING *;`;

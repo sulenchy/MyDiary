@@ -22,6 +22,7 @@ router.put('/entries/:id', authenticatedUserLogin.authenticateUser, validateEntr
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
 router.put('/user', authenticatedUserLogin.authenticateUser, validateUser.validateUpdateInput, usersController.updateUser);
+router.get('/user', authenticatedUserLogin.authenticateUser, usersController.getUser);
 router.post('/auth/login', usersController.loginUser);
 
 

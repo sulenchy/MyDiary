@@ -331,8 +331,6 @@ document.getElementById('modal-app').innerHTML = form;
 document.getElementById('modalBox').style.display = 'block';
 }
 
-
-
 const readEntry = (localTitle, content) => {
   const form = `<div class="imgcontainer">
   <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
@@ -349,7 +347,9 @@ const showModalBox = () => {
   document.getElementById('modalBox').style.display = 'block';
 };
 
-const userProfile = () => '<div> <h1>Shows the profile of the user</h1></div>';
+const userProfile = () => {
+  const page = ``;
+};
 
 const showAllEntries = () => {
   fetchViewAllEntries();
