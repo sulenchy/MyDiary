@@ -93,7 +93,46 @@ export default class UsersController {
       });
   }
 
+  /**
+   * @description get a user
+   *
+   * @param {*} req
+   * @param {*} res
+   *
+   * @memberOf UsersController Class
+   */
+  static getUser(req, res) {
+    const userid = req.token.user;
+    usersHelper.getUserById(userid)
+      .then((user) => {
+        if (user.rowCount === 0) {
+          return res.status(404).json({
+            message: 'Sorry, an error has occurred. Pls, try again.',
+          });
+        }
+        return res.status(200).json({
+          user: user.rows,
+          message: 'User details gotten successfully',
+        });
+      })
+      .catch(() => {
+        res.status(500)
+          .json({
+            error: {
+              message: 'Sorry, an error occurred',
+            },
+          });
+      });
+  }
 
+  /**
+   * @description update user profile
+   *
+   * @param {*} req
+   * @param {*} res
+   *
+   * @memberOf UsersController Class
+   */
   static updateUser(req, res) {
     const {
       fullname, gender, passportUrl, notification,

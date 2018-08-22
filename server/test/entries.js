@@ -182,7 +182,7 @@ describe('Diary Entries', () => {
           done();
         });
     });
-    it('Should modify existing user profile', (done) => {
+    it('Should not post on /api/v1/user', (done) => {
       chai.request(app)
         .post(`${updateUserUrl}`)
         .set('token', validToken)
@@ -192,6 +192,39 @@ describe('Diary Entries', () => {
           gender: 'female',
           notification: false,
         })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal(undefined);
+          done();
+        });
+    });
+    it('Should get user details', (done) => {
+      chai.request(app)
+        .get(`${updateUserUrl}`)
+        .set('token', validToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User details gotten successfully');
+          done();
+        });
+    });
+    it('Should get user details', (done) => {
+      chai.request(app)
+        .get(`${updateUserUrl}`)
+        .set('token', invalidToken)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User is unauthorized');
+          done();
+        });
+    });
+    it('Should get user details', (done) => {
+      chai.request(app)
+        .delete(`${updateUserUrl}`)
+        .set('token', validToken)
         .end((err, res) => {
           expect(res).to.have.status(404);
           expect(res.body).to.be.an('object');
