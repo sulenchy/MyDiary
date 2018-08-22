@@ -11,6 +11,7 @@ const invalidToken = 'shgsgasfdhjdsfhjkh.hdfurnjdghgrsd.tefgsfdgfgsd';
 const entriesUrl = '/api/v1/entries';
 const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
+const updateUserUrl = '/api/v1/user';
 
 describe('Diary Entries', () => {
   describe('/api/v1/entries', () => {
@@ -178,6 +179,104 @@ describe('Diary Entries', () => {
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('token');
           validToken = res.body.data.token;
+          done();
+        });
+    });
+    it('Should modify existing user profile', (done) => {
+      chai.request(app)
+        .post(`${updateUserUrl}`)
+        .set('token', validToken)
+        .send({
+          fullname: 'Ngolo Kante',
+          email: 'ngolo@kante.com',
+          gender: 'female',
+          notification: false,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal(undefined);
+          done();
+        });
+    });
+    it('Should modify existing user profile', (done) => {
+      chai.request(app)
+        .put(`${updateUserUrl}`)
+        .set('token', validToken)
+        .send({
+          fullname: 'Ngolo Kante',
+          email: 'ngolo@kante.com',
+          gender: 'female',
+          notification: false,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User profile updated successfully');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user.notification).to.equal(false);
+          expect(res.body.user.passportUrl).to.equal(undefined);
+          done();
+        });
+    });
+    it('Should modify existing user profile', (done) => {
+      chai.request(app)
+        .put(`${updateUserUrl}`)
+        .set('token', validToken)
+        .send({
+          fullname: 'Ngolo Kante',
+          email: 'ngolo@kante.com',
+          gender: 'female',
+          passportUrl: 'ngolo.jpg',
+          notification: true,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User profile updated successfully');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user.notification).to.equal(true);
+          done();
+        });
+    });
+    it('Should modify existing user profile', (done) => {
+      chai.request(app)
+        .put(`${updateUserUrl}`)
+        .set('token', validToken)
+        .send({
+          fullname: 'Ngolo Messi',
+          email: 'ngolo@kante.com',
+          gender: 'male',
+          passportUrl: 'ngolo.jpg',
+          notification: true,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('User profile updated successfully');
+          expect(res.body).to.have.property('user');
+          expect(res.body.user.notification).to.equal(true);
+          expect(res.body.user.fullname).to.equal('Ngolo Messi');
+          expect(res.body.user.gender).to.equal('male');
+          done();
+        });
+    });
+    it('Should not modify existing user profile email is not provided', (done) => {
+      chai.request(app)
+        .put(`${updateUserUrl}`)
+        .set('token', validToken)
+        .send({
+          fullname: 'Ngolo Messi',
+          gender: 'male',
+          passportUrl: 'ngolo.jpg',
+          notification: true,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(406);
+          expect(res.body).to.be.an('object');
+          expect(res.body.errors).to.be.an('object');
+          expect(res.body.errors.email).to.be.an('array');
+          expect(res.body.errors.email[0]).to.equal('The email field is required.');
           done();
         });
     });

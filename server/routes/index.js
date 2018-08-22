@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   res.status(200)
-    .send('Welcome to my Diary');
+    .send('Welcome to MyDiary');
 });
 
 
@@ -21,6 +21,7 @@ router.delete('/entries/:id', authenticatedUserLogin.authenticateUser, entriesCo
 router.put('/entries/:id', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.updateEntry);
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
 router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
+router.put('/user', authenticatedUserLogin.authenticateUser, validateUser.validateUpdateInput, usersController.updateUser);
 router.post('/auth/login', usersController.loginUser);
 
 

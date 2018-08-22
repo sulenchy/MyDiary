@@ -11,8 +11,6 @@ dotenv.config();
 
 const app = express();
 
-
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));

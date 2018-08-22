@@ -47,4 +47,18 @@ export default class UsersHelper {
       }
     });
   }
+
+  static updateUser(userid, fullname, email, gender, passportUrl, notification) {
+    const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', gender = '${gender}', passporturl = '${passportUrl}', notification = '${notification}' WHERE id = ${userid}  RETURNING *;`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, user profile cannot be updated',
+        }));
+      }
+    });
+  }
 }
