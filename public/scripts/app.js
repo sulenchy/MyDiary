@@ -1,15 +1,20 @@
 // Declaration and initialization of global variable
 let token = '';
-let entryUrl = 'http://localhost:8081/api/v1/entries';
+const entryUrl = 'http://localhost:8081/api/v1/entries';
+const userUrl = 'http://localhost:8081/api/v1/user';
+const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
+const loginUrl = 'http://localhost:8081/api/v1/auth/login';
+const url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
+let userDetails = {};
 const entriesNumber = 0;
 const entryGroup = {};
 let entriesList = '';
 let title = 'Entries in Days';
 let selectedDate = '';
-let url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
 
 let state = false;
 
+// groups entry by date
 const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
   const key = obj[property];
   if (!acc[key]) {
@@ -47,7 +52,60 @@ const fetchViewAllEntries = () => {
     }).catch(err => err.message);
 };
 
-// gets list of entries from the localStorag
+// loads the details of the logged in user
+const fetchUserDetails = () => {
+  token = localStorage.getItem('token');
+  fetch(userUrl, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Token: token,
+    },
+  })
+    .then(response => response.json())
+    .then((user) => {
+      localStorage.setItem('userDetails', JSON.stringify(user));
+    }).catch(err => err.message);
+};
+// uses fetch api to update the user details
+const updateUserDetails = (passportUrl, fullname, email, gender, notification) => {
+  fetch(userUrl, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Token: token,
+    },
+    body: JSON.stringify({
+      fullname, email, gender, passportUrl, notification,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 406) {
+        document.getElementById('add_new_error').innerHTML = 'An error has occured';
+      }
+      return response.json();
+    })
+    .then((user) => {
+      if (entry.data.errors) {
+        Object.keys(user.data.errors).forEach((key) => {
+          const ul = document.getElementById('update-error');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(entry.data.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        localStorage.setItem('userDetails', JSON.stringify(user));
+        const ul = document.getElementById('update-error');
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode('An entry has been updated successfully'));
+        ul.appendChild(li);
+      }
+    }).catch(err => err.message);
+};
+
+// gets list of entries from the localStorage
 if (localStorage.getItem('entries')) {
   entriesList = JSON.parse(localStorage.getItem('entries'));
 }
@@ -55,6 +113,7 @@ if (localStorage.getItem('entries')) {
 // contains the list of entries in DOM form
 let list = '';
 
+// filters group of entries by date
 const filterEntriesList = (filter = '', localEntryList) => {
   const filteredList = Object.keys(localEntryList).filter(entry => entry.indexOf(filter) > -1);
   const myObject = {};
@@ -64,6 +123,7 @@ const filterEntriesList = (filter = '', localEntryList) => {
   return myObject === undefined ? localEntryList : myObject;
 };
 
+// filters entries by title
 const filterDayEntriesByTitle = (filter = '', localEntryList) => {
   const filteredList = localEntryList.filter(entry => entry.title.indexOf(filter) > -1);
   return filteredList;
@@ -95,30 +155,33 @@ const entryByDateList = (arg) => {
   return list;
 };
 
+/**
+ * organises a list of entries in DOM
+ */
 const entryByDayList = (arg) => {
   let tempList = '';
   for (const key in arg) {
     if (arg) {
       tempList += `<div class="card row">
       <div class="day">
-          <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key]["title"]}","${arg[key]["content"]}")'>
+          <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
               <h2>${arg[key].created.split('T')[1].split('.')[0]}</h2>
           </a>
       </div>
       <div class="entry">
-          <a id="title-${arg[key].id}" href="#" onclick='readEntry("${arg[key]["title"]}","${arg[key]["content"]}")'>
+          <a id="title-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
               <h2>${arg[key].title}</h2>
           </a>
       </div>
       <div class="row">
           <div class="buttons">
               <div class="container">
-                  <a id="delete" href="#" onClick='addDeleteForm(${arg[key]["id"]})'>
+                  <a id="delete" href="#" onClick='addDeleteForm(${arg[key].id})'>
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
               <div class="container">
-                  <a id="edit" href="#" onClick='addUpdateForm(${arg[key]["id"]},"${arg[key]["title"]}","${arg[key]["content"]}")'>
+                  <a id="edit" href="#" onClick='addUpdateForm(${arg[key].id},"${arg[key].title}","${arg[key].content}")'>
                       <i class="fa fa-edit"></i>
                   </a>
               </div>
@@ -131,7 +194,91 @@ const entryByDayList = (arg) => {
   return list;
 };
 
+
 entryByDateList(filterEntriesList('', entriesList));
+
+
+// creates new user
+const register = (event) => {
+  event.preventDefault();
+  document.getElementById('errors').innerHTML = '';
+
+  const fullname = document.getElementById('fullname').value;
+  const email = document.getElementById('email').value;
+  const gender = document.getElementById('gender').value;
+  const password = document.getElementById('password').value;
+  const retypePassword = document.getElementById('retypePassword').value;
+
+  if (password !== retypePassword) {
+    document.getElementById('errors').innerHTML = '<li>Password mismatch. Please, re-enter the password</li>';
+  }
+
+  fetch(registerUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      fullname, email, password, gender,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 409) {
+        document.getElementById('error').innerHTML = 'Email already exists';
+      }
+      return response.json();
+    })
+    .then((user) => {
+      if (user.errors) {
+        Object.keys(user.errors).forEach((key) => {
+          const ul = document.getElementById('errors');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(user.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        // localStorage.setItem('token', user.user.token);
+        alert(`Congratulation to you, ${fullname}. You have successfully created your account. Enjoy your Diary on the go.....`);
+      }
+    }).catch(err => err.message);
+};
+
+// login an existing user
+const login = (event) => {
+  event.preventDefault();
+  document.getElementById('errors_login').innerHTML = '';
+
+  const email = document.getElementById('emailL').value;
+  const password = document.getElementById('passwordL').value;
+
+  fetch(loginUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email, password,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        document.getElementById('errors_login').innerHTML = 'Username or password is incorrect';
+      }
+      return response.json();
+    })
+    .then((user) => {
+      if (user.data.errors) {
+        Object.keys(user.data.errors).forEach((key) => {
+          const ul = document.getElementById('errors_login');
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(user.data.errors[key]));
+          ul.appendChild(li);
+        });
+      } else {
+        localStorage.setItem('token', user.data.token);
+        fetchUserDetails();
+        document.location = './landing-page.html';
+      }
+    }).catch(err => err.message);
+};
 
 // filter entries
 const searchValue = () => {
@@ -242,7 +389,6 @@ const updateEntry = (id) => {
 };
 
 const deleteEntry = (id) => {
-  // event.preventDefault();
   document.getElementById('add_new_error').innerHTML = '';
   const entryId = id;
   token = localStorage.getItem('token');
@@ -270,7 +416,7 @@ const deleteEntry = (id) => {
           ul.appendChild(li);
         });
       } else {
-        
+
       }
     }).catch(err => err.message);
 };
@@ -290,9 +436,9 @@ const addNewForm = () => {
   </div>
   <button type="submit" class="btn" id="file-submit" onClick="addNewEntry();">Save</button>
 </form>`;
-document.getElementById('modal-app').innerHTML = '';
-document.getElementById('modal-app').innerHTML = form;
-document.getElementById('modalBox').style.display = 'block';
+  document.getElementById('modal-app').innerHTML = '';
+  document.getElementById('modal-app').innerHTML = form;
+  document.getElementById('modalBox').style.display = 'block';
 };
 
 const addUpdateForm = (id, localTitle, content) => {
@@ -310,11 +456,11 @@ const addUpdateForm = (id, localTitle, content) => {
   </div>
   <button type="submit" class="btn" id="file-submit" onClick="updateEntry(${id});">Ok</button>
 </form>`;
-document.getElementById('modal-app').innerHTML = '';
-document.getElementById('modal-app').innerHTML = form;
-document.getElementById('modalBox').style.display = 'block';
-document.getElementById('title').value = localTitle;
-document.getElementById('content').value = content;
+  document.getElementById('modal-app').innerHTML = '';
+  document.getElementById('modal-app').innerHTML = form;
+  document.getElementById('modalBox').style.display = 'block';
+  document.getElementById('title').value = localTitle;
+  document.getElementById('content').value = content;
 };
 
 const addDeleteForm = (id) => {
@@ -326,10 +472,10 @@ const addDeleteForm = (id) => {
   <button type="submit" class="btn" id="file-submit" onClick="deleteEntry(${id});">Yes</button>
   <button type="submit" class="btn" id="file-submit" onclick="document.getElementById('modalBox').style.display='none'">No</button>
 </form>`;
-document.getElementById('modal-app').innerHTML = '';
-document.getElementById('modal-app').innerHTML = form;
-document.getElementById('modalBox').style.display = 'block';
-}
+  document.getElementById('modal-app').innerHTML = '';
+  document.getElementById('modal-app').innerHTML = form;
+  document.getElementById('modalBox').style.display = 'block';
+};
 
 const readEntry = (localTitle, content) => {
   const form = `<div class="imgcontainer">
@@ -342,13 +488,59 @@ const readEntry = (localTitle, content) => {
   document.getElementById('modalBox').style.display = 'block';
 };
 
-
 const showModalBox = () => {
   document.getElementById('modalBox').style.display = 'block';
 };
 
 const userProfile = () => {
-  const page = ``;
+  const page = `<div id="dashboard" class="container">
+  <div class="card-dash col-1-3">
+      <h2>Total entry</h2>
+      <h2>${localStorage.getItem('entriesNumber')}</h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2>Add New</h2>
+      <h2>
+          <i class="fas fa-plus-circle" id="add-new" onclick="addNewForm();"></i>
+      </h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2 id="txt"></h2>
+  </div>
+</div>
+<div class="container">
+  <h2>User Profile</h2>
+  <div class="row container">
+      <form name="userprofile" class="userprofile">
+          <ul id="update-error"></ul>
+          <label for="fullname">Full name</label>
+          <input type="text" id="fullname" name="fullname"  value=${userDetails.user[0].fullname} disabled placeholder="Full name">
+
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" value=${userDetails.user[0].email} disabled placeholder="email">
+      
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" class="input-field" disabled>
+            ${userDetails.user[0].gender === 'male'
+    ? '<option value="male" selected>male</option>'
+    : '<option value="female" selected>female</option>'}
+    <option value="female">female</option>
+    <option value="male">male</option>
+          </select>
+          <label for="notification">Notification</label>
+          <select id="notification" name="notify" class="input-field" disabled>
+          ${userDetails.user[0].notification === false
+    ? `<option value=${false} selected>false</option>`
+    : `<option value=${true} selected>true</option>`}
+    <option value="false">false</option>
+    <option value="true">true</option>
+          </select>
+
+          <input type="submit" id="editBtn" class="btn" value="Edit" onclick="enableInput();">
+      </form>
+  </div>
+  </div>`;
+  document.getElementById('app').innerHTML = page;
 };
 
 const showAllEntries = () => {
@@ -395,7 +587,30 @@ const showAllEntries = () => {
 };
 
 const show = () => {
+  fetchUserDetails();
+  userDetails = JSON.parse(localStorage.getItem('userDetails'));
+  document.getElementById('username').innerText = userDetails.user[0].fullname;
   showAllEntries();
+};
+
+// enables the user profile input boxes
+const enableInput = () => {
+  document.userprofile.fullname.disabled = !document.userprofile.fullname.disabled;
+  document.userprofile.email.disabled = !document.userprofile.email.disabled;
+  document.userprofile.gender.disabled = !document.userprofile.gender.disabled;
+  document.userprofile.notify.disabled = !document.userprofile.notify.disabled;
+  const editBtn = document.getElementById('editBtn');
+  if (editBtn.value === 'Edit') {
+    editBtn.value = 'Save';
+  } else {
+    const fullname = document.userprofile.fullname.value;
+    const passport = `${fullname}.jpg`;
+    const email = document.userprofile.email.value;
+    const gender = document.userprofile.gender.value;
+    const notification = document.userprofile.notification.value;
+    updateUserDetails(passport, fullname, email, gender, notification);
+    editBtn.value = 'Edit';
+  }
 };
 
 const logout = () => {
@@ -403,6 +618,10 @@ const logout = () => {
   window.location = './index.html';
 };
 
-document.getElementById('logout-small').addEventListener('click', logout);
-document.getElementById('logout-big').addEventListener('click', logout);
-document.getElementById('entries').addEventListener('click', show);
+if(document.getElementById('file-select')) { document.getElementById('file-select').addEventListener('change', handleFileUploadChange);}
+if(document.getElementById('file-submit')){document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit);}
+if (document.getElementById('login')) { document.getElementById('login').addEventListener('click', login); }
+if (document.getElementById('register')) { document.getElementById('register').addEventListener('click', register); }
+if (document.getElementById('logout-small')) { document.getElementById('logout-small').addEventListener('click', logout); }
+if (document.getElementById('logout-big')) { document.getElementById('logout-big').addEventListener('click', logout); }
+if (document.getElementById('entries')) { document.getElementById('entries').addEventListener('click', show); }
