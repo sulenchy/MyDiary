@@ -13,6 +13,8 @@
     <script>        
         if(localStorage.getItem('token') === null)
             window.location = './index.html';
+        console.log(JSON.parse(localStorage.getItem('userDetails')).user['0'].passporturl);
+        
     </script>
 </head>
 
@@ -21,7 +23,7 @@
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             
-            <a href="" id="profile-pic"><img class="img-center" src="https://goo.gl/3kCKeD" alt="Avatar"></a>
+            <a href="#" id="profile-pic"><img class="img-center" id="img-element" alt="Avatar"></a>
             
             <a id="username" href=""></a>
             <hr>
@@ -68,6 +70,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/main.js"></script>
+    <script>
+        let image = document.getElementById('img-element');
+        image.src = JSON.parse(localStorage.getItem('userDetails')).user['0'].passporturl;
+    </script>
 </body>
-
 </html>
