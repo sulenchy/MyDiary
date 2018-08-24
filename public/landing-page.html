@@ -13,8 +13,6 @@
     <script>        
         if(localStorage.getItem('token') === null)
             window.location = './index.html';
-        console.log(JSON.parse(localStorage.getItem('userDetails')).user['0'].passporturl);
-        
     </script>
 </head>
 
@@ -67,6 +65,8 @@
             </div>
         </div>
     </div>  
+    let image = document.getElementById('img-element');
+        image.src =JSON.parse(localStorage.getItem('userDetails')).user['0'].passporturl;
     <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/main.js"></script>
