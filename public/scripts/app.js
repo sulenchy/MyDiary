@@ -543,6 +543,100 @@ const userProfile = () => {
   document.getElementById('app').innerHTML = page;
 };
 
+const uploadProfilePic = () => {
+  const page = `<div id="dashboard" class="container">
+  <div class="card-dash col-1-3">
+      <h2>Total entry</h2>
+      <h2>${localStorage.getItem('entriesNumber')}</h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2>Add New</h2>
+      <h2>
+          <i class="fas fa-plus-circle" id="add-new" onclick="addNewForm();"></i>
+      </h2>
+  </div>
+  <div class="card-dash col-1-3">
+      <h2 id="txt"></h2>
+  </div>
+</div>
+<div class="container">
+<h2>Upload Profile Picture</h2>
+  <div id="filesubmit">
+        <em id="upload-progress"></em>
+        <input type="file" id="file-select" accept="image/*" />
+        <button id="file-submit" onClick="handleFileUploadSubmit(this);" class="btn">Submit</button>
+    </div>
+</div>`;
+  document.getElementById('app').innerHTML = page;
+  if (document.getElementById('file-select')) { document.getElementById('file-select').addEventListener('change', handleFileUploadChange); }
+};
+
+
+// Initialize Firebase
+const config = {
+  apiKey: 'AIzaSyAyKuao7my_KGIEKp5CeShqB0lfWX9B9uA',
+  authDomain: 'mydiary-8ec5a.firebaseapp.com',
+  databaseURL: 'https://mydiary-8ec5a.firebaseio.com',
+  projectId: 'mydiary-8ec5a',
+  storageBucket: 'mydiary-8ec5a.appspot.com',
+  messagingSenderId: '383367820588',
+};
+firebase.initializeApp(config);
+const storageService = firebase.storage();
+const storageRef = storageService.ref();
+
+
+let selectedFile;
+
+const handleFileUploadChange = (e) => {
+  selectedFile = e.target.files[0];
+};
+const handleFileUploadSubmit = () => {
+  const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile); // create a child directory called images, and place the file inside this directory
+  // Listen for state changes, errors, and completion of the upload.
+  uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+    (snapshot) => {
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      document.getElementById('upload-progress').innerText = `Upload is ${progress}% done`;
+      switch (snapshot.state) {
+        case firebase.storage.TaskState.PAUSED: // or 'paused'
+        document.getElementById('upload-progress').innerText = 'Upload is paused';
+          break;
+        case firebase.storage.TaskState.RUNNING: // or 'running'
+        document.getElementById('upload-progress').innerText = 'Upload is running';
+          break;
+      }
+    }, (error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/unauthorized':
+        document.getElementById('upload-progress').innerText = `User doesn't have permission to access the object`;
+          break;
+
+        case 'storage/canceled':
+        document.getElementById('upload-progress').innerText = `User canceled the upload`;
+          break;
+
+        case 'storage/unknown':
+        document.getElementById('upload-progress').innerText = `Unknown error occurred, inspect error.serverResponse`;
+          break;
+      }
+    }, () => {
+      // Upload completed successfully, now we can get the download URL
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        updateUserDetails(downloadURL, userDetails.user[0].fullname, userDetails.user[0].email, userDetails.user[0].gender, userDetails.user[0].notification);
+        document.getElementById('upload-progress').innerText = `Hurray, upload completed`;
+      });
+    });
+};
+
+// if (document.getElementById('file-ubmit'))
+//   document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit);
+document.getElementById('profile-pic').addEventListener('click', uploadProfilePic);
+
+
 const showAllEntries = () => {
   fetchViewAllEntries();
   const allEntries = `<div id="dashboard" class="container">
@@ -604,7 +698,7 @@ const enableInput = () => {
     editBtn.value = 'Save';
   } else {
     const fullname = document.userprofile.fullname.value;
-    const passport = `${fullname}.jpg`;
+    const passport = userDetails.user[0].passportUrl;
     const email = document.userprofile.email.value;
     const gender = document.userprofile.gender.value;
     const notification = document.userprofile.notification.value;
@@ -618,8 +712,8 @@ const logout = () => {
   window.location = './index.html';
 };
 
-if(document.getElementById('file-select')) { document.getElementById('file-select').addEventListener('change', handleFileUploadChange);}
-if(document.getElementById('file-submit')){document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit);}
+if (document.getElementById('file-select')) { document.getElementById('file-select').addEventListener('change', handleFileUploadChange); }
+if (document.getElementById('file-submit')) { document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit); }
 if (document.getElementById('login')) { document.getElementById('login').addEventListener('click', login); }
 if (document.getElementById('register')) { document.getElementById('register').addEventListener('click', register); }
 if (document.getElementById('logout-small')) { document.getElementById('logout-small').addEventListener('click', logout); }
