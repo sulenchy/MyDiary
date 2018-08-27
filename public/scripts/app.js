@@ -4,11 +4,8 @@ const entryUrl = 'http://localhost:8081/api/v1/entries';
 const userUrl = 'http://localhost:8081/api/v1/user';
 const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
 const loginUrl = 'http://localhost:8081/api/v1/auth/login';
-// const url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
 let userDetails = {};
-// const entriesNumber = 0;
-// const entryGroup = {};
-let entriesList = '';
+let entryListTotalPageNumber = 1;
 let title = 'Entries in Days';
 let selectedDate = '';
 
@@ -135,12 +132,11 @@ const filterDayEntriesByTitle = (filter = '', localEntryList) => {
 const entryByDateList = (arg) => {
   let tempList = '';
   for (const key in arg) {
-    console.log(entriesList);
     if (entriesList.hasOwnProperty(key)) {
       const keyLength = entriesList[key].length;
       const id = key;
       const entryVal = (keyLength === 1) ? ' entry' : ' entries';
-      tempList += `<a href="#"  id="${id}" class="entrygroup" onclick='viewEntry("${id}")'>
+      tempList += `<a href="#"  id="${id}" class="entrygroup" onclick='viewEntry("${id}",1)'>
        <div class="card row-entry">
            <div class="day">
                <h2>${key}</h2>
@@ -161,42 +157,48 @@ const entryByDateList = (arg) => {
  */
 const entryByDayList = (arg) => {
   let tempList = '';
-  for (const key in arg) {
-    if (arg) {
+  let paginationBtn = '';
+  for (const key in arg.data) {
+    myKey = key;
+    if (arg.data) {
+      
       tempList += `<div class="card row">
       <div class="day">
-          <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
-              <h2>${arg[key].created.split('T')[1].split('.')[0]}</h2>
+          <a id="time-${arg.data[key].id}" href="#" onclick='readEntry("${arg.data[key].title}","${arg.data[key].content}")'>
+              <h2>${arg.data[key].created.split('T')[1].split('.')[0]}</h2>
           </a>
       </div>
       <div class="entry">
-          <a id="title-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
-              <h2>${arg[key].title}</h2>
+          <a id="title-${arg.data[key].id}" href="#" onclick='readEntry("${arg.data[key].title}","${arg.data[key].content}")'>
+              <h2>${arg.data[key].title}</h2>
           </a>
       </div>
       <div class="row">
           <div class="buttons">
               <div class="container">
-                  <a id="delete" href="#" onClick='addDeleteForm(${arg[key].id})'>
+                  <a id="delete" href="#" onClick='addDeleteForm(${arg.data[key].id})'>
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
               <div class="container">
-                  <a id="edit" href="#" onClick='addUpdateForm(${arg[key].id},"${arg[key].title}","${arg[key].content}")'>
+                  <a id="edit" href="#" onClick='addUpdateForm(${arg.data[key].id},"${arg.data[key].title}","${arg.data[key].content}")'>
                       <i class="fa fa-edit"></i>
                   </a>
               </div>
           </div>
       </div>
-  </div>`;
+  </div>
+  <br>`;
     }
+  } 
+  for(let pageBtn = 1; pageBtn <= entryListTotalPageNumber; pageBtn++) {
+    paginationBtn += `
+    <a id=${pageBtn} href="#" class="pagination" onClick='viewEntry("${selectedDate}", ${pageBtn})'>${pageBtn}</a>`;
   }
-  list = tempList;
+  
+  list = tempList + paginationBtn;
   return list;
 };
-
-
-entryByDateList(filterEntriesList('', entriesList));
 
 
 // creates new user
@@ -275,6 +277,27 @@ const login = (event) => {
     .catch(err => err.message);
 };
 
+const Paginator = (items, page, per_page) => {
+ 
+  var page = page || 1,
+  per_page = per_page || 3,
+  offset = (page - 1) * per_page,
+ 
+  paginatedItems = items.slice(offset).slice(0, per_page),
+  total_pages = Math.ceil(items.length / per_page);
+  entryListTotalPageNumber = total_pages;
+  return {
+  page: page,
+  per_page: per_page,
+  pre_page: page - 1 ? page - 1 : null,
+  next_page: (total_pages > page) ? page + 1 : null,
+  total: items.length,
+  total_pages: total_pages,
+  data: paginatedItems
+  };
+}
+
+entryByDateList(filterEntriesList('', entriesList));
 // filter entries
 const searchValue = () => {
   const val = document.getElementById('search').value;
@@ -286,20 +309,7 @@ const searchValue = () => {
   show();
 };
 
-// view an entry
-const viewEntry = (id) => {
-  selectedDate = id;
-  state = true;
-  url = 'http://localhost:8081/client/landing-page.html#entries-by-time';
-  title = `Entries on ${id}`;
-  entryByDayList(entriesList[id]);
-  show();
-  return list;
-};
-
-const addNewEntry = (event) => {
-  // event.preventDefault();
-  // document.getElementById('add_new_error').innerHTML = '';
+const addNewEntry = () => {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   token = localStorage.getItem('token');
@@ -650,12 +660,6 @@ const showAllEntries = () => {
   <input type="text" class="input-field" id="search" placeholder="Search" name="search" onchange="searchValue()">
   
   ${list}
-
-  <div class="row text-center push-down">
-      <a href="#" class="btn">
-        View more
-      </a>
-  </div>
 </div>`;
   // initializes the app tag
   document.getElementById('app').innerHTML = allEntries;
@@ -676,6 +680,23 @@ const show = () => {
   userDetails = JSON.parse(localStorage.getItem('userDetails'));
   document.getElementById('username').innerText = userDetails.user[0].fullname;
   showAllEntries();
+};
+
+// view an entry
+const viewEntry = (id, pageNumber) => {
+  selectedDate = id;
+  state = true;
+  title = `Entries on ${id}`;
+  entryByDayList(Paginator(entriesList[id], pageNumber));
+  show();
+  document.getElementById(pageNumber).style.border = "4px solid";
+  return list;
+};
+
+
+const pageEntry = (id, pageNumber) => {
+  entryByDayList(Paginator(entriesList[id]).data, pageNumber);
+  show();
 };
 
 // enables the user profile input boxes
