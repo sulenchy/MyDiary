@@ -239,7 +239,7 @@ section#right {
      display: none; /* Hidden by default */
      position: fixed; /* Stay in place */
      z-index: 1; /* Sit on top */
-     left: 0;
+     left: 10;
      top: 0;
      width: 80%; /* Full width */
      height: 100%; /* Full height */
@@ -431,7 +431,8 @@ h2#txt {
     box-sizing: border-box; /* Make sure that padding and width stays in place */
     margin-top: 6px; /* Add a top margin */
     margin-bottom: 16px; /* Bottom margin */
-    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+    resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+    font-family: 'Courier New', Courier, monospace
 }
 
 /* Style the submit button with a specific background color etc */

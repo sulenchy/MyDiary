@@ -4,10 +4,10 @@ const entryUrl = 'http://localhost:8081/api/v1/entries';
 const userUrl = 'http://localhost:8081/api/v1/user';
 const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
 const loginUrl = 'http://localhost:8081/api/v1/auth/login';
-const url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
+// const url = 'http://localhost:8081/client/landing-page.html#entries-by-date';
 let userDetails = {};
-const entriesNumber = 0;
-const entryGroup = {};
+// const entriesNumber = 0;
+// const entryGroup = {};
 let entriesList = '';
 let title = 'Entries in Days';
 let selectedDate = '';
@@ -135,6 +135,7 @@ const filterDayEntriesByTitle = (filter = '', localEntryList) => {
 const entryByDateList = (arg) => {
   let tempList = '';
   for (const key in arg) {
+    console.log(entriesList);
     if (entriesList.hasOwnProperty(key)) {
       const keyLength = entriesList[key].length;
       const id = key;
@@ -259,25 +260,19 @@ const login = (event) => {
     }),
   })
     .then((response) => {
-      if (response.status === 401) {
+      if (response.status === 401 || response.status === 404) {
         document.getElementById('errors_login').innerHTML = 'Username or password is incorrect';
       }
       return response.json();
     })
     .then((user) => {
-      if (user.data.errors) {
-        Object.keys(user.data.errors).forEach((key) => {
-          const ul = document.getElementById('errors_login');
-          const li = document.createElement('li');
-          li.appendChild(document.createTextNode(user.data.errors[key]));
-          ul.appendChild(li);
-        });
-      } else {
-        localStorage.setItem('token', user.data.token);
-        fetchUserDetails();
-        document.location = './landing-page.html';
-      }
-    }).catch(err => err.message);
+      localStorage.setItem('token', user.data.token);
+    }).then(() => {
+      fetchUserDetails();
+      fetchViewAllEntries();
+      document.location = './landing-page.html';
+    })
+    .catch(err => err.message);
 };
 
 // filter entries
@@ -304,7 +299,7 @@ const viewEntry = (id) => {
 
 const addNewEntry = (event) => {
   // event.preventDefault();
-  document.getElementById('add_new_error').innerHTML = '';
+  // document.getElementById('add_new_error').innerHTML = '';
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   token = localStorage.getItem('token');
@@ -321,25 +316,19 @@ const addNewEntry = (event) => {
   })
     .then((response) => {
       if (response.status === 406) {
-        document.getElementById('add_new_error').innerHTML = 'An Error ann occurred';
+        document.getElementById('add_new_error').innerHTML = 'An Error an occurred';
       }
       return response.json();
     })
     .then((entry) => {
-      if (entry.data.errors) {
-        Object.keys(entry.data.errors).forEach((key) => {
-          const ul = document.getElementById('add_new_error');
-          const li = document.createElement('li');
-          li.appendChild(document.createTextNode(entry.data.errors[key]));
-          ul.appendChild(li);
-        });
-      } else {
+      if (entry.NewEntry) {
         const ul = document.getElementById('add_new_error');
         const li = document.createElement('li');
-        li.appendChild(document.createTextNode('An entry has been added successfully'));
+        li.appendChild(document.createTextNode(entry.message));
         ul.appendChild(li);
-        document.getElementById('title').innerText = '';
-        document.getElementById('content').innerText = '';
+        document.getElementById('title').value = '';
+
+        document.getElementById('content').value = '';
       }
     }).catch(err => err.message);
 };
@@ -422,7 +411,7 @@ const deleteEntry = (id) => {
 };
 
 const addNewForm = () => {
-  const form = `<form>
+  const form = `<form onSubmit="return false">
   <div class="imgcontainer">
   <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
   <h2>Add Entry</h2>
@@ -434,7 +423,7 @@ const addNewForm = () => {
   <div class="input-container">
   <textarea rows="4" class="input-field" id="content" placeholder="Entry content"></textarea>
   </div>
-  <button type="submit" class="btn" id="file-submit" onClick="addNewEntry();">Save</button>
+  <input type="submit" class="btn" id="file-submit" value="Save" onClick="addNewEntry();">
 </form>`;
   document.getElementById('modal-app').innerHTML = '';
   document.getElementById('modal-app').innerHTML = form;
@@ -511,7 +500,7 @@ const userProfile = () => {
 <div class="container">
   <h2>User Profile</h2>
   <div class="row container">
-      <form name="userprofile" class="userprofile">
+      <form name="userprofile" class="userprofile" onSubmit="return false">
           <ul id="update-error"></ul>
           <label for="fullname">Full name</label>
           <input type="text" id="fullname" name="fullname"  value=${userDetails.user[0].fullname} disabled placeholder="Full name">
@@ -524,16 +513,18 @@ const userProfile = () => {
             ${userDetails.user[0].gender === 'male'
     ? '<option value="male" selected>male</option>'
     : '<option value="female" selected>female</option>'}
-    <option value="female">female</option>
-    <option value="male">male</option>
+            ${userDetails.user[0].gender === 'male'
+    ? '<option value="female">female</option>'
+    : '<option value="male">male</option>'}
           </select>
           <label for="notification">Notification</label>
           <select id="notification" name="notify" class="input-field" disabled>
-          ${userDetails.user[0].notification === false
+            ${userDetails.user[0].notification === false
     ? `<option value=${false} selected>false</option>`
     : `<option value=${true} selected>true</option>`}
-    <option value="false">false</option>
-    <option value="true">true</option>
+            ${userDetails.user[0].notification === false
+    ? `<option value=${true}>true</option>`
+    : `<option value=${false}>false</option>`}
           </select>
 
           <input type="submit" id="editBtn" class="btn" value="Edit" onclick="enableInput();">
@@ -601,10 +592,10 @@ const handleFileUploadSubmit = () => {
       document.getElementById('upload-progress').innerText = `Upload is ${progress}% done`;
       switch (snapshot.state) {
         case firebase.storage.TaskState.PAUSED: // or 'paused'
-        document.getElementById('upload-progress').innerText = 'Upload is paused';
+          document.getElementById('upload-progress').innerText = 'Upload is paused';
           break;
         case firebase.storage.TaskState.RUNNING: // or 'running'
-        document.getElementById('upload-progress').innerText = 'Upload is running';
+          document.getElementById('upload-progress').innerText = 'Upload is running';
           break;
       }
     }, (error) => {
@@ -612,29 +603,29 @@ const handleFileUploadSubmit = () => {
       // https://firebase.google.com/docs/storage/web/handle-errors
       switch (error.code) {
         case 'storage/unauthorized':
-        document.getElementById('upload-progress').innerText = `User doesn't have permission to access the object`;
+          document.getElementById('upload-progress').innerText = 'User doesn\'t have permission to access the object';
           break;
 
         case 'storage/canceled':
-        document.getElementById('upload-progress').innerText = `User canceled the upload`;
+          document.getElementById('upload-progress').innerText = 'User canceled the upload';
           break;
 
         case 'storage/unknown':
-        document.getElementById('upload-progress').innerText = `Unknown error occurred, inspect error.serverResponse`;
+          document.getElementById('upload-progress').innerText = 'Unknown error occurred, inspect error.serverResponse';
           break;
       }
     }, () => {
       // Upload completed successfully, now we can get the download URL
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
         updateUserDetails(downloadURL, userDetails.user[0].fullname, userDetails.user[0].email, userDetails.user[0].gender, userDetails.user[0].notification);
-        document.getElementById('upload-progress').innerText = `Hurray, upload completed`;
+        document.getElementById('upload-progress').innerText = 'Hurray,Upload completed';
       });
     });
 };
 
 // if (document.getElementById('file-ubmit'))
 //   document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit);
-document.getElementById('profile-pic').addEventListener('click', uploadProfilePic);
+if (document.getElementById('profile-pic')) { document.getElementById('profile-pic').addEventListener('click', uploadProfilePic); }
 
 
 const showAllEntries = () => {
@@ -698,7 +689,7 @@ const enableInput = () => {
     editBtn.value = 'Save';
   } else {
     const fullname = document.userprofile.fullname.value;
-    const passport = userDetails.user[0].passportUrl;
+    const passport = userDetails.user[0].passporturl;
     const email = document.userprofile.email.value;
     const gender = document.userprofile.gender.value;
     const notification = document.userprofile.notification.value;

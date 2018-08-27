@@ -46,6 +46,9 @@ https://sulenchy-my-diary.herokuapp.com/api/v1
 | PUT           | api/v1/entries/:id        | Modify an existing diary entry                        |
 | POST          | api/v1/auth/signup        | Register a user                                       |
 | POST          | api/v1/auth/login         | Login a user                                          |
+| DELETE        | api/v1/entries/:id        | Delete an existing entry                              |
+| GET           | api/v1/user               | Get a user profile details                            |
+| PUT           | api/v1/user               | Update user profile details                           |
 
 # Author
 Abudu Abiodun Sulaiman @sulenchy
