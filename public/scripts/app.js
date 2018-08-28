@@ -8,6 +8,7 @@ let userDetails = {};
 let entryListTotalPageNumber = 1;
 let title = 'Entries in Days';
 let selectedDate = '';
+let entriesList = '';
 
 let state = false;
 
@@ -161,7 +162,6 @@ const entryByDayList = (arg) => {
   for (const key in arg.data) {
     myKey = key;
     if (arg.data) {
-      
       tempList += `<div class="card row">
       <div class="day">
           <a id="time-${arg.data[key].id}" href="#" onclick='readEntry("${arg.data[key].title}","${arg.data[key].content}")'>
@@ -190,12 +190,12 @@ const entryByDayList = (arg) => {
   </div>
   <br>`;
     }
-  } 
-  for(let pageBtn = 1; pageBtn <= entryListTotalPageNumber; pageBtn++) {
+  }
+  for (let pageBtn = 1; pageBtn <= entryListTotalPageNumber; pageBtn++) {
     paginationBtn += `
     <a id=${pageBtn} href="#" class="pagination" onClick='viewEntry("${selectedDate}", ${pageBtn})'>${pageBtn}</a>`;
   }
-  
+
   list = tempList + paginationBtn;
   return list;
 };
@@ -278,24 +278,23 @@ const login = (event) => {
 };
 
 const Paginator = (items, page, per_page) => {
- 
   var page = page || 1,
-  per_page = per_page || 3,
-  offset = (page - 1) * per_page,
- 
-  paginatedItems = items.slice(offset).slice(0, per_page),
-  total_pages = Math.ceil(items.length / per_page);
+    per_page = per_page || 3,
+    offset = (page - 1) * per_page,
+
+    paginatedItems = items.slice(offset).slice(0, per_page),
+    total_pages = Math.ceil(items.length / per_page);
   entryListTotalPageNumber = total_pages;
   return {
-  page: page,
-  per_page: per_page,
-  pre_page: page - 1 ? page - 1 : null,
-  next_page: (total_pages > page) ? page + 1 : null,
-  total: items.length,
-  total_pages: total_pages,
-  data: paginatedItems
+    page,
+    per_page,
+    pre_page: page - 1 ? page - 1 : null,
+    next_page: (total_pages > page) ? page + 1 : null,
+    total: items.length,
+    total_pages,
+    data: paginatedItems,
   };
-}
+};
 
 entryByDateList(filterEntriesList('', entriesList));
 // filter entries
@@ -574,18 +573,23 @@ const uploadProfilePic = () => {
 
 
 // Initialize Firebase
-const config = {
-  apiKey: 'AIzaSyAyKuao7my_KGIEKp5CeShqB0lfWX9B9uA',
-  authDomain: 'mydiary-8ec5a.firebaseapp.com',
-  databaseURL: 'https://mydiary-8ec5a.firebaseio.com',
-  projectId: 'mydiary-8ec5a',
-  storageBucket: 'mydiary-8ec5a.appspot.com',
-  messagingSenderId: '383367820588',
-};
-firebase.initializeApp(config);
-const storageService = firebase.storage();
-const storageRef = storageService.ref();
+let config = '';
+let storageService = '';
+let storageRef = '';
 
+if (firebase) {
+  config = {
+    apiKey: 'AIzaSyAyKuao7my_KGIEKp5CeShqB0lfWX9B9uA',
+    authDomain: 'mydiary-8ec5a.firebaseapp.com',
+    databaseURL: 'https://mydiary-8ec5a.firebaseio.com',
+    projectId: 'mydiary-8ec5a',
+    storageBucket: 'mydiary-8ec5a.appspot.com',
+    messagingSenderId: '383367820588',
+  };
+  firebase.initializeApp(config);
+  storageService = firebase.storage();
+  storageRef = storageService.ref();
+}
 
 let selectedFile;
 
@@ -593,6 +597,7 @@ const handleFileUploadChange = (e) => {
   selectedFile = e.target.files[0];
 };
 const handleFileUploadSubmit = () => {
+  if(firebase){
   const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile); // create a child directory called images, and place the file inside this directory
   // Listen for state changes, errors, and completion of the upload.
   uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -631,6 +636,7 @@ const handleFileUploadSubmit = () => {
         document.getElementById('upload-progress').innerText = 'Hurray,Upload completed';
       });
     });
+  }
 };
 
 // if (document.getElementById('file-ubmit'))
@@ -689,7 +695,7 @@ const viewEntry = (id, pageNumber) => {
   title = `Entries on ${id}`;
   entryByDayList(Paginator(entriesList[id], pageNumber));
   show();
-  document.getElementById(pageNumber).style.border = "4px solid";
+  document.getElementById(pageNumber).style.border = '4px solid';
   return list;
 };
 
