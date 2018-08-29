@@ -335,10 +335,9 @@ const addNewEntry = () => {
 };
 
 const updateEntry = (id) => {
-  // event.preventDefault();
   document.getElementById('add_new_error').innerHTML = '';
   const entryId = id;
-  const entryTitle = document.getElementById('title').value;
+  const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   token = localStorage.getItem('token');
   updateEntryUrl = `${entryUrl}/${entryId}`;
@@ -350,7 +349,7 @@ const updateEntry = (id) => {
       Token: token,
     },
     body: JSON.stringify({
-      entryTitle, content,
+      title, content,
     }),
   })
     .then((response) => {
@@ -360,21 +359,10 @@ const updateEntry = (id) => {
       return response.json();
     })
     .then((entry) => {
-      if (entry.data.errors) {
-        Object.keys(entry.data.errors).forEach((key) => {
-          const ul = document.getElementById('add_new_error');
-          const li = document.createElement('li');
-          li.appendChild(document.createTextNode(entry.data.errors[key]));
-          ul.appendChild(li);
-        });
-      } else {
-        const ul = document.getElementById('add_new_error');
-        const li = document.createElement('li');
-        li.appendChild(document.createTextNode('An entry has been updated successfully'));
-        ul.appendChild(li);
-        document.getElementById('title').innerText = '';
-        document.getElementById('content').innerText = '';
-      }
+      const ul = document.getElementById('add_new_error');
+      const li = document.createElement('li');
+      li.appendChild(document.createTextNode('An entry has been updated successfully'));
+      ul.appendChild(li);
     }).catch(err => err.message);
 };
 

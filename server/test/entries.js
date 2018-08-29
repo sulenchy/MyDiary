@@ -12,6 +12,7 @@ const entriesUrl = '/api/v1/entries';
 const userSignup = '/api/v1/auth/signup';
 const userLogin = '/api/v1/auth/login';
 const updateUserUrl = '/api/v1/user';
+const usersUrl = '/api/v1/users';
 
 describe('Diary Entries', () => {
   describe('/api/v1/entries', () => {
@@ -28,6 +29,16 @@ describe('Diary Entries', () => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('User is unauthorized');
+          done();
+        });
+    });
+    it('/api/v1/users Should get users', (done) => {
+      chai.request(app)
+        .get(`${usersUrl}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Sorry, no user is available check back later.');
           done();
         });
     });

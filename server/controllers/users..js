@@ -126,6 +126,37 @@ export default class UsersController {
   }
 
   /**
+   * @description get all users
+   *
+   * @param {*} req
+   * @param {*} res
+   *
+   * @memberOf UsersController Class
+   */
+  static getUsers(req, res) {
+    usersHelper.getUsers()
+      .then((users) => {
+        if (users.rowCount === 0) {
+          return res.status(404).json({
+            message: 'Sorry, no user is available check back later.',
+          });
+        }
+        return res.status(200).json({
+          user: users.rows,
+          message: 'Users gotten successfully',
+        });
+      })
+      .catch(() => {
+        res.status(500)
+          .json({
+            error: {
+              message: 'Sorry, an error occurred',
+            },
+          });
+      });
+  }
+
+  /**
    * @description update user profile
    *
    * @param {*} req
