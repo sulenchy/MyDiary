@@ -24,6 +24,8 @@ app.use('/api/v1', entriesRouter);
 
 app.use('/client', express.static('public'));
 
+//sending daily email notification
+
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);
 });

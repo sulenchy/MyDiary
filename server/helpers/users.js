@@ -88,4 +88,18 @@ export default class UsersHelper {
       }
     });
   }
+
+  static setVisited(userid) {
+    const user = `UPDATE users SET visited = NOW()::DATE WHERE id = ${userid}  RETURNING *;`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, an error has occurred',
+        }));
+      }
+    });
+  }
 }
