@@ -518,8 +518,8 @@ a.logout {
         }
 
         .row-entry{
-            display:fles;
-            fles-wrap: wrap;
+            display:flex;
+            flex-wrap: wrap;
         }
         .entry-date{
             width:20%;

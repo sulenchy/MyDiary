@@ -4,6 +4,8 @@ const entryUrl = 'http://localhost:8081/api/v1/entries';
 const userUrl = 'http://localhost:8081/api/v1/user';
 const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
 const loginUrl = 'http://localhost:8081/api/v1/auth/login';
+let deleteEntryUrl = '';
+let updateEntryUrl = '';
 let userDetails = {};
 let entryListTotalPageNumber = 1;
 let title = 'Entries in Days';
@@ -123,7 +125,7 @@ const filterEntriesList = (filter = '', localEntryList) => {
 
 // filters entries by title
 const filterDayEntriesByTitle = (filter = '', localEntryList) => {
-  const filteredList = localEntryList.filter(entry => entry.title.indexOf(filter) > -1);
+  const filteredList = localEntryList.data.filter(entry => entry.title.indexOf(filter) > -1);
   return filteredList;
 };
 
@@ -159,29 +161,30 @@ const entryByDateList = (arg) => {
 const entryByDayList = (arg) => {
   let tempList = '';
   let paginationBtn = '';
-  for (const key in arg.data) {
+
+  for (const key in arg) {
     myKey = key;
-    if (arg.data) {
+    if (arg) {
       tempList += `<div class="card row">
       <div class="day">
-          <a id="time-${arg.data[key].id}" href="#" onclick='readEntry("${arg.data[key].title}","${arg.data[key].content}")'>
-              <h2>${arg.data[key].created.split('T')[1].split('.')[0]}</h2>
+          <a id="time-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
+              <h2>${arg[key].created.split('T')[1].split('.')[0]}</h2>
           </a>
       </div>
       <div class="entry">
-          <a id="title-${arg.data[key].id}" href="#" onclick='readEntry("${arg.data[key].title}","${arg.data[key].content}")'>
-              <h2>${arg.data[key].title}</h2>
+          <a id="title-${arg[key].id}" href="#" onclick='readEntry("${arg[key].title}","${arg[key].content}")'>
+              <h2>${arg[key].title}</h2>
           </a>
       </div>
       <div class="row">
           <div class="buttons">
               <div class="container">
-                  <a id="delete" href="#" onClick='addDeleteForm(${arg.data[key].id})'>
+                  <a id="delete" href="#" onClick='addDeleteForm(${arg[key].id})'>
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
               <div class="container">
-                  <a id="edit" href="#" onClick='addUpdateForm(${arg.data[key].id},"${arg.data[key].title}","${arg.data[key].content}")'>
+                  <a id="edit" href="#" onClick='addUpdateForm(${arg[key].id},"${arg[key].title}","${arg[key].content}")'>
                       <i class="fa fa-edit"></i>
                   </a>
               </div>
@@ -195,7 +198,6 @@ const entryByDayList = (arg) => {
     paginationBtn += `
     <a id=${pageBtn} href="#" class="pagination" onClick='viewEntry("${selectedDate}", ${pageBtn})'>${pageBtn}</a>`;
   }
-
   list = tempList + paginationBtn;
   return list;
 };
@@ -277,11 +279,10 @@ const login = (event) => {
     .catch(err => err.message);
 };
 
-const Paginator = (items, page, per_page) => {
-  var page = page || 1,
-    per_page = per_page || 3,
+const Paginator = (items, pageArg, per_pageArg) => {
+  let page = pageArg || 1,
+    per_page = per_pageArg || 3,
     offset = (page - 1) * per_page,
-
     paginatedItems = items.slice(offset).slice(0, per_page),
     total_pages = Math.ceil(items.length / per_page);
   entryListTotalPageNumber = total_pages;
@@ -297,16 +298,7 @@ const Paginator = (items, page, per_page) => {
 };
 
 entryByDateList(filterEntriesList('', entriesList));
-// filter entries
-const searchValue = () => {
-  const val = document.getElementById('search').value;
-  if (!state) {
-    entryByDateList(filterEntriesList(val, entriesList));
-  } else {
-    entryByDayList(filterDayEntriesByTitle(val, entriesList[selectedDate]));
-  }
-  show();
-};
+
 
 const addNewEntry = () => {
   const title = document.getElementById('title').value;
@@ -346,7 +338,7 @@ const updateEntry = (id) => {
   // event.preventDefault();
   document.getElementById('add_new_error').innerHTML = '';
   const entryId = id;
-  const title = document.getElementById('title').value;
+  const entryTitle = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   token = localStorage.getItem('token');
   updateEntryUrl = `${entryUrl}/${entryId}`;
@@ -358,7 +350,7 @@ const updateEntry = (id) => {
       Token: token,
     },
     body: JSON.stringify({
-      title, content,
+      entryTitle, content,
     }),
   })
     .then((response) => {
@@ -413,8 +405,6 @@ const deleteEntry = (id) => {
           li.appendChild(document.createTextNode(entry.data.errors[key]));
           ul.appendChild(li);
         });
-      } else {
-
       }
     }).catch(err => err.message);
 };
@@ -536,12 +526,13 @@ const userProfile = () => {
     : `<option value=${false}>false</option>`}
           </select>
 
-          <input type="submit" id="editBtn" class="btn" value="Edit" onclick="enableInput();">
+          <input type="submit" id="editBtn" class="btn" value="Edit" onClick='enableInput()'>
       </form>
   </div>
   </div>`;
   document.getElementById('app').innerHTML = page;
 };
+
 
 const uploadProfilePic = () => {
   const page = `<div id="dashboard" class="container">
@@ -597,52 +588,65 @@ const handleFileUploadChange = (e) => {
   selectedFile = e.target.files[0];
 };
 const handleFileUploadSubmit = () => {
-  if(firebase){
-  const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile); // create a child directory called images, and place the file inside this directory
-  // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-    (snapshot) => {
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      document.getElementById('upload-progress').innerText = `Upload is ${progress}% done`;
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          document.getElementById('upload-progress').innerText = 'Upload is paused';
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          document.getElementById('upload-progress').innerText = 'Upload is running';
-          break;
-      }
-    }, (error) => {
+  if (firebase) {
+    const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile); // create a child directory called images, and place the file inside this directory
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        document.getElementById('upload-progress').innerText = `Upload is ${progress}% done`;
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            document.getElementById('upload-progress').innerText = 'Upload is paused';
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            document.getElementById('upload-progress').innerText = 'Upload is running';
+            break;
+          default:
+        }
+      }, (error) => {
       // A full list of error codes is available at
       // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case 'storage/unauthorized':
-          document.getElementById('upload-progress').innerText = 'User doesn\'t have permission to access the object';
-          break;
-
-        case 'storage/canceled':
-          document.getElementById('upload-progress').innerText = 'User canceled the upload';
-          break;
-
-        case 'storage/unknown':
-          document.getElementById('upload-progress').innerText = 'Unknown error occurred, inspect error.serverResponse';
-          break;
-      }
-    }, () => {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            document.getElementById('upload-progress').innerText = 'User doesn\'t have permission to access the object';
+            break;
+          case 'storage/canceled':
+            document.getElementById('upload-progress').innerText = 'User canceled the upload';
+            break;
+          case 'storage/unknown':
+            document.getElementById('upload-progress').innerText = 'Unknown error occurred, inspect error.serverResponse';
+            break;
+          default:
+        }
+      }, () => {
       // Upload completed successfully, now we can get the download URL
-      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        updateUserDetails(downloadURL, userDetails.user[0].fullname, userDetails.user[0].email, userDetails.user[0].gender, userDetails.user[0].notification);
-        document.getElementById('upload-progress').innerText = 'Hurray,Upload completed';
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          updateUserDetails(downloadURL, userDetails.user[0].fullname, userDetails.user[0].email, userDetails.user[0].gender, userDetails.user[0].notification);
+          document.getElementById('upload-progress').innerText = 'Hurray,Upload completed';
+        });
       });
-    });
   }
 };
 
-// if (document.getElementById('file-ubmit'))
-//   document.getElementById('file-submit').addEventListener('click', handleFileUploadSubmit);
 if (document.getElementById('profile-pic')) { document.getElementById('profile-pic').addEventListener('click', uploadProfilePic); }
 
+const checkTime = (arg) => {
+  if (arg < 10) { arg = `0${arg}`; } // add zero in front of numbers < 10
+  return arg;
+};
+
+const startTime = () => {
+  const today = new Date();
+  const hour = today.getHours();
+  let min = today.getMinutes();
+  let sec = today.getSeconds();
+  min = checkTime(min);
+  sec = checkTime(sec);
+  document.getElementById('txt').innerHTML = `${hour}:${min}:${sec}`;
+  setTimeout(startTime, 500);
+};
 
 const showAllEntries = () => {
   fetchViewAllEntries();
@@ -671,15 +675,9 @@ const showAllEntries = () => {
   document.getElementById('app').innerHTML = allEntries;
   document.getElementById('add-new').addEventListener('click', showModalBox);
 
-  const today = new Date();
-  const h = today.getHours();
-  let m = today.getMinutes();
-  let s = today.getSeconds();
-  m = checkTime(m);
-  s = checkTime(s);
-  document.getElementById('txt').innerHTML = `${h}:${m}:${s}`;
-  const t = setTimeout(startTime, 500);
+  startTime();
 };
+
 
 const show = () => {
   fetchUserDetails();
@@ -688,12 +686,23 @@ const show = () => {
   showAllEntries();
 };
 
+// filter entries
+const searchValue = () => {
+  const val = document.getElementById('search').value;
+  if (!state) {
+    entryByDateList(filterEntriesList(val, entriesList));
+  } else {
+    entryByDayList(filterDayEntriesByTitle(val, Paginator(entriesList[selectedDate], 1)));
+  }
+  show();
+};
+
 // view an entry
 const viewEntry = (id, pageNumber) => {
   selectedDate = id;
   state = true;
   title = `Entries on ${id}`;
-  entryByDayList(Paginator(entriesList[id], pageNumber));
+  entryByDayList(Paginator(entriesList[id], pageNumber).data);
   show();
   document.getElementById(pageNumber).style.border = '4px solid';
   return list;
