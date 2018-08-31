@@ -52,6 +52,7 @@ https://sulenchy-my-diary.herokuapp.com/api/v1
 | DELETE        | api/v1/entries/:id        | Delete an existing entry                              |
 | GET           | api/v1/user               | Get a user profile details                            |
 | PUT           | api/v1/user               | Update user profile details                           |
+| GET           | api/v1/users              | Get all users                                         |
 
 # Author
 [Sulenchy](https://github.com/sulenchy)
