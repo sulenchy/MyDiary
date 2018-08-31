@@ -26,6 +26,9 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 ## Gh-pages Link
 https://sulenchy.github.io/MyDiary/ui/
 
+## Client side Link
+https://sulenchy-my-diary.herokuapp.com/client/index.html
+
 ## Template Pages
 - /index.html
 - /add-edit.html
