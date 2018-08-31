@@ -17,9 +17,8 @@ const sendDailyNotificationByEmail = () => {
       rejectUnauthorized: false
     }
   });
-  console.log('------------ cron job about to start -------------------')
   // sending emails at periodic intervals
-  cron.schedule('1 * * * * * ', () => {
+  cron.schedule('* 7 * * * * ', () => {
   
     const usersUrl = 'http://localhost:8081/api/v1/users' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
     fetch(usersUrl, {
@@ -47,7 +46,7 @@ const sendDailyNotificationByEmail = () => {
           if (error) {
             throw error;
           } else {
-            winston.log(info, 'Email successfully sent!');
+            winston.log('Email successfully sent!');
           }
         });
         
