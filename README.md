@@ -54,4 +54,4 @@ https://sulenchy-my-diary.herokuapp.com/api/v1
 | PUT           | api/v1/user               | Update user profile details                           |
 
 # Author
-Abudu Abiodun Sulaiman @sulenchy
+[Sulenchy](https://github.com/sulenchy)
