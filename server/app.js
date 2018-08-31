@@ -6,6 +6,7 @@ import winston from 'winston';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 import entriesRouter from './routes/index';
+import sendNotificationByEmail from './helpers/emailNotification';
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ app.use('/api/v1', entriesRouter);
 
 app.use('/client', express.static('public'));
 
-//sending daily email notification
+sendNotificationByEmail();
 
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);

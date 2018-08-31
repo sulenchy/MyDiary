@@ -1,9 +1,9 @@
 // Declaration and initialization of global variable
 let token = '';
-const entryUrl = 'http://localhost:8081/api/v1/entries';
-const userUrl = 'http://localhost:8081/api/v1/user';
-const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
-const loginUrl = 'http://localhost:8081/api/v1/auth/login';
+const entryUrl = 'http://localhost:8081/api/v1/entries' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
+const userUrl = 'http://localhost:8081/api/v1/user' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/user';
+const registerUrl = 'http://localhost:8081/api/v1/auth/signup' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
+const loginUrl = 'http://localhost:8081/api/v1/auth/login' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
 let deleteEntryUrl = '';
 let updateEntryUrl = '';
 let userDetails = {};
@@ -594,8 +594,6 @@ const handleFileUploadSubmit = () => {
           default:
         }
       }, (error) => {
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
         switch (error.code) {
           case 'storage/unauthorized':
             document.getElementById('upload-progress').innerText = 'User doesn\'t have permission to access the object';
