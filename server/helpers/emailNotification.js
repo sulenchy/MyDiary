@@ -2,24 +2,26 @@ import winston from 'winston';
 import cron from 'node-cron';
 import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 // sending daily email notification
 const sendDailyNotificationByEmail = () => {
-
-    //setting up the transporter
-    const transporter = nodemailer.createTransport({
+  // setting up the transporter
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'mydiaryjscript@gmail.com',
-      pass: 'mydiary12345678',
+      pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   });
   // sending emails at periodic intervals
   cron.schedule('* 7 * * * * ', () => {
-  
     const usersUrl = 'http://localhost:8081/api/v1/users' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
     fetch(usersUrl, {
       method: 'GET',
@@ -30,11 +32,11 @@ const sendDailyNotificationByEmail = () => {
     })
       .then(response => response.json())
       .then((users) => {
-        let emails = ['mydiaryjscript@gmail.com'];
+        const emails = ['mydiaryjscript@gmail.com'];
         for (const user of users.user) {
-            if(user.notification === true){ 
-                emails.push(user.email);
-            }
+          if (user.notification === true) {
+            emails.push(user.email);
+          }
         }
         const mailOptions = {
           from: 'mydiaryjscript@gmail.com',
@@ -49,10 +51,8 @@ const sendDailyNotificationByEmail = () => {
             winston.log('Email successfully sent!');
           }
         });
-        
       }).catch(err => err.message);
-    
   });
-}
+};
 
 export default sendDailyNotificationByEmail;
