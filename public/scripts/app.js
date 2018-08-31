@@ -2,7 +2,7 @@
 let token = '';
 const entryUrl = 'http://localhost:8081/api/v1/entries' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
 const userUrl = 'http://localhost:8081/api/v1/user' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/user';
-const registerUrl = 'http://localhost:8081/api/v1/auth/signup' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
+const registerUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
 const loginUrl = 'http://localhost:8081/api/v1/auth/login' || 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
 let deleteEntryUrl = '';
 let updateEntryUrl = '';
