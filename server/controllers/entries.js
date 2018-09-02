@@ -25,7 +25,7 @@ export default class EntriesController {
               },
             });
         }
-
+        usersHelper.setVisited(userid);
         return entriesHelper.createEntry(userid, title, content)
           .then(newEntry => res.status(201).json({
             NewEntry: {

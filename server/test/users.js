@@ -12,6 +12,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 const signupUrl = '/api/v1/auth/signup';
 const loginUrl = '/api/v1/auth/login';
+const usersUrl = '/api/v1/users';
 
 describe('Test default route', () => {
   it('Should return 200 for the default route', (done) => {
@@ -48,6 +49,16 @@ describe('General user input', () => {
     done();
   });
   describe('POST /api/v1/auth/signup', () => {
+    it('/api/v1/users Should getusers', (done) => {
+      chai.request(app)
+        .get(`${usersUrl}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Users gotten successfully');
+          done();
+        });
+    });
     it('Should create new user with valid signup detail', (done) => {
       chai.request(app)
         .post(`${signupUrl}`)
@@ -56,6 +67,16 @@ describe('General user input', () => {
           expect(res).to.have.status(201);
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.equal('New user created successfully');
+          done();
+        });
+    });
+    it('/api/v1/users Should get users', (done) => {
+      chai.request(app)
+        .get(`${usersUrl}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Users gotten successfully');
           done();
         });
     });

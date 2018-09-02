@@ -55,6 +55,25 @@ export default class UsersHelper {
     });
   }
 
+  /**
+   * @description get  all user
+   *
+   *
+   * @memberOf UsersHelper Class
+   */
+  static getUsers() {
+    const user = 'SELECT * FROM users;';
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, no user is available. check back later',
+        }));
+      }
+    });
+  }
 
   static updateUser(userid, fullname, email, gender, passportUrl, notification) {
     const user = `UPDATE users SET fullname = '${fullname}', email = '${email}', gender = '${gender}', passporturl = '${passportUrl}', notification = '${notification}' WHERE id = ${userid}  RETURNING *;`;
@@ -65,6 +84,20 @@ export default class UsersHelper {
       } else {
         reject(new Error({
           message: 'Sorry, user profile cannot be updated',
+        }));
+      }
+    });
+  }
+
+  static setVisited(userid) {
+    const user = `UPDATE users SET visited = NOW()::DATE WHERE id = ${userid}  RETURNING *;`;
+    return new Promise((resolve, reject) => {
+      const data = client.query(user);
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error({
+          message: 'Sorry, an error has occurred',
         }));
       }
     });
