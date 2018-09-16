@@ -26,6 +26,9 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 ## Gh-pages Link
 https://sulenchy.github.io/MyDiary/ui/
 
+## Client side Link
+https://sulenchy-my-diary.herokuapp.com/client/index.html
+
 ## Template Pages
 - /index.html
 - /add-edit.html
@@ -49,6 +52,7 @@ https://sulenchy-my-diary.herokuapp.com/api/v1
 | DELETE        | api/v1/entries/:id        | Delete an existing entry                              |
 | GET           | api/v1/user               | Get a user profile details                            |
 | PUT           | api/v1/user               | Update user profile details                           |
+| GET           | api/v1/users              | Get all users                                         |
 
 # Author
-Abudu Abiodun Sulaiman @sulenchy
+[Sulenchy](https://github.com/sulenchy)
