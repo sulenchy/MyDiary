@@ -19,6 +19,5 @@ export default {
   },
   production: {
     database: process.env.DATABASE_LINK,
-    ssl: true,
   },
 };
