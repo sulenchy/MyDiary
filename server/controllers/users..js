@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt-nodejs';
 import createToken from '../helpers/createToken';
 import usersHelper from '../helpers/users';
 
