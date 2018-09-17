@@ -1,9 +1,9 @@
 // Declaration and initialization of global variable
 let token = '';
-const entryUrl = 'http://localhost:8081/api/v1/entries';
-const userUrl = 'http://localhost:8081/api/v1/users';
-const registerUrl = 'http://localhost:8081/api/v1/auth/signup';
-const loginUrl = 'http://localhost:8081/api/v1/auth/login';
+const entryUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
+const userUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
+const registerUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
+const loginUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
 let deleteEntryUrl = '';
 let updateEntryUrl = '';
 let userDetails = {};

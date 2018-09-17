@@ -8,7 +8,7 @@ export default {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT,    
+    port: process.env.DB_PORT,
   },
   test: {
     user: process.env.DB_USERNAME,
@@ -18,7 +18,7 @@ export default {
     port: process.env.DB_PORT,
   },
   production: {
-    database: process.env.DATABASE_URL,
+    database: process.env.DATABASE_LINK,
     ssl: true,
   },
 };
