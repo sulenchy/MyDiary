@@ -21,8 +21,8 @@ const sendDailyNotificationByEmail = () => {
     },
   });
   // sending emails at periodic intervals
-  cron.schedule('* 7 * * * * ', () => {
-    const usersUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
+  cron.schedule('1 * * * * * ', () => {
+    const usersUrl = 'http://localhost:8081/api/v1/users';
     fetch(usersUrl, {
       method: 'GET',
       mode: 'cors',
@@ -46,12 +46,12 @@ const sendDailyNotificationByEmail = () => {
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            throw error;
+            console.log(error);
           } else {
             winston.log('Email successfully sent!');
           }
         });
-      }).catch(err => err.message);
+      }).catch(err => console.log(err));
   });
 };
 
