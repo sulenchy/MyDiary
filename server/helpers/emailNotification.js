@@ -22,7 +22,7 @@ const sendDailyNotificationByEmail = () => {
   });
   // sending emails at periodic intervals
   cron.schedule('1 * * * * * ', () => {
-    const usersUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
+    const usersUrl = 'http://localhost:8081/api/v1/users';
     fetch(usersUrl, {
       method: 'GET',
       mode: 'cors',
