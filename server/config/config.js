@@ -18,6 +18,6 @@ export default {
     port: process.env.DB_PORT,
   },
   production: {
-    database: process.env.DATABASE_LINK,
+    database: process.env.DATABASE_URL,
   },
 };

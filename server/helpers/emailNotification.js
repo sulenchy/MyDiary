@@ -46,7 +46,7 @@ const sendDailyNotificationByEmail = () => {
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            winston.log(error)
+            winston.log(error);
           } else {
             winston.log('Email successfully sent!');
           }
