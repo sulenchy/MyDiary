@@ -6,7 +6,7 @@ client.connect();
 
 export default class UsersHelper {
   static signupUser(fullname, email, password, gender) {
-    const hashedPassword = bcrypt.hashSync(`${password}`, 10);
+    const hashedPassword = bcrypt.hashSync(`${password}`);
     const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${hashedPassword}','${gender}') RETURNING *;`;
     return new Promise((resolve, reject) => {
       const data = client.query(user);
