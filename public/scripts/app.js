@@ -1,7 +1,7 @@
 // Declaration and initialization of global variable
 let token = '';
 const entryUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
-const userUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
+const userUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/user';
 const registerUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
 const loginUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
 let deleteEntryUrl = '';
@@ -88,11 +88,11 @@ const updateUserDetails = (passportUrl, fullname, email, gender, notification) =
       return response.json();
     })
     .then((user) => {
-      if (entry.data.errors) {
+      if (user.data.errors) {
         Object.keys(user.data.errors).forEach((key) => {
           const ul = document.getElementById('update-error');
           const li = document.createElement('li');
-          li.appendChild(document.createTextNode(entry.data.errors[key]));
+          li.appendChild(document.createTextNode(user.data.errors[key]));
           ul.appendChild(li);
         });
       } else {
@@ -242,6 +242,11 @@ const register = (event) => {
         });
       } else {
         // localStorage.setItem('token', user.user.token);
+        document.getElementById('fullname').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('gender').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('retypePassword').value = '';
         alert(`Congratulation to you, ${fullname}. You have successfully created your account. Enjoy your Diary on the go.....`);
       }
     }).catch(err => err.message);
