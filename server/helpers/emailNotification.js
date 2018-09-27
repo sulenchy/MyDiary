@@ -1,4 +1,4 @@
-import winston from 'winston';
+import console from 'console';
 import cron from 'node-cron';
 import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
@@ -21,7 +21,7 @@ const sendDailyNotificationByEmail = () => {
     },
   });
   // sending emails at periodic intervals
-  cron.schedule('1 * * * * * ', () => {
+  cron.schedule('* * 7 * * * ', () => {
     const usersUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
     fetch(usersUrl, {
       method: 'GET',
@@ -42,16 +42,16 @@ const sendDailyNotificationByEmail = () => {
           from: 'mydiaryjscript@gmail.com',
           to: emails.toString(),
           subject: 'Daily Notification;)',
-          text: 'Hi there, this email is sent to remind you to pen down your feelings and thought. Thank you',
+          text: 'Hi dear, do not forget to pen down your feelings and thought. \n\n Thank you',
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            winston.log(error);
+            console.log(error);
           } else {
-            winston.log('Email successfully sent!');
+            console.log('Email successfully sent!');
           }
         });
-      }).catch(err => winston.log(err));
+      }).catch(err => console.log(err));
   });
 };
 
