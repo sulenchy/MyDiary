@@ -1,4 +1,4 @@
-import console from 'console';
+import winston from 'winston';
 import cron from 'node-cron';
 import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
@@ -42,16 +42,16 @@ const sendDailyNotificationByEmail = () => {
           from: 'mydiaryjscript@gmail.com',
           to: emails.toString(),
           subject: 'Daily Notification;)',
-          text: 'Hi dear, do not forget to pen down your feelings and thought. \n\n Thank you',
+          text: 'Hi dear, \n\nDo not forget to pen down your feelings and thought. \n\nThank you.',
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.log(error);
+            winston.log(error);
           } else {
-            console.log('Email successfully sent!');
+            winston.log('Email successfully sent!');
           }
         });
-      }).catch(err => console.log(err));
+      }).catch(err => winston.log(err));
   });
 };
 
