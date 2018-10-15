@@ -25,6 +25,8 @@ router.put('/user', authenticatedUserLogin.authenticateUser, validateUser.valida
 router.get('/user', authenticatedUserLogin.authenticateUser, usersController.getUser);
 router.get('/users', usersController.getUsers);
 router.post('/auth/login', usersController.loginUser);
+router.put('/changePassword', usersController.changePassword);
+
 
 
 export default router;
