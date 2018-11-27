@@ -191,7 +191,7 @@ export default class UsersController {
         }));
   }
 
-    /**
+  /**
      * @description change user password
      *
      * @param {*} req
@@ -199,26 +199,23 @@ export default class UsersController {
      *
      * @memberOf UsersController Class
      */
-    static changePassword(req, res) {
-      const email = req.body.email.toLowerCase();
-      const password = req.body.password;
-      usersHelper.changePassword(email, password)
-        .then(user => res.status(200).json({
-          user: {
-            id: user.rows[0].id,
-            email: user.rows[0].email,
+  static changePassword(req, res) {
+    let { email } = res.body;
+    const { password } = res.body;
+    email = email.toLowerCase();
+    usersHelper.changePassword(email, password)
+      .then(user => res.status(200).json({
+        user: {
+          id: user.rows[0].id,
+          email: user.rows[0].email,
+        },
+        message: 'Password changed successfully',
+      }))
+      .catch(err => res.status(500)
+        .json({
+          error: {
+            message: err.message,
           },
-          message: 'Password changed successfully',
-        }))
-        .catch(err => res.status(500)
-          .json({
-            error: {
-              message: err.message,
-            },
-          }));
-    }
-
-
-
-    
+        }));
+  }
 }
