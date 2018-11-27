@@ -46,7 +46,7 @@
     "node-cron": "^1.2.1",
     "node-fetch": "^2.2.0",
     "nodemailer": "^4.6.8",
-    "nodemon": "^1.18.4",
+    "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^7.4.3",
     "swagger-ui-express": "^3.0.10",
     "validatorjs": "^3.14.2",
@@ -61,6 +61,7 @@
     "eslint-plugin-react": "^7.9.1",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
+    "nodemon": "^1.18.6",
     "nyc": "^12.0.2"
   }
 }

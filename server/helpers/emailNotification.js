@@ -1,4 +1,5 @@
 import winston from 'winston';
+import smtpTransport from 'nodemailer-smtp-transport';
 import cron from 'node-cron';
 import fetch from 'node-fetch';
 import nodemailer from 'nodemailer';
@@ -10,16 +11,13 @@ dotenv.config();
 // sending daily email notification
 const sendDailyNotificationByEmail = () => {
   // setting up the transporter
-  const transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
     auth: {
       user: 'mydiaryjscript@gmail.com',
       pass: process.env.EMAIL_PASS,
     },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  }));
   // sending emails at periodic intervals
   cron.schedule('1 * * * * * ', () => {
     const usersUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
@@ -33,11 +31,11 @@ const sendDailyNotificationByEmail = () => {
       .then(response => response.json())
       .then((users) => {
         const emails = ['mydiaryjscript@gmail.com'];
-        for (const user of users.user) {
+        users.user.forEach((user) => {
           if (user.notification === true) {
             emails.push(user.email);
           }
-        }
+        });
         const mailOptions = {
           from: 'mydiaryjscript@gmail.com',
           to: emails.toString(),
@@ -48,7 +46,7 @@ const sendDailyNotificationByEmail = () => {
           if (error) {
             winston.log(error);
           } else {
-            winston.log('Email successfully sent!');
+            winston.log(info, 'Email successfully sent!');
           }
         });
       }).catch(err => winston.log(err));
