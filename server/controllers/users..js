@@ -63,12 +63,14 @@ export default class UsersController {
         if (user.rowCount === 0) {
           return res.status(404)
             .json({
+              status: 'failure',
               message: 'User not found. Please, register now',
             });
         }
         if (!bcrypt.compareSync(password.trim(), user.rows[0].password)) {
           return res.status(401)
             .json({
+              status: 'failure',
               message: 'Password or username is incorrect. Please try again',
             });
         }
@@ -81,6 +83,7 @@ export default class UsersController {
             token: createToken(user.rows[0].id),
           },
           message: 'User logged in successfully',
+          status: 'success',
         });
       })
       .catch(() => {
