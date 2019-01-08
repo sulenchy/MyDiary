@@ -21,6 +21,7 @@ export default class EntriesController {
           return res.status(401)
             .json({
               error: {
+                status: 'failure',
                 message: 'Sorry, user doesn\'t exist',
               },
             });
@@ -36,11 +37,13 @@ export default class EntriesController {
               edited: newEntry.rows[0].edited,
             },
             message: 'New entry created successfully.',
+            status: 'success',
           }))
           .catch(() => {
             res.status(500)
               .json({
                 error: {
+                  status: 'failure',
                   message: 'Sorry, an error occurred',
                 },
               });
@@ -50,6 +53,7 @@ export default class EntriesController {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -70,6 +74,7 @@ export default class EntriesController {
       .then((entries) => {
         if (entries.rowCount === 0) {
           return res.status(200).json({
+            status: 'failure',
             message: 'No entry. Pls, add one now',
           });
         }
@@ -77,12 +82,14 @@ export default class EntriesController {
           entries: entries.rows,
           length: entries.rowCount,
           message: 'Diary entries gotten successfully',
+          status: 'success',
         });
       })
       .catch(() => {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -104,18 +111,21 @@ export default class EntriesController {
       .then((entry) => {
         if (entry.rowCount === 0) {
           return res.status(404).json({
+            status: 'failure',
             message: 'No Entry is found',
           });
         }
         return res.status(200).json({
           entry: entry.rows,
           message: 'Diary entry gotten successfully',
+          status: 'success',
         });
       })
       .catch(() => {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -133,10 +143,12 @@ export default class EntriesController {
       .then((entry) => {
         if (entry.rowCount === 0) {
           return res.status(403).json({
+            status: 'failure',
             message: 'Entry cannot be updated by you',
           });
         }
         return res.status(200).json({
+          status: 'success',
           message: 'Diary entry updated successfully',
         });
       })
@@ -144,6 +156,7 @@ export default class EntriesController {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -159,10 +172,12 @@ export default class EntriesController {
       .then((entry) => {
         if (entry.rowCount === 0) {
           return res.status(403).json({
+            status: 'failure',
             message: 'Entry cannot be deleted by you',
           });
         }
         return res.status(200).json({
+          status: 'success',
           message: 'Diary entry deleted successfully',
         });
       })
@@ -170,6 +185,7 @@ export default class EntriesController {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
