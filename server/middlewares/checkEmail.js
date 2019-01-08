@@ -26,6 +26,7 @@ export default class ValidateUserEmail {
         if (foundEmail.rows[0]) {
           return res.status(409)
             .json({
+              status: 'failure',
               message: 'Email already exists',
             });
         }
