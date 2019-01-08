@@ -40,6 +40,7 @@ export default class UsersController {
       .catch(err => res.status(500)
         .json({
           error: {
+            status: 'failure',
             message: err.message,
           },
         }));
@@ -90,6 +91,7 @@ export default class UsersController {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -110,18 +112,21 @@ export default class UsersController {
       .then((user) => {
         if (user.rowCount === 0) {
           return res.status(404).json({
+            status: 'failure',
             message: 'Sorry, an error has occurred. Pls, try again.',
           });
         }
         return res.status(200).json({
           user: user.rows,
           message: 'User details gotten successfully',
+          status: 'success',
         });
       })
       .catch(() => {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -141,18 +146,21 @@ export default class UsersController {
       .then((users) => {
         if (users.rowCount === 0) {
           return res.status(404).json({
+            status: 'failure',
             message: 'Sorry, no user is available check back later.',
           });
         }
         return res.status(200).json({
           user: users.rows,
           message: 'Users gotten successfully',
+          status: 'success',
         });
       })
       .catch(() => {
         res.status(500)
           .json({
             error: {
+              status: 'failure',
               message: 'Sorry, an error occurred',
             },
           });
@@ -188,6 +196,7 @@ export default class UsersController {
       }))
       .catch(err => res.status(500)
         .json({
+          status: 'failure',
           error: {
             message: err.message,
           },
