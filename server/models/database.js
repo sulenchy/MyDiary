@@ -16,8 +16,8 @@ CREATE TABLE users(
   email VARCHAR(50) NOT NULL,
   password VARCHAR(255) NOT NULL,
   gender VARCHAR(50) NOT NULL,
-  visited DATE NULL,
-  passportUrl VARCHAR(255) DEFAULT '',
+  visited DATE DEFAULT NOW(),
+  passportUrl VARCHAR(255) DEFAULT 'https://goo.gl/eUu3Qw',
   notification BOOLEAN DEFAULT 'false',
   role status DEFAULT 'user');`;
 
