@@ -15,7 +15,7 @@ const sendDailyNotificationByEmail = () => {
     service: 'gmail',
     auth: {
       user: 'mydiaryjscript@gmail.com',
-      pass: process.env.EMAIL_PASS,
+      pass: process.env.EMAIL_APP_PASSWORD,
     },
   }));
   // sending emails at periodic intervals
