@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My Diary... Your space for thoughts and feelings</title>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Coda+Caption:800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+    <script>        
+        if(localStorage.getItem('token') === null)
+            window.location = './index.html';
+    </script>
+</head>
+
+<body onload="show();">
+    <div class="row">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            
+            <a href="#" id="profile-pic"><img class="img-center" id="img-element" alt="Avatar"></a>
+            
+            <a id="username" href=""></a>
+            <hr>
+            <a id="entries" href="#">Entries</a>
+            <a id="profile" href="#" onClick="userProfile();">User Profile</a>
+            <a id="logout-small" href="#" class="logout">Logout</a>
+        </div>
+        
+        <div class="main-form">
+            <div class="row bottom-border">
+                <div class="left">
+                    <h2>
+                        <span class="hamburgerIcon" onclick="openNav()">&#9776;</span> &nbsp;&nbsp; &nbsp;&nbsp; My Diary... Your Thoughts & Feelings</h2>
+                </div>
+                <div class="full-width">
+                    <a id="logout-big" href="#" class="right btn">Logout</a>
+                </div>
+            </div>
+            <div id="app">
+                
+            </div>
+            <div id="modalBox" class="modal">
+                <div class="modal-container">
+                    <div id="modal-app">
+                        <form>
+                            <div class="imgcontainer">
+                            <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
+                            <h2>Add Entry</h2>
+                            </div>
+                            <ul id='add_new_error' class="text-red"></ul>
+                            <div class="input-container">
+                            <input class="input-field" id="title" type="text" placeholder="Entry Title">
+                            </div>
+                            <div class="input-container">
+                            <textarea rows="4" class="input-field" id="content" placeholder="Entry content"></textarea>
+                            </div>
+                            <button type="submit" class="btn" id="file-submit1" onClick="addNewEntry();">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>
+        let image = document.getElementById('img-element');
+        image.src = JSON.parse(localStorage.getItem('userDetails')).user['0'].passporturl;
+    </script>
+</body>
+</html>

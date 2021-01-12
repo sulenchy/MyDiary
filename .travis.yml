@@ -1,0 +1,28 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=39ac8d5ddfbac96759005595b2d7e76aee7f9491adc69b02486b1cc33331a3c6
+language: node_js
+node_js:
+  - "8.8.0" 
+
+env:
+- NODE_ENV=test
+
+services:
+  - postgresql
+
+before_script:
+  - npm install nyc coveralls codeclimate-test-reporter -g
+  - psql -c 'DROP database if exists mydiarytest;' -U postgres
+  - psql -c 'CREATE database mydiarytest;' -U postgres
+
+
+script:
+- npm test
+
+cache: 
+  - npm install
+
+after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+
+after_success: npm run coverage

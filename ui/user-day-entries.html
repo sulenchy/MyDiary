@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My Diary... Your space for thoughts and feelings</title>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Coda+Caption:800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="row">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            
+                <img class="img-center" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAflBMVEX///8AAAD5+fn8/PxjY2O3t7f29vYZGRk9PT0PDw8SEhIbGxvv7+/n5+cVFRW5ubng4OAzMzMICAhnZ2fW1taCgoJLS0swMDCPj49VVVV3d3cpKSmgoKCVlZVQUFCxsbFxcXHIyMhcXFxERESHh4ciIiKenp46OjrDw8PPz8/Sd116AAAMHUlEQVR4nO1d6ZaquhJWplYBQRQFRFGc3/8Fb7v77J1KSEJSBPCu1d/PHkIqqSk1JJPJL37xi1/g4W3cQ+EcZ3t/OU+m02S+9Pezo1Mc3I039twUYb3K0+VrKsHXpShf1tjzlCKoilkio4EgmRVuMPZ8ubCfxUqNBoJVerbHnjcNq6oXulT8YFFXH8NltlvPcVT8YO5En7Avcep3oeIHfhqPTIa77U7FD7bReFRY970pMt7YleNIi3eVWgsM/Gx4a+llS+mcFqu8OJTRKw4Dz7a9IIxfUZkV+Uqu3b4Ow+6KfZdI+M7JolD8v2GUORKW9O8DqrDnTjQNVXsduMVDNMbq2ff8/0Oc8yewdCotpyOoHAF75kMoYzvjelPL9RPBEna05srM/NA7f224HHF00R+2Kq4pemxMzroB+8rZDj+ViLYKuM5Bcu1xU+JZ84NGzJhVctTHpTdJKZu+4cyYYxE1eXZRmRqcgrVuMrJR/8htnmdOPZjHsLFiN+MLVt0aO95R/Jp4sip/nvWwWtaV5d6vs9kvlKy2qo0v1Q/CmvlQYnTfU2Z03zU5Og2X1cVXY0PbDjP0uldvO2C1ytqQRbGO9LjLHrfjBxUjkLkRcfQYF2Lbk3RAhOw3DbCAx1hzcxwrg81I5aUzJQwdi8FCBO7CKCUWvce7AaM2MX2M3HaSE5uW88ug0drgQkt8F91F6931wOEai/k8fiRa4lJzU1RFYUbPlGaG6YIrNYUSN8iT8q8OZmeoigzOIUHFV8LlB9DBUPKFMMYWdf4Yha9+QHHXTF/fUJ7bCHJOQEn8Sfe/KUHvoPhMgNLCmseTGJ7Utp3c6CB+veJOltSClnGh5VzY0MPaoWcRVOvZfy7TYnaq0O5SAL2Vi86yXtFLQGC7W+Z8nKADkjH0IDUUzwbOAOfv2mUjIvLGrcSR4sL1UI6m2lDz4hTvU5gB2eOSBtBbeqguBrRBW8xXvZOIjDdOGFmxocArWucYMNYSc66NhXmgH6wwUgcdjbnaADCPg4kznOXZxSky6laBAWqVf3iCf8BYwrNCGcQcQwn0NRQEzQZ8cUNw80upnGP+0h85AJG7Vbu838HnEJo3VEy++wjhg8zVejTxANlKnEjDUi51eiDOzUB6/bZ/B6p3jli0ojljEQr90UPAti0q2AMaJ9P/0rM5XzEQAg9cpy+5/IK/vOnvva1VZLPTJ8QDfo90nS0gqoi8xL05WxkQsQQg71IpATN56H/F0ixBuyEcSKBMZOsAWAOhesvmXI1vCXCDJawJ/mqm/41Ji4vVxArxEeCZi9d6q/JHQrx06ZhOEfY9Iv8t9Mxj8jcIjaJjQ/4CE50B7C9ygsHhBROc5B4J5dgjPgMkUbAONlE6rQ4ABzFnoq1AnEyAbhSoPSDqmC3X1llvYHYeMA5fkkGqHnMubJaqKOCE+BDYeof3e4t4ZEfE8BNOCVQ7LpgvEeW64IkAsP6oRDqqCviG+VLLTAlnLTGxJw9Dx3SKyeZZJFzHOTLZ5LeomHWIIwQVjiVRbc6ag6MEKoS2wRGCiscC69481BC7jOIsjIPyBqqYFHBP01AQ/5ir01qB3BFcVSyR58ZpIyBj4yq9UIYdZ7Eo48sKWSX+lRqGFHa47KwCJiKCOYl8w1bs26Mxx30MnErYYMxM+BtVoLp7MMeFN4TrbpH1xNbHobqtUM7QBEpCQptUoDyxGUO2gFMJ2Pw9EBL6lEnUAHazoZVSB7rnhTAyfRIgKSacFZngnK0EneglloSWaZLYQgRKG2MoA5XY+4NMMAbxwfFFi5pxxjeQdUsTyMg+/DFgC3wxbKBtSRJ8QQSwv1BtEUdpgR6aOiuroUuNCznPQneNxB0wwb+/0HaAu/RRkbAmFIbDv5/mHcbWtYlYa/gHpP4VpnyIxcc6KH+g58qrl2LwQAwGnDI5O3Yr+dMKCZ06fYroXyhpZJ/wCvGNQCNsisl9AxBfBEoD8X071r5rJBE7duQS/QT9X+K5IAL9FJRdx67lnud/I8FIOIkLd67iF3Qks0Dk8GmQozU07SQp3bnLxVLSwd16D94gpn0JfkrMZPd+BLYDqB86wIkEHpeJl2SgB8hie8saMNH2QNzDBPyUfMNIg9lB6j4mRsrTbTIg+KlhQiYbSW3NykynOp8Qo6z15zMHQRndl6m7A/isZVLY/37oyrHyt6uxVky+sBtUvwCRQ9V0+I7Jljm++jVoEGlsyiLfPh7bvCgNX+LAN4gdXJTgeSjqy85fJNOk0FOrz2/mS5a31dZJ9e9yO/+bMnRRkE5jWNa0IOw1/p3pLU4ehdaFJHynEePGeyUvj7tV3FIr41yIslirMwTfjSe2WDWs5WWiLG6uMBnvICrtuqgWCPIPVtpH3afsBHWp5DwSprJa7bWaBeAfdXWDD22FQF+FcFu8ss2pvCnpN37wQS8cZKucOW4nzr1OmwPbHMODUsE5PxykF6Br9W7/Yl9fq3McWLYXbqL76aJ6BeJcYU/4ATqtkOmB82nD2Ld6MoKQqU4QO+50KaMiWnWOIIitk1bQjvBikLQxhiitQNRQW6IHmU/XRduWiBI9xE62lRmiUoX6+GpxV0SpN/VkqPYVskjIVTBIhtIaTjk9HXC+2QvkATxhelq5YECrsaIL5C4GkWm2mJD8Rl7dP4AR+YE8TU4YnF13UCsrFZKBZP1b2mWzAOaQlQTVMidpz6dJJLJZSMqcVAvPUNW9KMhmISk8AzwjLQVUdhj7JMSSlQKeyRAyd+sjCAEC3TQ3iuWyH0GItFwW8B23UPuDCAHF7zx5BlWNEr31CYS0lJQDOiVFO59ASEuRP5yjOHD6AYSAgwRfmkEJnLgR5gMIaW2EUWpNGp8Q0L0q6shUaRYbnxBQ3yZiHJX2vfEJAfXFwoO9QkPl6IQAqy5WrkDcRaeS0QkBR22JKwW2TXDiHZsQYAxlRy/g5wuCwCMTAu8IkaVyYEc6308ZmRDVxnx4dwX/qoRxCVG+KmHigTwUNyAzLiHA0vktcW4QJeFeJzIqISFIrrQVtFgtF7yMSghIMLXfEQIr3DkqeLAoCicGrXXlzsQGFsdvhrjsSvgAiklcODoTXoKkculZ67VU5xrVF6aO5YmbeoNcrZTEhqlOvjEJMu0LN5SR5II307QvCqNya8Kr214nAw+KcagoRVo1BJlU1euZYKBafGum/VybfcjqtnbFtgFzmR59vaHs+gf7XBh6W2yZH+QpaRg8nykX31AXTrb0Jcb3vPXyPDludQsRE1pAdLocNK8A3RxynMTc8mukUnpCpcR12tkojtwrVbmEVbpV71VI9seiPKsWOOIvZaVvQb0oV7cF57LIVxJWW+6267R8xlqTsWBh2EKz6hIypXaTpRWfq3uWntZOned57ayLNCur5ybElcpSJQra3faUU9WpYakrul0lTe/nmJd7U1lLdc1LQF8d+RnXrWOuqfx2Dj/vAnzkE0of8CQBnQ1HP6BEv2wwgsTTtZP4xm4mGe0M/WwHXRrWpbOXKcMc+CEVukC67tSvwbR+7cd72ubYkR08+t6ARe9vWP1FRZdOGng2ibkBIR3ktVjzzz812/EuQzzIxaze0UgjkMUUXi/7eTgSoGIqnWtD6tJuvCLXq/YKGm/kmePmKzO03+OmVOxhs4MdbKLxsGPe18OObAOB2YcdJ5MnG/qZm+vEI/BSdsF8w09tfi9VoxHJ+OOn9hCPn34rr2YgfmXUPFbNOGzRj9FiteLU5Mu67mAPBH8j5txzZObJ5jsnYtmn5RU8ot3RlYxTThA5yfr1hfjPmm8FqQAFCJ41n/X7rPnk3eDN7ehZOBFiBS3X4Y42vw/hmsaCnp5FXWq5LkFZC7rH+npGuYGnsInkUVRKxARVIR7DuA0Uwy4l0fd9nUWSJQ2jrJZkVbAvXWFhHeTpqvnueMpK9xyHgWfbXhDGZ7fMTsedvGfOPwwc4Ji8246NZxH9rNdHrYWwSqPJXSOmFYsIdfEnD9vB3lAWIE4RTxGwuKVDKVwZ7MhR7SbmYrHG2NJ+YLk1MrW7dNwRJYMH+5xql9s80vPH7AWFwC1migU3yaXgNO5/EqxXWWylFsbfFuXmw/hJCGsTHYp1Ptv7y/n3HiXzpb+f5eviEP3fkPCLX/ziM/E/yVmttuIQCTgAAAAASUVORK5CYII="
+                    alt="Avatar">
+            
+            <a href="">Username</a>
+            <hr>
+            <a href="./user-entries.html">Entries</a>
+            <a href="./user-profile.html">User Profile</a>
+            <a href="./index.html" class="logout">Logout</a>
+        </div>
+        
+        <div class="main-form">
+            <div class="row">
+                <div class="left">
+                    <h2>
+                        <span class="hamburgerIcon" onclick="openNav()">&#9776;</span> &nbsp;&nbsp; &nbsp;&nbsp; My Diary... Your Thoughts & Feelings</h2>
+                </div>
+                <div class="full-width">
+                    <a href="./index.html" class="right btn">Logout</a>
+                </div>
+            </div>
+            <hr>
+            <div class="container">
+                <h2>Month | Day Year</h2>
+                <div class="#">
+                    <button class="btn-float" onclick="goToAddNew();">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <input type="text" class="input-field" placeholder="Search.." name="search">
+        
+                    <div class="card row">
+                        <div class="day">
+                            <a href="./entry-content.html">
+                                <h2>hr:min:sec</h2>
+                            </a>
+                        </div>
+                        <div class="entry">
+                            <a href="./entry-content.html">
+                                <h2>Title of the entry</h2>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="buttons">
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card row">
+                        <div class="day">
+                            <a href="./entry-content.html">
+                                <h2>hr:min:sec</h2>
+                            </a>
+                        </div>
+                        <div class="entry">
+                            <a href="./entry-content.html">
+                                <h2>Title of the entry</h2>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="buttons">
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card row">
+                        <div class="day">
+                            <a href="./entry-content.html">
+                                <h2>hr:min:sec</h2>
+                            </a>
+                        </div>
+                        <div class="entry">
+                            <a href="./entry-content.html">
+                                <h2>Title of the entry</h2>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="buttons">
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card row">
+                        <div class="day">
+                            <a href="./entry-content.html">
+                                <h2>hr:min:sec</h2>
+                            </a>
+                        </div>
+                        <div class="entry">
+                            <a href="./entry-content.html">
+                                <h2>Title of the entry</h2>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="buttons">
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="container">
+                                    <a href="#">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="row text-center push-down">
+                        <a href="#" class="btn">
+                            View more
+                        </a>
+                    </div>
+        
+        
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <script src="scripts/main.js"></script>
+
+</body>
+
+</html>
