@@ -27,7 +27,7 @@ app.use('/api/v1', Router);
 
 app.use('/client', express.static('public'));
 
-sendNotificationByEmail();
+// sendNotificationByEmail();
 
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);

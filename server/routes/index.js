@@ -19,7 +19,7 @@ router.get('/entries/:id', authenticatedUserLogin.authenticateUser, entriesContr
 router.delete('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.deleteEntry);
 router.put('/entries/:id', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.updateEntry);
 router.get('/entries', authenticatedUserLogin.authenticateUser, entriesController.getAllEntry);
-router.post('/auth/signup', validateUserEmail.checkEmail, validateUser.validateSignupInput, usersController.signupUser);
+router.post('/auth/signup', validateUser.validateSignupInput, usersController.signupUser);
 router.put('/user', authenticatedUserLogin.authenticateUser, validateUser.validateUpdateInput, usersController.updateUser);
 router.get('/user', authenticatedUserLogin.authenticateUser, usersController.getUser);
 router.get('/users', usersController.getUsers);
