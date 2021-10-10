@@ -17,7 +17,7 @@ export default class ValidateUserEmail {
    *
    * @return {Object}
    */
-  static checkEmail(req, res, done) {
+  static checkEmail(req, res, next) {
     const { email } = req.body;
     const mailCheck = `
       SELECT * FROM users WHERE email = '${email}'`;
@@ -29,7 +29,9 @@ export default class ValidateUserEmail {
               message: 'Email already exists',
             });
         }
-        return done();
-      }).catch(err => res.status(500).send(err.message));
+        return next();
+      })
+      .catch(err => err.stack)
+      .then(() => client.end());
   }
 }

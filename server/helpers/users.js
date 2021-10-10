@@ -8,16 +8,24 @@ export default class UsersHelper {
   static signupUser(fullname, email, password, gender) {
     const hashedPassword = bcrypt.hashSync(`${password}`);
     const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${hashedPassword}','${gender}') RETURNING *;`;
-    return new Promise((resolve, reject) => {
-      const data = client.query(user);
-      if (data) {
-        resolve(data);
-      } else {
-        reject(new Error({
-          message: 'Sorry, New user cannot be created',
-        }));
-      }
-    });
+
+    client
+      .query(user)
+      .then(result => result)
+      .catch(e => e.stack)
+      .then(() => client.end());
+
+  // return new Promise((resolve, reject) => {
+  //     const data = client.query(user);
+  //     if (data) {
+  //       resolve(data);
+  //     } else {
+  //       reject(new Error({
+  //         message: 'Sorry, New user cannot be created',
+  //       }));
+  //     }
+  //     client.end();
+  //   });
   }
 
   static loginUser(email) {
@@ -31,6 +39,7 @@ export default class UsersHelper {
           message: 'Sorry, user does not exist. Please, register now.',
         }));
       }
+      client.end();
     });
   }
 
@@ -89,7 +98,7 @@ export default class UsersHelper {
     });
   }
 
-  static changePassword(email, password){
+  static changePassword(email, password) {
     const hashedPassword = bcrypt.hashSync(`${password}`);
     const user = `UPDATE users SET password = '${hashedPassword}' WHERE  email = '${email}'  RETURNING *;`;
     return new Promise((resolve, reject) => {
@@ -104,8 +113,6 @@ export default class UsersHelper {
     });
   }
 
-
-  
 
   static setVisited(userid) {
     const user = `UPDATE users SET visited = NOW()::DATE WHERE id = ${userid}  RETURNING *;`;

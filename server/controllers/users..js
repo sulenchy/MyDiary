@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt-nodejs';
 import createToken from '../helpers/createToken';
 import usersHelper from '../helpers/users';
+import connection from '../helpers/connection';
+
+const client = connection();
+client.connect();
 
 /**
  * @class userController
@@ -24,7 +28,13 @@ export default class UsersController {
       fullname, password, gender,
     } = req.body;
     const email = req.body.email.toLowerCase();
-    usersHelper.signupUser(fullname, email, password, gender)
+
+
+    const hashedPassword = bcrypt.hashSync(`${password}`);
+    const user = `INSERT INTO users (fullname,email,password,gender) VALUES ('${fullname}','${email}','${hashedPassword}','${gender}') RETURNING *;`;
+
+    client
+      .query(user)
       .then(newUser => res.status(201).json({
         user: {
           id: newUser.rows[0].id,
@@ -37,13 +47,30 @@ export default class UsersController {
         },
         message: 'New user created successfully',
       }))
-      .catch(err => res.status(500)
-        .json({
-          error: {
-            status: 'failure',
-            message: err.message,
-          },
-        }));
+      .catch(e => e.stack)
+      .then(() => client.end());
+
+
+    // usersHelper.signupUser(fullname, email, password, gender)
+    //   .then(newUser => res.status(201).json({
+    //     user: {
+    //       id: newUser.rows[0].id,
+    //       fullname,
+    //       email,
+    //       gender,
+    //       notification: newUser.rows[0].notification,
+    //       role: newUser.rows[0].role,
+    //       token: createToken(newUser.rows[0].id),
+    //     },
+    //     message: 'New user created successfully',
+    //   }))
+    //   .catch(err => res.status(500)
+    //     .json({
+    //       error: {
+    //         status: 'failure',
+    //         message: err.message,
+    //       },
+    //     }));
   }
 
   /**
