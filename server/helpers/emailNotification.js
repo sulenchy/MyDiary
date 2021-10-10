@@ -40,7 +40,7 @@ const sendDailyNotificationByEmail = () => {
           from: 'mydiaryjscript@gmail.com',
           to: emails.toString(),
           subject: 'Daily Notification;)',
-          text: 'Hi there, this email is sent to remind you to pen down your feelings and thought. Thank you',
+          text: 'Hi there, this email is sent to remind you to pen down your feelings and thought today. \nThank you',
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
@@ -49,7 +49,7 @@ const sendDailyNotificationByEmail = () => {
             winston.log(info, 'Email successfully sent!');
           }
         });
-      }).catch(err => winston.log(err));
+      }).catch(() => winston.log('Sorry, an error was encountered sending email notification. Please report to the admin'));
   });
 };
 

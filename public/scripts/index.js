@@ -41,6 +41,7 @@ const register = (event) => {
         });
       } else {
         // localStorage.setItem('token', user.user.token);
+        Location.reload();
         alert(`Congratulation to you, ${fullname}. You have successfully created your account. Enjoy your Diary on the go.....`);
       }
     }).catch(err => err.message);
@@ -78,6 +79,8 @@ const login = (event) => {
         });
       } else {
         localStorage.setItem('token', user.data.token);
+        document.getElementById('emailL').value = '';
+        document.getElementById('passwordL').value = '';
         document.location = './landing-page.html';
       }
     }).catch(err => err.message);

@@ -14,7 +14,6 @@ router.get('/', (req, res) => {
     .send('Welcome to MyDiary');
 });
 
-
 router.post('/entries', authenticatedUserLogin.authenticateUser, validateEntry.validateCreateEntryInput, entriesController.createEntry);
 router.get('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.getEntry);
 router.delete('/entries/:id', authenticatedUserLogin.authenticateUser, entriesController.deleteEntry);
@@ -26,7 +25,5 @@ router.get('/user', authenticatedUserLogin.authenticateUser, usersController.get
 router.get('/users', usersController.getUsers);
 router.post('/auth/login', usersController.loginUser);
 router.put('/changePassword', usersController.changePassword);
-
-
 
 export default router;

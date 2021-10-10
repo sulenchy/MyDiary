@@ -30,6 +30,6 @@ export default class ValidateUserEmail {
             });
         }
         return done();
-      }).catch((err) => { res.status(500).send(err.message); });
+      }).catch(err => res.status(500).send(err.message));
   }
 }

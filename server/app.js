@@ -6,7 +6,7 @@ import winston from 'winston';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
-import entriesRouter from './routes/index';
+import Router from './routes/index';
 import sendNotificationByEmail from './helpers/emailNotification';
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(logger('dev'));
 app.use(cors());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/api/v1', entriesRouter);
+app.use('/api/v1', Router);
 
 app.use('/client', express.static('public'));
 
