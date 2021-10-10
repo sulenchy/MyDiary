@@ -1,13 +1,14 @@
 // Declaration and initialization of global variable
 let token = '';
-// const entryUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
-const entryUrl = 'http://localhost:4000/api/v1/entries';
-// const userUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
-const userUrl = 'http://localhost:4000/api/v1/user';
-// const registerUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
-const registerUrl = 'http://localhost:4000/api/v1/auth/signup';
-// const loginUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
-const loginUrl = 'http://localhost:4000/api/v1/auth/login';
+const entryUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/entries';
+// const entryUrl = 'http://localhost:4000/api/v1/entries';
+const userUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/users';
+// const userUrl = 'http://localhost:4000/api/v1/user';
+const registerUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/signup';
+// const registerUrl = 'http://localhost:4000/api/v1/auth/signup';
+const loginUrl = 'https://sulenchy-my-diary.herokuapp.com/api/v1/auth/login';
+// const loginUrl = 'http://localhost:4000/api/v1/auth/login';
+
 let deleteEntryUrl = '';
 let updateEntryUrl = '';
 let userDetails = {};
