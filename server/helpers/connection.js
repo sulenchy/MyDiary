@@ -10,7 +10,9 @@ const connection = () => {
     config = configurations.development;
   } else if (process.env.NODE_ENV === 'test') {
     config = configurations.test;
-  } else { config = process.env.DATABASE_URL; }
+  } else {
+    config = configurations.production;
+  }
   const client = new Client(config);
   return client;
 };
