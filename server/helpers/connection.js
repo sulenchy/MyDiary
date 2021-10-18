@@ -11,6 +11,9 @@ const connection = () => {
   } else if (process.env.NODE_ENV === 'test') {
     config = configurations.test;
   } else { config = process.env.DATABASE_URL; }
+  config.ssl = {
+    ejectUnauthorized: false,
+  };
   const client = new Client(config);
   return client;
 };
