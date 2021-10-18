@@ -27,7 +27,9 @@ app.use('/api/v1', Router);
 
 app.use('/client', express.static('public'));
 
-sendNotificationByEmail();
+// sendNotificationByEmail();
+
+console.log('connection string ==> ', process.env.DATABASE_URL);
 
 app.listen(port, () => {
   winston.log('info', `App listening at localhost:${port}`);
