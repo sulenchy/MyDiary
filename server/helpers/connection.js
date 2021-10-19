@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import configurations from '../config/config';
 
 
@@ -13,7 +13,8 @@ const connection = () => {
   } else {
     config = configurations.production;
   }
-  const client = new Client(config);
-  return client;
+  const pool = new Pool(config);
+
+  return pool;
 };
 export default connection;
