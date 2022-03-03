@@ -35,22 +35,32 @@
                 <p>Getting started is quite simple and easy. Just fill out the info below.</p>
             
                 <form>
+                    <ul id='errors' class="text-red"></ul>
                     <div class="input-container">
                         <i class="fa fa-user icon"></i>
-                        <input class="input-field" type="text" placeholder="Username" name="usrnm">
+                        <input class="input-field" type="text" id="fullname" placeholder="Full name" name="username">
                     </div>
-            
                     <div class="input-container">
                         <i class="fa fa-envelope icon"></i>
-                        <input class="input-field" type="email" placeholder="Email" name="email" required>
+                        <input class="input-field" type="email" placeholder="Email" id="email" name="email" required>
                     </div>
-            
+                    <div class="input-container">
+                        <i class="fa fa-intersex icon"></i>
+                        <select class="input-field" id="gender" name="gender" required>
+                            <option value="">Choose your gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
                     <div class="input-container">
                         <i class="fa fa-key icon"></i>
-                        <input class="input-field" type="password" placeholder="Password" name="psw" required>
+                        <input class="input-field" type="password" placeholder="Password" id="password" name="password" required>
                     </div>
-            
-                    <button type="submit" class="btn text-center">Register</button>
+                    <div class="input-container">
+                        <i class="fa fa-key icon"></i>
+                        <input class="input-field" type="password" placeholder="Retype Password" id="retypePassword" name="password" required>
+                    </div>
+                    <button type="submit" id='register' class="btn text-center">Register</button>
                 </form>
                 <p>Already have an account?
                     <a class="#" href="#"  onclick="document.getElementById('modalBox').style.display='block'">Login</a>
@@ -64,17 +74,18 @@
                         <span onclick="document.getElementById('modalBox').style.display='none'" class="close" title="Close Modal">&times;</span>
                         <h2>Login</h2>
                     </div>
+                    <ul id='errors_login' class="text-red"></ul>
                     <div class="input-container">
                         <i class="fa fa-envelope icon"></i>
-                        <input class="input-field" type="text" placeholder="Email" name="email">
+                        <input class="input-field" id="emailL" type="text" placeholder="Email" name="email">
                     </div>
         
                     <div class="input-container">
                         <i class="fa fa-key icon"></i>
-                        <input class="input-field" type="password" placeholder="Password" name="psw">
+                        <input class="input-field" id="passwordL" type="password" placeholder="Password" name="password">
                     </div>
         
-                    <input type="button"  class="btn" value="Login" onclick="redirect();" />
+                    <input type="button" id="login"  class="btn" value="Login" />
         
                     <span class="">Forgot
                         <a href="#">password?</a>
@@ -83,8 +94,9 @@
             </form>
         </div>
     </div>
-
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/app.js"></script>
 
 </body>
 
